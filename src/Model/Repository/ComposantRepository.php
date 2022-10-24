@@ -20,7 +20,7 @@ class ComposantRepository extends AbstractRepository {
 
     protected function getNomsColonnes(): array
     {
-        return ['id', 'libelle', 'prix'];
+        return ['id', 'libelle', 'prix', 'imgPath'];
     }
 
     protected function construire(array $objetFormatTableau)
@@ -29,7 +29,7 @@ class ComposantRepository extends AbstractRepository {
         $libelle = $objetFormatTableau['libelle'];
         $prix = $objetFormatTableau['prix'];
         $img = $objetFormatTableau['imgPath'];
-        return new Composant($id, $libelle, $prix,$img);
+        return new Composant($id, $libelle, $prix, $img);
 
     }
 }

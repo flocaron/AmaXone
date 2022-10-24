@@ -9,6 +9,7 @@
 
 <header>
     <nav>
+        <a href="frontController.php?action=readAll&controller=user"> Gestion des utilisateurs </a>
         <a href="frontController.php?action=readAll&controller=composant"> Gestion des composants </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>
     </nav>

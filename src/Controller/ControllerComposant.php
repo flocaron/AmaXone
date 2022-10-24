@@ -12,18 +12,25 @@ class ControllerComposant {
         require "../src/View/view.php"; // Charge la vue
     }
 
+    public static function welcome() {
+        self::afficheVue([
+            "pageTitle" => "Catalogue",
+            "cheminVueBody" => "composants/welcome.php",
+        ]);
+    }
+
     public static function readAll() {
         $composants = (new ComposantRepository())->selectAll();
         self::afficheVue([
             'inventaire' => $composants,
-            "pagetitle" => "Catalogue",
+            "pageTitle" => "Catalogue",
             "cheminVueBody" => "composants/list.php",
         ]);
     }
 
     public static function error($errorMsg = "") {
         self::afficheVue([
-            "pagetitle" => "Error",
+            "pageTitle" => "Error",
             "msg" => $errorMsg,
             "cheminVueBody" => "composants/error.php",
         ]);

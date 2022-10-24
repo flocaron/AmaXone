@@ -16,7 +16,7 @@ class Composant extends AbstractDataObject
             'id' => $this->id,
             'libelle' => $this->libelle,
             'prix' => $this->prix,
-            'imgPath'=>$this->imgPath,
+            'imgPath' => $this->imgPath,
         ];
     }
 
