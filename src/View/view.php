@@ -26,7 +26,7 @@
 
 <footer>
     <p id="foot">
-        AmaXone Trademark inc.
+       <h3 class="font-normal hover:font-bold">AmaXone ™ Inc.</h3>
     </p>
 </footer>
 
