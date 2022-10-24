@@ -26,7 +26,7 @@
 
 <footer>
     <p id="foot">
-        Site de covoiturage de Bakaaa
+        AmaXone Trademark inc.
     </p>
 </footer>
 
