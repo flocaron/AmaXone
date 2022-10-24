@@ -15,8 +15,8 @@ class ControllerComposant {
     public static function readAll() {
         $composants = (new ComposantRepository())->selectAll();
         self::afficheVue([
-            'voitures' => $composants,
-            "pagetitle" => "Liste des composants",
+            'inventaire' => $composants,
+            "pagetitle" => "Catalogue",
             "cheminVueBody" => "composants/list.php",
         ]);
     }
