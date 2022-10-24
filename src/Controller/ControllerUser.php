@@ -118,7 +118,7 @@ class ControllerUser
             $prenom = $_GET['prenom'];
             $email = $_GET['email'];
 
-            $use = new User($login, $nom, $prenom, "", $email);
+            $use = new User($login, $nom, $prenom, $email, "");
             $bool = (new UserRepository)->update($use);
             if ($bool) {
                 $users = (new UserRepository)->selectAll();
@@ -152,7 +152,7 @@ class ControllerUser
             $prenom = $_GET['prenom'];
             $email = $_GET['email'];
 
-            $bool = (new UserRepository)->save(new User($login, $nom, $prenom, "", $email));
+            $bool = (new UserRepository)->save(new User($login, $nom, $prenom, $email, ""));
             if ($bool) {
                 $users = (new UserRepository)->selectAll();
                 self::afficheVue([

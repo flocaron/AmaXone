@@ -16,7 +16,7 @@ class UserRepository extends AbstractRepository
     }
 
     protected function getNomsColonnes(): array {
-        return ['login', 'mdp', 'nom', 'prenom', 'email'];
+        return ['login', 'nom', 'prenom', 'email', 'mdp'];
     }
 
     protected function construire(array $userFormatTableau) {

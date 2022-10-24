@@ -32,7 +32,7 @@ class User extends AbstractDataObject
         return false;
     }
 
-    public function __construct(string $login, string $nom, string $prenom, string $mdp, string $email) {
+    public function __construct(string $login, string $nom, string $prenom, string $email, string $mdp) {
         $this->login = $login;
         $this->nom = $nom;
         $this->prenom = $prenom;
