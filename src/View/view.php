@@ -2,13 +2,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <!-- <link rel="stylesheet" type="text/css" href="path"> -->
-    <title><?php echo $pagetitle; ?></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>TEST</title>
 </head>
 <body>
 
 <header>
     <nav>
+        <h1 class="text-3xl font-bold underline">
+            Hello world!
+        </h1>
         <a href="frontController.php?action=readAll&controller=voiture"> Gestion des voitures </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>
     </nav>
