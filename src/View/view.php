@@ -2,8 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../src/CSS/style.css">
-    <link rel="icon" type="image/png" href="../src/Icon/icon.jpg">
+    <link rel="stylesheet" type="text/css" href="path">
     <title><?php echo $pagetitle; ?></title>
 </head>
 <body>
@@ -11,8 +10,6 @@
 <header>
     <nav>
         <a href="frontController.php?action=readAll&controller=voiture"> Gestion des voitures </a>
-        <a href="frontController.php?action=readAll&controller=user"> Gestion des utilisateurs </a>
-        <a href="frontController.php?action=readAll&controller=trajet"> Gestion des trajets </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>
     </nav>
 </header>

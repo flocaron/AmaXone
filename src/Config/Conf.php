@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Covoiturage\Config;
+namespace App\E_Commerce\Config;
 
 class Conf
 {

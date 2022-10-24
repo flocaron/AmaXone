@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Covoiturage\Model\DataObject;
+namespace App\E_Commerce\Model\DataObject;
 
 abstract class AbstractDataObject
 {

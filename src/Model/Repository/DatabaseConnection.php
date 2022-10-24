@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Covoiturage\Model\Repository;
+namespace App\E_Commerce\Model\Repository;
 
-use App\Covoiturage\Config\Conf;
+use App\E_Commerce\Config\Conf;
 
 use PDO;
 

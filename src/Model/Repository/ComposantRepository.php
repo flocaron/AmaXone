@@ -1,30 +1,34 @@
 <?php
 
-namespace App\Covoiturage\Model\Repository;
+namespace App\E_Commerce\Model\Repository;
 
-use App\Covoiturage\Model\Repository\AbstractRepository;
-use App\Covoiturage\Model\DataObject\Composant;
+use App\E_Commerce\Model\Repository\AbstractRepository;
+use App\E_Commerce\Model\DataObject\Composant;
 
 class ComposantRepository extends AbstractRepository {
 
 
     protected function getNomTable(): string
     {
-        return "";
+        return "projet_composant";
     }
 
     protected function getNomClePrimaire(): string
     {
-        return "";
+        return "id";
     }
 
     protected function getNomsColonnes(): array
     {
-        return [];
+        return ['id', 'libelle', 'prix'];
     }
 
     protected function construire(array $objetFormatTableau)
     {
+        $id = $objetFormatTableau['id'];
+        $libelle = $objetFormatTableau['libelle'];
+        $prix = $objetFormatTableau['prix'];
+        return new Composant($id, $libelle, $prix);
 
     }
 }
