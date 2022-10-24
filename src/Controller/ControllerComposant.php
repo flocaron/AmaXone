@@ -14,7 +14,7 @@ class ControllerComposant {
 
     public static function welcome() {
         self::afficheVue([
-            "pageTitle" => "Catalogue",
+            "pageTitle" => "Bienvenue",
             "cheminVueBody" => "composants/welcome.php",
         ]);
     }

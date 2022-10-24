@@ -9,7 +9,7 @@ $loader = new App\E_Commerce\Lib\Psr4AutoloaderClass();
 $loader->addNamespace('App\E_Commerce', __DIR__ . '/../src');
 $loader->register();
 
-$action = $_GET['action'] ?? 'readAll';
+$action = $_GET['action'] ?? 'welcome';
 
 $controller = $_GET['controller'] ?? 'composant';
 
