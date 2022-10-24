@@ -7,6 +7,10 @@
                 <input type="text" placeholder="jhon77" name="login" id="login_id" required/>
             </p>
             <p>
+                <label for="email_id">Email</label> :
+                <input type="email" placeholder="john.doo@gmail.com" name="email" id="email_id" required/>
+            </p>
+            <p>
                 <label for="nom_id">Nom</label> :
                 <input type="text" placeholder="Doo" name="nom" id="nom_id" required/>
             </p>

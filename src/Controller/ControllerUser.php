@@ -112,12 +112,13 @@ class ControllerUser
     }
 
     public static function updated() {
-        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom'])) {
+        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email'])) {
             $login = $_GET['login'];
             $nom = $_GET['nom'];
             $prenom = $_GET['prenom'];
+            $email = $_GET['email'];
 
-            $use = new User($login, $nom, $prenom);
+            $use = new User($login, $nom, $prenom, "", $email);
             $bool = (new UserRepository)->update($use);
             if ($bool) {
                 $users = (new UserRepository)->selectAll();
@@ -145,12 +146,13 @@ class ControllerUser
 
     public static function created()
     {
-        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom'])) {
+        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email'])) {
             $login = $_GET['login'];
             $nom = $_GET['nom'];
             $prenom = $_GET['prenom'];
+            $email = $_GET['email'];
 
-            $bool = (new UserRepository)->save(new User($login, $nom, $prenom));
+            $bool = (new UserRepository)->save(new User($login, $nom, $prenom, "", $email));
             if ($bool) {
                 $users = (new UserRepository)->selectAll();
                 self::afficheVue([

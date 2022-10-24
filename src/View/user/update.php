@@ -7,6 +7,10 @@
                 <input type="text" value="<?php echo htmlspecialchars($user->get('login'));?>" name="login" id="login_id" readonly/>
             </p>
             <p>
+                <label for="email_id">Email</label> :
+                <input type="email" value="<?php echo htmlspecialchars($user->get('email'));?>" name="email" id="email_id" required/>
+            </p>
+            <p>
                 <label for="nom_id">Nom</label> :
                 <input type="text" value="<?php echo htmlspecialchars($user->get('nom'));?>" name="nom" id="nom_id" required/>
             </p>
