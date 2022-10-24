@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title><?php echo $pageTitle;?></title>
+    <script src="https://cdn.tailwindcss.com"> </script>
+    <title><?php echo $pagetitle;?></title>
 </head>
 <body>
 
 <header>
     <nav>
+        <a href="frontController.php"> Accueil </a>
         <a href="frontController.php?action=readAll&controller=user"> Gestion des utilisateurs </a>
         <a href="frontController.php?action=readAll&controller=composant"> Gestion des composants </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>

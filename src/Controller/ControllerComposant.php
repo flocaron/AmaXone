@@ -6,15 +6,14 @@ use App\E_Commerce\Model\Repository\ComposantRepository;
 
 class ControllerComposant {
 
-    private static function afficheVue(array $parametres = []): void
-    {
+    private static function afficheVue(array $parametres = []): void {
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require "../src/View/view.php"; // Charge la vue
     }
 
     public static function welcome() {
         self::afficheVue([
-            "pageTitle" => "Bienvenue",
+            "pagetitle" => "Bienvenue",
             "cheminVueBody" => "composants/welcome.php",
         ]);
     }
@@ -23,19 +22,18 @@ class ControllerComposant {
         $composants = (new ComposantRepository())->selectAll();
         self::afficheVue([
             'inventaire' => $composants,
-            "pageTitle" => "Catalogue",
+            "pagetitle" => "Catalogue",
             "cheminVueBody" => "composants/list.php",
         ]);
     }
 
     public static function error($errorMsg = "") {
         self::afficheVue([
-            "pageTitle" => "Error",
+            "pagetitle" => "Error",
             "msg" => $errorMsg,
             "cheminVueBody" => "composants/error.php",
         ]);
     }
-
 
 
 }
