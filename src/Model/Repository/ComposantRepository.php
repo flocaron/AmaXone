@@ -28,7 +28,8 @@ class ComposantRepository extends AbstractRepository {
         $id = $objetFormatTableau['id'];
         $libelle = $objetFormatTableau['libelle'];
         $prix = $objetFormatTableau['prix'];
-        return new Composant($id, $libelle, $prix);
+        $img = $objetFormatTableau['imgPath'];
+        return new Composant($id, $libelle, $prix,$img);
 
     }
 }

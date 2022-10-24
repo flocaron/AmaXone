@@ -8,6 +8,7 @@ class Composant extends AbstractDataObject
     private int $id;
     private string $libelle;
     private int $prix;
+    private string $imgPath;
 
     public function formatTableau(): array
     {
@@ -15,13 +16,15 @@ class Composant extends AbstractDataObject
             'id' => $this->id,
             'libelle' => $this->libelle,
             'prix' => $this->prix,
+            'imgPath'=>$this->imgPath,
         ];
     }
 
-    public function __construct(int $id, string $libelle, int $prix) {
+    public function __construct(int $id, string $libelle, int $prix, string $imgPath) {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->prix = $prix;
+        $this->imgPath = $imgPath;
     }
 
     /**
@@ -46,6 +49,12 @@ class Composant extends AbstractDataObject
     public function getPrix(): int
     {
         return $this->prix;
+    }
+
+    public function getImgPath(): string
+    {
+        return $this->imgPath;
+
     }
 
 
