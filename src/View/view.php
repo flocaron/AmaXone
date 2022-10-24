@@ -17,7 +17,7 @@
 <main>
     <section>
         <?php
-            require __DIR__ . "/$cheminVueBody";
+            require __DIR__ . "/{$cheminVueBody}";
         ?>
     </section>
 </main>
