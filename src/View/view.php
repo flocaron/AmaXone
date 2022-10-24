@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>TEST</title>
+    <title><?php echo $pageTitle;?></title>
 </head>
 <body>
 
 <header>
     <nav>
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-        </h1>
         <a href="frontController.php?action=readAll&controller=voiture"> Gestion des voitures </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>
     </nav>
