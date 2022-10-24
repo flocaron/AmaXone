@@ -11,7 +11,7 @@ $loader->register();
 
 $action = $_GET['action'] ?? 'readAll';
 
-$controller = $_GET['controller'] ?? 'composant';
+$controller = $_GET['controller'] ?? 'composants';
 
 $controllerClassName = 'App\E_Commerce\Controller\Controller' . ucfirst($controller);
 

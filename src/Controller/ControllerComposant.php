@@ -17,7 +17,7 @@ class ControllerComposant {
         self::afficheVue([
             'voitures' => $composants,
             "pagetitle" => "Liste des composants",
-            "cheminVueBody" => "composant/list.php",
+            "cheminVueBody" => "composants/list.php",
         ]);
     }
 
@@ -25,7 +25,7 @@ class ControllerComposant {
         self::afficheVue([
             "pagetitle" => "Error",
             "msg" => $errorMsg,
-            "cheminVueBody" => "composant/error.php",
+            "cheminVueBody" => "composants/error.php",
         ]);
     }
 
