@@ -9,7 +9,7 @@
 
 <header>
     <nav>
-        <a href="frontController.php?action=readAll&controller=voiture"> Gestion des voitures </a>
+        <a href="frontController.php?action=readAll&controller=composant"> Gestion des composants </a>
         <a href="frontController.php?action=login&controller=user"> Se connecter </a>
     </nav>
 </header>

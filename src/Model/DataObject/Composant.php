@@ -2,7 +2,8 @@
 
 namespace App\E_Commerce\Model\DataObject;
 
-class Composant extends AbstractDataObject {
+class Composant extends AbstractDataObject
+{
 
     private int $id;
     private string $libelle;
