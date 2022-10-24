@@ -9,7 +9,7 @@ class ControllerComposant {
     private static function afficheVue(array $parametres = []): void
     {
         extract($parametres); // Crée des variables à partir du tableau $parametres
-        require "../src/view/view.php"; // Charge la vue
+        require "../src/View/view.php"; // Charge la vue
     }
 
     public static function readAll() {

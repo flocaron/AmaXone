@@ -2,7 +2,7 @@
 
 namespace App\E_Commerce\Model\Repository;
 
-use App\Covoiturage\Model\Repository\DatabaseConnection;
+use App\E_Commerce\Model\Repository\DatabaseConnection;
 use PDOException;
 
 

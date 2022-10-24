@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="path">
+    <!-- <link rel="stylesheet" type="text/css" href="path"> -->
     <title><?php echo $pagetitle; ?></title>
 </head>
 <body>
@@ -17,7 +17,7 @@
 <main>
     <section>
         <?php
-            require __DIR__ . "/view.php";
+            require __DIR__ . "/$cheminVueBody";
         ?>
     </section>
 </main>
