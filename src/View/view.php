@@ -6,7 +6,6 @@
     <title><?php echo $pagetitle;?></title>
 </head>
 <body>
-
 <main>
     <section>
         <?php

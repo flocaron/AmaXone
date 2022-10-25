@@ -8,7 +8,7 @@
             <img src="https://as1.ftcdn.net/v2/jpg/03/05/50/70/1000_F_305507033_BN534jYwkZk1gYGx9n03zfnoTkIDJTYL.jpg" alt="ELECTRONIQUE BIP BOOOP" class="h-full w-full object-cover object-center">
           </div>
           <h3 class="mt-6 text-sm text-gray-500">
-            <a href="">
+            <a href="frontController.php?action=readAll&controller=composant">
               <span class="absolute inset-0"></span>
               Électronique
             </a>
