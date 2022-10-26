@@ -13,6 +13,13 @@ class ControllerUser
         require "../src/View/view.php"; // Charge la vue
     }
 
+    public static function welcome() {
+        self::afficheVue([
+            "pagetitle" => "Bienvenue",
+            "cheminVueBody" => "user/welcome.php",
+        ]);
+    }
+
     public static function readAll()
     {
         $users = (new UserRepository)->selectAll();
