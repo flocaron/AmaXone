@@ -153,11 +153,15 @@ class ControllerComposant {
 
     public static function created()
     {
-        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
+        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['file-upload'])) {
             $libelle = $_GET['libelle'];
             $description = $_GET['description'];
             $prix = $_GET['prix'];
-            $imgPath = $_GET['imgPath'];
+
+
+            var_dump($_FILES);
+
+            $imgPath = "";
 
             $bool = (new ComposantRepository)->save(new Composant($libelle, $description, $prix, $imgPath));
             if ($bool) {
