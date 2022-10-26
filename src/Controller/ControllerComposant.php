@@ -158,8 +158,10 @@ class ControllerComposant {
             $description = $_GET['description'];
             $prix = $_GET['prix'];
 
+            foreach ($_FILES['file-upload'] as $k => $v) {
+                echo "<p> $k = $v </p>";
+            }
 
-            var_dump($_FILES);
 
             $imgPath = "";
 
