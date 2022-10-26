@@ -1,24 +1,46 @@
+<!--<article id="form">
+    <form method="get" action="frontController.php">
+        <fieldset>
+            <legend>Mon formulaire :</legend>
+            <p>
+                <label for="login_id">Login</label> :
+                <input type="text" placeholder="jhon77" name="login" id="login_id" required/>
+            </p>
+            <p>
+                <label for="email_id">Email</label> :
+                <input type="email" placeholder="john.doo@gmail.com" name="email" id="email_id" required/>
+            </p>
+            <p>
+                <label for="nom_id">Nom</label> :
+                <input type="text" placeholder="Doo" name="nom" id="nom_id" required/>
+            </p>
+            <p>
+                <label for="prenom_id">Prenom</label> :
+                <input type="text" placeholder="John" name="prenom" id="prenom_id" required/>
+            </p>
+            <p>
+                <input type="hidden" name="controller" value="user" />
+                <input type="hidden" name="action" value="created" />
+                <input type="submit" value="Envoyer" />
+            </p>
+        </fieldset>
+    </form>
+</article> -->
 <div class="mt-10 sm:mt-0">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-        <div class="md:col-span-1">
-            <div class=" flex justify-center px-4 sm:px-0">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">Ajouter un produit au catalogue</h3>
-            </div>
-        </div>
         <div class="mt-5 md:col-span-2 md:mt-0">
-            <form action="#" method="POST">
+            <form action="frontController.php" method="GET">
                 <div class="overflow-hidden shadow sm:rounded-md">
                     <div class=" flex flex-col gap-6 bg-white px-4 py-5 sm:p-6">
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="libelle" class="block text-sm font-medium text-gray-700">Nom Produit</label>
                                 <input type="text" name="libelle" id="libelle" required
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                       class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label for="prix" class="block text-sm font-medium text-gray-700">Prix</label>
                                 <input type="text" name="prix" id="prix" required
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                       class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                             </div>
 
                         </div>
@@ -58,16 +80,11 @@
                         </button>
                     </div>
                 </div>
+                <input type="hidden" name="controller" value="user" />
+                <input type="hidden" name="action" value="created" />
             </form>
         </div>
     </div>
 </div>
-
-<div class="hidden sm:block" aria-hidden="true">
-    <div class="py-5">
-        <div class="border-t border-gray-200"></div>
-    </div>
-</div>
-
 
 
