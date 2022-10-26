@@ -1,6 +1,6 @@
 <div class="mt-10 sm:mt-0">
         <div class="mt-5 px-10 md:col-span-2 md:mt-0">
-            <form enctype="multipart/form-data" action="frontController.php" method="GET">
+            <form enctype="multipart/form-data" action="frontController.php?action=created&controller=composant" method="post">
                 <div class="overflow-hidden shadow sm:rounded-md">
                     <div class=" flex flex-col gap-6 bg-white px-4 py-5 sm:p-6">
                         <div class="grid grid-cols-6 gap-6">
@@ -52,8 +52,6 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" name="controller" value="composant" />
-                <input type="hidden" name="action" value="created" />
             </form>
         </div>
     </div>

@@ -153,10 +153,10 @@ class ControllerComposant {
 
     public static function created()
     {
-        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['file-upload'])) {
-            $libelle = $_GET['libelle'];
-            $description = $_GET['description'];
-            $prix = $_GET['prix'];
+        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix']) && isset($_POST['file-upload'])) {
+            $libelle = $_POST['libelle'];
+            $description = $_POST['description'];
+            $prix = $_POST['prix'];
 
             foreach ($_FILES['file-upload'] as $k => $v) {
                 echo "<p> $k = $v </p>";
