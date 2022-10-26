@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"> </script>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
     <title><?php echo $pagetitle;?></title>
 </head>
 <body>
