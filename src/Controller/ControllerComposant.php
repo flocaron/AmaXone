@@ -153,14 +153,16 @@ class ControllerComposant {
 
     public static function created()
     {
-        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix']) && isset($_POST['file-upload'])) {
+        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix'])) {
             $libelle = $_POST['libelle'];
             $description = $_POST['description'];
             $prix = $_POST['prix'];
 
+            //TODO upload file
             foreach ($_FILES['file-upload'] as $k => $v) {
                 echo "<p> $k = $v </p>";
             }
+
 
 
             $imgPath = "";
