@@ -20,16 +20,17 @@ class ComposantRepository extends AbstractRepository {
 
     protected function getNomsColonnes(): array
     {
-        return ['id', 'libelle', 'prix', 'imgPath'];
+        return ['libelle', 'description', 'prix', 'imgPath'];
     }
 
     protected function construire(array $objetFormatTableau)
     {
         $id = $objetFormatTableau['id'];
         $libelle = $objetFormatTableau['libelle'];
+        $description = $objetFormatTableau['description'];
         $prix = $objetFormatTableau['prix'];
         $img = $objetFormatTableau['imgPath'];
-        return new Composant($id, $libelle, $prix, $img);
+        return new Composant($libelle, $description, $prix, $img, $id);
 
     }
 }

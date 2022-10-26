@@ -7,7 +7,7 @@
 ?>
 <a href="#" class="group">
     <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-200">
-        <img src="<?php echo $produit->getImgPath();?>" alt="..." class="h-full aspect-auto w-full object-fill object-center group-hover:opacity-75">
+        <img src="<?php echo 'assets/' . $produit->getImgPath();?>" alt="..." class="h-full aspect-auto w-full object-fill object-center group-hover:opacity-75">
     </div>
     <h3 class="mt-4 text-sm text-gray-700"><?php echo $produit->getLibelle();?> </h3>
     <p class="mt-1 text-lg font-medium text-gray-900"><?php echo $produit->getPrix()." €";?></p>

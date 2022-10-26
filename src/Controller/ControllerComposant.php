@@ -119,13 +119,13 @@ class ControllerComposant {
     }
 
     public static function updated() {
-        if (isset($_GET['id']) && isset($_GET['libelle']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
-            $id = $_GET['id'];
+        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
             $libelle = $_GET['libelle'];
+            $description = $_GET['description'];
             $prix = $_GET['prix'];
             $imgPath = $_GET['imgPath'];
 
-            $use = new Composant($id, $libelle, $prix, $imgPath);
+            $use = new Composant($libelle, $description, $prix, $imgPath);
             $bool = (new ComposantRepository)->update($use);
             if ($bool) {
                 $composants = (new ComposantRepository)->selectAll();
@@ -153,13 +153,13 @@ class ControllerComposant {
 
     public static function created()
     {
-        if (isset($_GET['id']) && isset($_GET['libelle']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
-            $id = $_GET['id'];
+        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
             $libelle = $_GET['libelle'];
+            $description = $_GET['description'];
             $prix = $_GET['prix'];
             $imgPath = $_GET['imgPath'];
 
-            $bool = (new ComposantRepository)->save(new Composant($id, $libelle, $prix, $imgPath));
+            $bool = (new ComposantRepository)->save(new Composant($libelle, $description, $prix, $imgPath));
             if ($bool) {
                 $composants = (new ComposantRepository)->selectAll();
                 self::afficheVue([
