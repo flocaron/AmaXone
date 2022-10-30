@@ -6,12 +6,8 @@ use App\E_Commerce\Model\Repository\ComposantRepository;
 use App\E_Commerce\Model\DataObject\Composant;
 
 
-class ControllerComposant {
-
-    private static function afficheVue(array $parametres = []): void {
-        extract($parametres); // Crée des variables à partir du tableau $parametres
-        require "../src/View/view.php"; // Charge la vue
-    }
+class ControllerComposant extends AbstractController
+{
 
     public static function error($errorMsg = "") {
         self::afficheVue([
@@ -153,34 +149,44 @@ class ControllerComposant {
 
     public static function created()
     {
-        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix'])) {
+        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
             $libelle = $_POST['libelle'];
             $description = $_POST['description'];
             $prix = $_POST['prix'];
 
-            //TODO upload file
-            foreach ($_FILES['file-upload'] as $k => $v) {
-                echo "<p> $k = $v </p>";
-            }
-
-
-
-            $imgPath = "";
-
-            $bool = (new ComposantRepository)->save(new Composant($libelle, $description, $prix, $imgPath));
-            if ($bool) {
-                $composants = (new ComposantRepository)->selectAll();
-                self::afficheVue([
-                    "inventaire" => $composants,
-                    "pagetitle" => "Created",
-                    "cheminVueBody" => "composant/created.php",
-                ] );
+            $pic_path = __DIR__ . "/../../web/assets/" . $_FILES['file-upload']['name'];
+            $explosion = explode('.',$_FILES['file-upload']['name']);
+            if (in_array(end($explosion), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10**7) {
+                if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
+                    $imgPath = $_FILES['file-upload']['name'];
+                    $bool = (new ComposantRepository)->save(new Composant($libelle, $description, $prix, $imgPath));
+                    if ($bool) {
+                        $composants = (new ComposantRepository)->selectAll();
+                        self::afficheVue([
+                            "inventaire" => $composants,
+                            "pagetitle" => "Created",
+                            "cheminVueBody" => "composant/created.php",
+                        ]);
+                    } else {
+                        self::afficheVue([
+                            "pagetitle" => "Error",
+                            "msg" => "id déja existant !!",
+                            "cheminVueBody" => "composant/error.php",
+                        ]);
+                    }
+                } else {
+                    self::afficheVue([
+                        "pagetitle" => "Error",
+                        "msg" => "Upload failed !!",
+                        "cheminVueBody" => "composant/error.php",
+                    ]);
+                }
             } else {
                 self::afficheVue([
                     "pagetitle" => "Error",
-                    "msg" => "id déja existant !!",
+                    "msg" => "Wrong size or extension !!",
                     "cheminVueBody" => "composant/error.php",
-                ] );
+                ]);
             }
         } else {
             self::afficheVue([

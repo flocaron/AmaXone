@@ -5,13 +5,8 @@ namespace App\E_Commerce\Controller;
 use App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
 
-class ControllerUser
+class ControllerUser extends AbstractController
 {
-    private static function afficheVue(array $parametres = []): void
-    {
-        extract($parametres); // Crée des variables à partir du tableau $parametres
-        require "../src/View/view.php"; // Charge la vue
-    }
 
     public static function welcome() {
         self::afficheVue([
