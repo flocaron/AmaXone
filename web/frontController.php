@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';
 
 use App\E_Commerce\Controller\ControllerComposant;
+use App\E_Commerce\Controller\ControllerUser;
 
 
 $loader = new App\E_Commerce\Lib\Psr4AutoloaderClass();

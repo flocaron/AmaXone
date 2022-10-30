@@ -39,7 +39,7 @@ class ControllerComposant extends AbstractController
             } else {
                 self::afficheVue([
                     'composant' => $composant,
-                    "pagetitle" => "Détail de {$composant->get('id')}",
+                    "pagetitle" => "Détail de {$composant->getID()}",
                     "cheminVueBody" => "composant/detail.php",
                 ]);
             }
