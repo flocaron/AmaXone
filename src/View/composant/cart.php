@@ -77,7 +77,6 @@
                                                 </div>
                                             </li>
                                         <?php } ?>
-                                        <!-- More products... -->
                                     </ul>
                                 </div>
                             </div>

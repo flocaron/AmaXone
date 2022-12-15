@@ -15,11 +15,11 @@
                                 <a href="frontController.php?controller=composant&action=read&id=<?php echo $produit->getId(); ?>"">
                                     <span aria-hidden="true" class="absolute inset-0"></span>
                                 </a>
-                                <?php echo $produit->getLibelle(); ?>
                             </h3>
                         </div>
+                        <?php echo $produit->getLibelle(); ?>
                         <p class="text-sm font-medium text-gray-900"><?php echo $produit->getPrix() . " €"; ?></p>
-                        <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&id=<?php echo $produit->getId(); ?>"> addPanier </a> </p>
+                        <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&id=<?php echo $produit->getId(); ?>">Ajouter au panier</a> </p>
                     </div>
                 </div>
             <?php } ?>
