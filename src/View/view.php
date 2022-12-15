@@ -74,6 +74,17 @@
 <main>
     <section>
         <?php
+        echo  "<p>";
+        foreach ($msgFlash as $type => $subTab) {
+            foreach ($subTab as $msg) {
+                echo "<div class='alert alert-$type'> $msg </div>";
+            }
+        }
+        echo  "</p>";
+        ?>
+    </section>
+    <section>
+        <?php
         require __DIR__ . "/{$cheminVueBody}";
         ?>
     </section>

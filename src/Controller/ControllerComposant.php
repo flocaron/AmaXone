@@ -206,7 +206,7 @@ class ControllerComposant extends AbstractController
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
-        header("Location: frontController.php?action=readAll&controller=composant");
+        header("Location: frontController.php?action=affichePanier&controller=composant");
     }
 
     public static function removePanier() {
@@ -216,24 +216,20 @@ class ControllerComposant extends AbstractController
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
-        header("Location: frontController.php?action=readAll&controller=composant");
+        header("Location: frontController.php?action=affichePanier&controller=composant");
     }
 
     public static function affichePanier() {
         $panierComposant = [];
-        foreach (Panier::lirePanier()  as $id) {
-            $panierComposant[] = (new ComposantRepository())->select($id);
+        foreach (Panier::lirePanier() as $id => $qte) {
+            $panierComposant[serialize((new ComposantRepository())->select($id))] = $qte;
         }
         self::afficheVue([
             "pagetitle" => "Panier",
             "panierComposant" => $panierComposant,
-            "cheminVueBody" => "composant/cart.php",
+            "cheminVueBody" => "composant/panierTemp.php",
         ] );
     }
-
-
-
-
 
 
 }
