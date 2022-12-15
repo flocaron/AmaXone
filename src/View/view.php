@@ -39,27 +39,28 @@
 
                             </span>
                             </button>
-                            <div x-show="open"
-                                 x-transition:enter.duration.500ms
-                                 x-transition:leave.duration.1000ms
-                                 class="absolute right-0 w-48 py-2 mt-2 bg-white bg-gray-100 rounded-md shadow-xl">
-                                <a href="#"
-                                   class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
-                                    Historique de transactions
-                                </a>
-                                <a href="#"
-                                   class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
-                                    Préferences & Sécurité
-                                </a>
-                                <a href="#"
-                                   class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
-                                    Se déconnecter
-                                </a>
-                            </div>
+                            <div x-show="open
+                                x-transition:enter.duration.500ms
+                                x-transition:leave.duration.1000ms
+                                class=" absolute right-0 w-48 py-2 mt-2 bg-white bg-gray-100 rounded-md shadow-xl
+                            ">
+                            <a href="#"
+                               class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
+                                Historique de transactions
+                            </a>
+                            <a href="#"
+                               class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
+                                Préferences & Sécurité
+                            </a>
+                            <a href="#"
+                               class="block px-4 py-2 text-sm text-gray-300 text-gray-700 hover:bg-gray-400 hover:text-white">
+                                Se déconnecter
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </nav>
 </header>

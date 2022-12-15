@@ -2,6 +2,8 @@
 
 namespace App\E_Commerce\Controller;
 
+use App\Covoiturage\Lib\MessageFlash;
+use App\Covoiturage\Lib\Panier;
 use App\E_Commerce\Model\Repository\ComposantRepository;
 use App\E_Commerce\Model\DataObject\Composant;
 
@@ -196,6 +198,30 @@ class ControllerComposant extends AbstractController
             ] );
         }
     }
+
+    public static function addPanier() {
+        if (isset($_GET['id'])) {
+            Panier::ajouter($_GET['id']);
+            MessageFlash::ajouter("success", "Element ajouté au panier !");
+        } else {
+            MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
+        }
+        header("Location: frontController.php?action=readAll&controller=composant");
+    }
+
+    public static function removePanier() {
+        if (isset($_GET['id'])) {
+            Panier::retirer($_GET['id']);
+            MessageFlash::ajouter("success", "Element supprimé du panier !");
+        } else {
+            MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
+        }
+        header("Location: frontController.php?action=readAll&controller=composant");
+    }
+
+
+
+
 
 
 }

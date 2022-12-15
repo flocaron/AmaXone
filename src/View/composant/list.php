@@ -1,4 +1,3 @@
-
 <div class="bg-white">
     <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 class="text-2xl font-bold items-center tracking-tight text-gray-900">Notre Catalogue</h2>
@@ -14,12 +13,13 @@
                         <div>
                             <h3 class="text-sm text-gray-700">
                                 <a href="frontController.php?controller=composant&action=read&id=<?php echo $produit->getId(); ?>"">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                <?php echo $produit->getLibelle(); ?>
+                                    <span aria-hidden="true" class="absolute inset-0"></span>
                                 </a>
+                                <?php echo $produit->getLibelle(); ?>
                             </h3>
                         </div>
                         <p class="text-sm font-medium text-gray-900"><?php echo $produit->getPrix() . " €"; ?></p>
+                        <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&id=<?php echo $produit->getId(); ?>"> addPanier </a> </p>
                     </div>
                 </div>
             <?php } ?>
