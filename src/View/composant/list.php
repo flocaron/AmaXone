@@ -13,7 +13,6 @@
                         <div>
                             <h3 class="text-sm text-gray-700">
                                 <a href="frontController.php?controller=composant&action=read&id=<?php echo $produit->getId(); ?>"">
-                                    <span aria-hidden="true" class="absolute inset-0"></span>
                                 </a>
                             </h3>
                         </div>
