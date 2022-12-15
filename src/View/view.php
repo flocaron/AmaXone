@@ -8,7 +8,7 @@
 </head>
 <body>
 <header>
-    <nav class="bg-gray-800">
+    <nav class="bg-gray-800 z-5">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -26,7 +26,7 @@
                 <div class="absolute inset-y-0 right-0 flex justify-center items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
                     <!-- Profile dropdown -->
-                    <div class="container flex justify-center mx-auto">
+                    <div class="container flex justify-center mx-auto z-100">
                         <div x-data="{ open: false }" @mouseleave="open = false" class="relative">
                             <!-- Dropdown toggle button -->
                             <button @mouseover="open = true" class="flex items-center block p-2 rounded-md">
