@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Covoiturage\Model\HTTP;
+namespace App\E_Commerce\Model\HTTP;
 
 use App\Covoiturage\Config\Conf;
 use App\Covoiturage\Lib\ConnexionUtilisateur;

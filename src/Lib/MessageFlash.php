@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Covoiturage\Lib;
+namespace App\E_Commerce\Lib;
 
-use App\Covoiturage\Model\HTTP\Session;
+use App\E_Commerce\Model\HTTP\Session;
 
 class MessageFlash
 {

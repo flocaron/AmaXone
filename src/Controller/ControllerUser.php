@@ -2,7 +2,7 @@
 
 namespace App\E_Commerce\Controller;
 
-use App\E_Commerce\Model\Repository\UserRepository;
+use     App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
 
 class ControllerUser extends AbstractController

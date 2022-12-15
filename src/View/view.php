@@ -21,7 +21,14 @@
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                aria-current="page">Accueil</a>
                         </div>
+
                     </div>
+                    <div class="flex space-x-4">
+                        <a href="frontController.php?action=affichePanier&controller=composant"
+                           class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                           aria-current="page">Panier</a>
+                    </div>
+
                 </div>
                 <div class="absolute inset-y-0 right-0 flex justify-center items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 

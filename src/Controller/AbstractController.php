@@ -2,9 +2,12 @@
 
 namespace App\E_Commerce\Controller;
 
+use App\E_Commerce\Lib\MessageFlash;
+
 abstract class AbstractController
 {
     protected static function afficheVue(array $parametres = []): void {
+        $parametres["msgFlash"] = MessageFlash::lireTousMessages();
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require "../src/View/view.php"; // Charge la vue
     }

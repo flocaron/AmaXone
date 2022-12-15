@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Covoiturage\Lib;
+namespace App\E_Commerce\Lib;
 
-use App\Covoiturage\Model\HTTP\Cookie;
+use App\E_Commerce\Model\HTTP\Cookie;
 
 class PreferenceControleur {
 

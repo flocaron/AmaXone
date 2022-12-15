@@ -2,8 +2,8 @@
 
 namespace App\E_Commerce\Controller;
 
-use App\Covoiturage\Lib\MessageFlash;
-use App\Covoiturage\Lib\Panier;
+use App\E_Commerce\Lib\MessageFlash;
+use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\Repository\ComposantRepository;
 use App\E_Commerce\Model\DataObject\Composant;
 
@@ -217,6 +217,18 @@ class ControllerComposant extends AbstractController
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
         header("Location: frontController.php?action=readAll&controller=composant");
+    }
+
+    public static function affichePanier() {
+        $panierComposant = [];
+        foreach (Panier::lirePanier()  as $id) {
+            $panierComposant[] = (new ComposantRepository())->select($id);
+        }
+        self::afficheVue([
+            "pagetitle" => "Panier",
+            "panierComposant" => $panierComposant,
+            "cheminVueBody" => "composant/cart.php",
+        ] );
     }
 
 

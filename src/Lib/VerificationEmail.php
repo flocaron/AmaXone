@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Covoiturage\Lib;
+namespace App\E_Commerce\Lib;
 
 use App\Covoiturage\Config\Conf;
 use App\Covoiturage\Model\DataObject\User;
