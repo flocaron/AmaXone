@@ -22,38 +22,32 @@ class ControllerComposant extends GenericController
 
     public static function read()
     {
-        if (isset($_GET['id'])) {
-            $composant = (new ComposantRepository)->select($_GET['id']);
+        if (isset($_REQUEST['id'])) {
+            $composant = (new ComposantRepository)->select($_REQUEST['id']);
             if (is_null($composant)) {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "id non trouvée !!",
-                    "cheminVueBody" => "composant/error.php",
-                ]);
+                MessageFlash::ajouter("warning", "id non trouvée !!");
+                header("Location: frontController.php?action=readAll&controller=composant");
             } else {
                 self::afficheVue([
                     'composant' => $composant,
-                    "pagetitle" => "Détail de {$composant->getID()}",
+                    "pagetitle" => "Détail de {$composant->getId()}",
                     "cheminVueBody" => "composant/detail.php",
                 ]);
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "id non renseignée !!",
-                "cheminVueBody" => "composant/error.php",
-            ]);
+            MessageFlash::ajouter("danger", "id non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=composant");
         }
     }
 
     public static function delete()
     {
-        if (isset($_GET['id'])) {
-            $bool = (new ComposantRepository())->delete($_GET['id']);
+        if (isset($_REQUEST['id'])) {
+            $bool = (new ComposantRepository())->delete($_REQUEST['id']);
             if ($bool) {
                 $composants = (new ComposantRepository)->selectAll();
                 self::afficheVue([
-                    "primary" => $_GET['id'],
+                    "primary" => $_REQUEST['id'],
                     "inventaire" => $composants,
                     "pagetitle" => "Supressed",
                     "cheminVueBody" => "composant/deleted.php",
@@ -76,8 +70,8 @@ class ControllerComposant extends GenericController
 
     public static function update()
     {
-        if (isset($_GET['id'])) {
-            $composant = (new ComposantRepository)->select($_GET['id']);
+        if (isset($_REQUEST['id'])) {
+            $composant = (new ComposantRepository)->select($_REQUEST['id']);
             if (is_null($composant)) {
                 self::afficheVue([
                     "pagetitle" => "Error",
@@ -109,11 +103,11 @@ class ControllerComposant extends GenericController
     }
 
     public static function updated() {
-        if (isset($_GET['libelle']) && isset($_GET['description']) && isset($_GET['prix']) && isset($_GET['imgPath'])) {
-            $libelle = $_GET['libelle'];
-            $description = $_GET['description'];
-            $prix = $_GET['prix'];
-            $imgPath = $_GET['imgPath'];
+        if (isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && isset($_REQUEST['imgPath'])) {
+            $libelle = $_REQUEST['libelle'];
+            $description = $_REQUEST['description'];
+            $prix = $_REQUEST['prix'];
+            $imgPath = $_REQUEST['imgPath'];
 
             $use = new Composant($libelle, $description, $prix, $imgPath);
             $bool = (new ComposantRepository)->update($use);
@@ -192,8 +186,8 @@ class ControllerComposant extends GenericController
     }
 
     public static function addPanier() {
-        if (isset($_GET['id'])) {
-            Panier::ajouter($_GET['id']);
+        if (isset($_REQUEST['id'])) {
+            Panier::ajouter($_REQUEST['id']);
             MessageFlash::ajouter("success", "Element ajouté au panier !");
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
@@ -202,8 +196,8 @@ class ControllerComposant extends GenericController
     }
 
     public static function removePanier() {
-        if (isset($_GET['id'])) {
-            Panier::retirer($_GET['id']);
+        if (isset($_REQUEST['id'])) {
+            Panier::retirer($_REQUEST['id']);
             MessageFlash::ajouter("success", "Element supprimé du panier !");
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
