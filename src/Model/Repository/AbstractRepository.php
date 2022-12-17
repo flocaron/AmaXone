@@ -30,15 +30,20 @@ abstract class AbstractRepository
 
     public function select(string $primaryKey)
     {
-        $pdo = DatabaseConnection::getPdo();
-        $sql = "SELECT * from " . static::getNomTable() . " WHERE " . static::getNomClePrimaire() . " =:key";
-        $rep = $pdo->prepare($sql);
-        $rep->execute(array("key" => $primaryKey));
-        $obj = $rep->fetch();
-        if (!$obj) {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "SELECT * from " . static::getNomTable() . " WHERE " . static::getNomClePrimaire() . " =:key";
+            $rep = $pdo->prepare($sql);
+            $rep->execute(array("key" => $primaryKey));
+            $obj = $rep->fetch();
+            if (!$obj) {
+                return null;
+            }
+            return static::construire($obj);
+        } catch (PDOException) {
             return null;
         }
-        return static::construire($obj);
+
     }
 
     public function delete(string $primaryKey): bool

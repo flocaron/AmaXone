@@ -2,24 +2,22 @@
 
 namespace App\E_Commerce\Controller;
 
-use     App\E_Commerce\Model\Repository\UserRepository;
+use App\E_Commerce\Lib\ConnexionUtilisateur;
+use App\E_Commerce\Lib\MessageFlash;
+use App\E_Commerce\Lib\MotDePasse;
+use App\E_Commerce\Lib\VerificationEmail;
+use App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
 
-class ControllerUser extends AbstractController
+class ControllerUser extends GenericController
 {
-
-    public static function welcome() {
-        self::afficheVue([
-            "pagetitle" => "Bienvenue",
-            "cheminVueBody" => "user/welcome.php",
-        ]);
-    }
 
     public static function readAll()
     {
         $users = (new UserRepository)->selectAll();
         self::afficheVue([
             'users' => $users,
+            'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
             "pagetitle" => "Liste des utilisateurs",
             "cheminVueBody" => "user/list.php",
         ]);
@@ -27,81 +25,75 @@ class ControllerUser extends AbstractController
 
     public static function read()
     {
-        if (isset($_GET['login'])) {
-            $user = (new UserRepository)->select($_GET['login']);
+        if (isset($_REQUEST['login'])) {
+            $user = (new UserRepository)->select($_REQUEST['login']);
             if (is_null($user)) {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "login non trouvée !!",
-                    "cheminVueBody" => "user/error.php",
-                ]);
+                MessageFlash::ajouter("warning", "login non trouvée !!");
+                header("Location: frontController.php?action=readAll&controller=user");
             } else {
                 self::afficheVue([
                     'user' => $user,
+                    'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
                     "pagetitle" => "Détail de {$user->get('login')}",
+                    "connecte" => ConnexionUtilisateur::estUtilisateur($_REQUEST['login']),
                     "cheminVueBody" => "user/detail.php",
                 ]);
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "login non renseignée !!",
-                "cheminVueBody" => "user/error.php",
-            ]);
+            MessageFlash::ajouter("danger", "login non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=user");
         }
     }
 
     public static function delete()
     {
-        if (isset($_GET['login'])) {
-            $bool = (new UserRepository())->delete($_GET['login']);
-            if ($bool) {
-                $users = (new UserRepository)->selectAll();
-                self::afficheVue([
-                    "primary" => $_GET['login'],
-                    "users" => $users,
-                    "pagetitle" => "Supressed",
-                    "cheminVueBody" => "user/deleted.php",
-                ] );
+        if (isset($_REQUEST['login'])) {
+            if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
+                if (isset($_REQUEST['verif'])) {
+                    if (strcmp($_REQUEST['verif'], 'oui') == 0) {
+                        $boolR = (new UserRepository())->delete($_REQUEST['login']);
+                        if ($boolR) {
+                            MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
+                        } else {
+                            MessageFlash::ajouter("warning", "login non trouvée !!");
+                        }
+                    }
+                } else {
+                    MessageFlash::ajouter("verif", "Etes-vous sur ? <a href='frontController.php?action=delete&controller=user&login=" . rawurlencode($_REQUEST['login']) . "&verif=oui'> oui </a>  <a href='frontController.php?action=readAll&controller=user'> non</a>");
+                }
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Login non trouvée !!",
-                    "cheminVueBody" => "user/error.php",
-                ] );
+                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
+                header("Location: frontController.php?action=readAll&controller=user");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "Login non renseignée !!",
-                "cheminVueBody" => "user/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "Login non renseignée !!");
         }
+        header("Location: frontController.php?action=readAll&controller=user");
     }
 
     public static function update()
     {
-        if (isset($_GET['login'])) {
-            $user = (new UserRepository)->select($_GET['login']);
-            if (is_null($user)) {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Login non trouvée !!",
-                    "cheminVueBody" => "user/error.php",
-                ]);
+        if (isset($_REQUEST['login'])) {
+            if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
+                $user = (new UserRepository)->select($_REQUEST['login']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("warning", "login non trouvée !!");
+                    header("Location: frontController.php?action=readAll&controller=user");
+                } else {
+                    self::afficheVue([
+                        "user" => $user,
+                        "pagetitle" => "Modifier user",
+                        "estAdmin" => ConnexionUtilisateur::estAdministrateur(),
+                        "cheminVueBody" => "user/update.php",
+                    ]);
+                }
             } else {
-                self::afficheVue([
-                    "user" => $user,
-                    "pagetitle" => "Modifier user",
-                    "cheminVueBody" => "user/update.php",
-                ] );
+                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
+                header("Location: frontController.php?action=readAll&controller=user");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "Login non renseignée !!",
-                "cheminVueBody" => "user/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "login non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=user");
         }
     }
 
@@ -109,72 +101,98 @@ class ControllerUser extends AbstractController
     {
         self::afficheVue([
             "pagetitle" => "Créer Utilisateur",
+            "estAdmin" => ConnexionUtilisateur::estAdministrateur(),
             "cheminVueBody" => "user/create.php",
-        ] );
+        ]);
     }
 
-    public static function updated() {
-        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email'])) {
-            $login = $_GET['login'];
-            $nom = $_GET['nom'];
-            $prenom = $_GET['prenom'];
-            $email = $_GET['email'];
-
-            $use = new User($login, $nom, $prenom, $email, "");
-            $bool = (new UserRepository)->update($use);
-            if ($bool) {
-                $users = (new UserRepository)->selectAll();
-                self::afficheVue([
-                    "use" => $use,
-                    "users" => $users,
-                    "pagetitle" => "Updated",
-                    "cheminVueBody" => "user/updated.php",
-                ] );
+    public static function updated()
+    {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdpN']) && isset($_REQUEST['mdpC'])) {
+            if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
+                if (ConnexionUtilisateur::estAdministrateur()) {
+                    $password = (new UserRepository())->getHashMdp(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+                } else {
+                    $password = (new UserRepository())->getHashMdp($_REQUEST['login']);
+                }
+                if (MotDePasse::verifier($_REQUEST['mdp'], $password)) {
+                    if (strlen($_REQUEST['mdpN']) > 0 ){
+                        if (strcmp($_REQUEST['mdpN'], $_REQUEST['mdpC']) == 0) {
+                            $_REQUEST['mdp'] = $_REQUEST['mdpN'];
+                        } else {
+                            MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
+                            header("Location: frontController.php?action=update&controller=user&login=" . rawurlencode($_REQUEST['login']));
+                            exit(1);
+                        }
+                    }
+                    if (isset($_REQUEST['estAdmin']) && !ConnexionUtilisateur::estAdministrateur()) {
+                        unset($_REQUEST['estAdmin']);
+                        MessageFlash::ajouter("danger", "Vous n'etes pas admin !");
+                    }
+                    $user = (new UserRepository())->select($_REQUEST['login']);
+                    if ($user->get('email') != $_REQUEST['email']) {
+                        $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
+                        if (!$email) {
+                            MessageFlash::ajouter('warning', "Votre nouveau email n'est pas valide");
+                            header("Location: frontController.php?action=create&controller=user");
+                            exit(1);
+                        } else {
+                            $_REQUEST['email'] = $email;
+                        }
+                    }
+                    $newUser = User::construireDepuisFormulaire($_REQUEST);
+                    $bool = (new UserRepository)->update($newUser);
+                    if ($bool) {
+                        MessageFlash::ajouter("success", "utilisateur bien modifié !!");
+                        VerificationEmail::envoiEmailValidation($newUser);
+                    } else {
+                        MessageFlash::ajouter("warning", "utilisateur non modifié !!");
+                    }
+                    header("Location: frontController.php?action=readAll&controller=user");
+                } else {
+                    MessageFlash::ajouter("warning", "mauvais mot de passe !!");
+                    header("Location: frontController.php?action=update&controller=user&login=" . rawurlencode($_REQUEST['login']));
+                }
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Immatriculation déja existante !!",
-                    "cheminVueBody" => "user/error.php",
-                ] );
+                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
+                header("Location: frontController.php?action=readAll&controller=user");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "Immatriculation non renseignée !!",
-                "cheminVueBody" => "user/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "login non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=user");
         }
     }
 
-    public static function created()
-    {
-        if (isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email'])) {
-            $login = $_GET['login'];
-            $nom = $_GET['nom'];
-            $prenom = $_GET['prenom'];
-            $email = $_GET['email'];
-
-            $bool = (new UserRepository)->save(new User($login, $nom, $prenom, $email, ""));
-            if ($bool) {
-                $users = (new UserRepository)->selectAll();
-                self::afficheVue([
-                    "users" => $users,
-                    "pagetitle" => "Created",
-                    "cheminVueBody" => "user/created.php",
-                ] );
+    public static function created() {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
+            if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+                $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
+                if (!$email) {
+                    MessageFlash::ajouter('warning', "Votre email n'est pas valide");
+                    header("Location: frontController.php?action=create&controller=user");
+                    exit(1);
+                } else {
+                    $_REQUEST['email'] = $email;
+                }
+                if (isset($_REQUEST['estAdmin']) && !ConnexionUtilisateur::estAdministrateur()) {
+                    unset($_REQUEST['estAdmin']);
+                }
+                $newUser = User::construireDepuisFormulaire($_REQUEST);
+                $bool = (new UserRepository)->save($newUser);
+                if ($bool) {
+                    VerificationEmail::envoiEmailValidation($newUser);
+                    MessageFlash::ajouter("success", "utilisateur bien créé !!");
+                } else {
+                    MessageFlash::ajouter("warning", "login deja existant !!");
+                }
+                header("Location: frontController.php?action=readAll&controller=user");
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Login déja existant !!",
-                    "cheminVueBody" => "user/error.php",
-                ] );
+                MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
+                header("Location: frontController.php?action=create&controller=user");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "Login non renseigné !!",
-                "cheminVueBody" => "user/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "login non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=user");
         }
     }
 
@@ -185,5 +203,52 @@ class ControllerUser extends AbstractController
         ] );
     }
 
+    public static function logined() {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['mdp'])) {
+            $user = (new UserRepository())->select($_REQUEST['login']);
+            if (!is_null($user)) {
+                if (VerificationEmail::aValideEmail($user)) {
+                    if (MotDePasse::verifier($_REQUEST['mdp'], $user->get('mdpHache'))) {
+                        ConnexionUtilisateur::connecter($_REQUEST['login']);
+                        MessageFlash::ajouter("success", "Vous etes bien connecté !");
+                        header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
+                    } else {
+                        MessageFlash::ajouter("warning", "Mauvais mot de passe ou login !");
+                        header("Location: frontController.php?action=login&controller=user");
+                    }
+                } else {
+                    MessageFlash::ajouter("warning", "Vous n'avez pas verifié votre email !");
+                    header("Location: frontController.php?action=login&controller=user");
+                }
+            } else {
+                MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas !");
+                header("Location: frontController.php?action=login&controller=user");
+            }
+        } else {
+            MessageFlash::ajouter("danger", "Il manque le login et/ou le mdp !");
+            header("Location: frontController.php?action=login&controller=user");
+        }
+    }
+
+    public static function unlogin() {
+        ConnexionUtilisateur::deconnecter();
+        MessageFlash::ajouter("success", "Vous-etes deconnecté !");
+        header("Location: frontController.php");
+    }
+
+    public static function validerEmail() {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
+            if (VerificationEmail::traiterEmailValidation($_REQUEST['login'], $_REQUEST['nonce'])) {
+                MessageFlash::ajouter("success", "Email validé !");
+                header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
+            } else {
+                MessageFlash::ajouter("warning", "Validation failed !");
+                header("Location: frontController.php?action=readAll&controller=user");
+            }
+        } else {
+            MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
+            header("Location: frontController.php?action=readAll&controller=user");
+        }
+    }
 
 }

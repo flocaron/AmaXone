@@ -8,16 +8,8 @@ use App\E_Commerce\Model\Repository\ComposantRepository;
 use App\E_Commerce\Model\DataObject\Composant;
 
 
-class ControllerComposant extends AbstractController
+class ControllerComposant extends GenericController
 {
-
-    public static function error($errorMsg = "") {
-        self::afficheVue([
-            "pagetitle" => "Error",
-            "msg" => $errorMsg,
-            "cheminVueBody" => "composant/error.php",
-        ]);
-    }
 
     public static function readAll() {
         $composants = (new ComposantRepository())->selectAll();
@@ -156,7 +148,7 @@ class ControllerComposant extends AbstractController
             $description = $_POST['description'];
             $prix = $_POST['prix'];
 
-            $pic_path = __DIR__ . "/../../web/assets/" . $_FILES['file-upload']['name'];
+            $pic_path = __DIR__ . "/../../assets/images" . $_FILES['file-upload']['name'];
             $explosion = explode('.',$_FILES['file-upload']['name']);
             if (in_array(end($explosion), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10**7) {
                 if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
@@ -227,7 +219,7 @@ class ControllerComposant extends AbstractController
         self::afficheVue([
             "pagetitle" => "Panier",
             "panierComposant" => $panierComposant,
-            "cheminVueBody" => "composant/panierTemp.php",
+            "cheminVueBody" => "composant/cart.php",
         ] );
     }
 

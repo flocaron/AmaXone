@@ -11,6 +11,7 @@ class Conf
         'login' => 'caronf',
         'password' => '080087921DC'
     );
+    private static $debug = true;
 
     static public function getLogin(): string
     {
@@ -30,6 +31,16 @@ class Conf
     static public function getPassword(): string
     {
         return self::$databases['password'];
+    }
+
+    static public function getAbsoluteURL() : string
+    {
+        return "https://webinfo.iutmontp.univ-montp2.fr/~caronf/e-commerce/web/frontController.php";
+    }
+
+    static public function getDebug() : string
+    {
+        return self::$debug;
     }
 
 }

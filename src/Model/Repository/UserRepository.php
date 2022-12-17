@@ -4,6 +4,7 @@ namespace App\E_Commerce\Model\Repository;
 
 use App\E_Commerce\Model\Repository\AbstractRepository;
 use App\E_Commerce\Model\DataObject\User;
+use PDOException;
 
 class UserRepository extends AbstractRepository
 {
@@ -16,17 +17,45 @@ class UserRepository extends AbstractRepository
     }
 
     protected function getNomsColonnes(): array {
-        return ['login', 'nom', 'prenom', 'email', 'mdp'];
+        return ['login', 'nom', 'prenom', 'mdpHache', 'estAdmin', 'email', 'emailAValider', 'nonce'];
     }
 
-    protected function construire(array $userFormatTableau) {
+    protected function construire(array $userFormatTableau) : User {
         $login = $userFormatTableau['login'];
         $nom = $userFormatTableau['nom'];
         $prenom = $userFormatTableau['prenom'];
+        $mdpHache = $userFormatTableau['mdpHache'];
+        $estAdmin = $userFormatTableau['estAdmin'];
         $email = $userFormatTableau['email'];
-        $mdp = $userFormatTableau['mdp'];
-        return new User($login, $nom, $prenom, $email, $mdp);
+        $emailAValider = $userFormatTableau['emailAValider'];
+        $nonce = $userFormatTableau['nonce'];
+        return new User($login, $nom, $prenom, $mdpHache, $estAdmin, $email, $emailAValider, $nonce);
     }
 
+    public function getHashMdp(string $login) : bool|string {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "SELECT mdpHache FROM tp_user WHERE login = :login ;";
+            $statement = $pdo->prepare($sql);
+            $statement->execute(["login" => $login]);
+            $res = $statement->fetch();
+            return !$res ? false : $res["mdpHache"];
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    public function getEstAdmin(string $login) : bool {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "SELECT estAdmin FROM tp_user WHERE login = :login ;";
+            $statement = $pdo->prepare($sql);
+            $statement->execute(["login" => $login]);
+            $res = $statement->fetch();
+            return $res && $res["estAdmin"] == 1;
+        } catch (PDOException) {
+            return false;
+        }
+    }
 
 }

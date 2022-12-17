@@ -47,7 +47,13 @@
                                 <div class="flow-root">
                                     <ul role="list" class="-my-6 divide-y divide-gray-200">
 
-                                        <?php foreach ($panierComposant as $composant) { ?>
+                                        <?php
+                                        $total = 0;
+                                        foreach ($panierComposant as $composantSerialize => $qte) {
+                                            $composant = unserialize($composantSerialize);
+
+                                            ?>
+
                                             <li class="flex py-6">
                                                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                     <img src="<?php echo "assets/" . $composant->getImgPath(); ?>"
@@ -59,24 +65,41 @@
                                                     <div>
                                                         <div class="flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
-                                                                <a href="#"><?php echo $composant->getNom() ?> </a>
+                                                                <a href="#"><?php echo htmlspecialchars($composant->getLibelle())  ?> </a>
                                                             </h3>
-                                                            <p class="ml-4"><?php echo $composant->getPrix() ?></p>
+                                                            <p class="ml-4"><?php echo htmlspecialchars($composant->getPrix()) ?></p>
                                                         </div>
                                                     </div>
                                                     <div class="flex flex-1 items-end justify-between text-sm">
-                                                        <p class="text-gray-500">Qty 1</p>
+                                                        <p class="text-gray-500">Qty <?php echo $qte; ?></p>
 
                                                         <div class="flex">
-                                                            <button type="button"
-                                                                    class="font-medium text-indigo-600 hover:text-indigo-500">
-                                                                Remove
-                                                            </button>
+                                                            <a href="frontController.php?action=addPanier&controller=composant&id=<?php echo htmlspecialchars($composant->getId()) ?>">
+                                                                <button type="button"
+                                                                        class="font-medium text-indigo-600 hover:text-indigo-500">
+
+                                                                    Add
+                                                                </button>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="flex">
+
+                                                            <a href="frontController.php?action=removePanier&controller=composant&id=<?php echo htmlspecialchars($composant->getId()) ?>">
+                                                                <button type="button"
+                                                                        class="font-medium text-indigo-600 hover:text-indigo-500">
+
+                                                                    Remove
+                                                                </button>
+                                                            </a>
+
                                                         </div>
                                                     </div>
                                                 </div>
                                             </li>
-                                        <?php } ?>
+                                            <?php
+                                            $total += $composant->getPrix() * $qte;
+                                        } ?>
                                     </ul>
                                 </div>
                             </div>
@@ -85,7 +108,7 @@
                         <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
                             <div class="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
-                                <p>$262.00</p>
+                                <p>$<?php echo $total; ?></p>
                             </div>
                             <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                             <div class="mt-6">
@@ -95,10 +118,12 @@
                             <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                                 <p>
                                     or
-                                    <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
-                                        Continue Shopping
-                                        <span aria-hidden="true"> &rarr;</span>
-                                    </button>
+                                    <a href="frontController.php?action=readAll&controller=composant">
+                                        <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                            Continue Shopping
+                                            <span aria-hidden="true"> &rarr;</span>
+                                        </button>
+                                    </a>
                                 </p>
                             </div>
                         </div>
