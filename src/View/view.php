@@ -58,7 +58,7 @@
                         ?>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
-                                <a href="frontController.php?action=read&controller=user&login=<?php echo htmlspecialchars($loginUser); ?>"
+                                <a href="frontController.php?action=read&controller=user&login=<?php echo rawurlencode($loginUser); ?>"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Profil</a>
                             </div>

@@ -12,14 +12,14 @@
                     <div class="mt-4 flex justify-between">
                         <div>
                             <h3 class="text-sm text-gray-700">
-                                <a href="frontController.php?controller=composant&action=read&id=<?php echo htmlspecialchars($produit->getId()); ?>">
+                                <a href="frontController.php?controller=composant&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
                                 </a>
                             </h3>
                         </div>
-                        <?php echo $produit->getLibelle(); ?>
+                        <?php echo htmlspecialchars($produit->getLibelle()); ?>
                         <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars ($produit->getPrix()) . " €"; ?></p>
                     </div>
-                    <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo htmlspecialchars($produit->getId()); ?>">Ajouter au panier</a> </p>
+                    <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter au panier</a> </p>
 
                 </div>
 
