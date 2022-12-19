@@ -60,5 +60,9 @@ class Panier
         return [];
     }
 
+    public static function replacePanier(array $panier) : void {
+        Session::getInstance()->enregistrer(static::$clePanier, $panier);
+    }
+
 
 }

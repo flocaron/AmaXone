@@ -58,4 +58,34 @@ class UserRepository extends AbstractRepository
         }
     }
 
+    public function getLastPanier(string $login) : null|bool|string {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "SELECT dernierPanier FROM " . self::getNomTable() . " WHERE login = :login ;";
+            $statement = $pdo->prepare($sql);
+            $statement->execute(["login" => $login]);
+            $res = $statement->fetch();
+            return !$res ? false : $res["dernierPanier"];
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
+    // TODO function
+    public function setLastPanier(string $login, string $panier) : null|bool|string {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "UPDATE " . self::getNomTable() . " SET dernierPanier = :panier WHERE login = :login ;";
+            $statement = $pdo->prepare($sql);
+            $statement->execute([
+                "login" => $login,
+                "panier" => $panier
+            ]);
+            $res = $statement->fetch();
+            return !$res ? false : $res["dernierPanier"];
+        } catch (PDOException) {
+            return false;
+        }
+    }
+
 }

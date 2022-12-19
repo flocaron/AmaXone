@@ -13,6 +13,8 @@ class ConnexionUtilisateur
     public static function connecter(string $loginUtilisateur): void
     {
         Session::getInstance()->enregistrer(static::$cleConnexion, $loginUtilisateur);
+        $lastPanier = (new UserRepository)->getLastPanier($loginUtilisateur);
+        Panier::replacePanier(is_null($lastPanier) ? [] : unserialize($lastPanier) );
     }
 
     public static function estConnecte(): bool
@@ -22,6 +24,8 @@ class ConnexionUtilisateur
 
     public static function deconnecter(): void
     {
+
+        (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize(Panier::lirePanier()));
         Session::getInstance()->detruire();
         Session::getInstance()->supprimer(static::$cleConnexion);
         MessageFlash::ajouter("success", "Vous-etes deconnecté !");

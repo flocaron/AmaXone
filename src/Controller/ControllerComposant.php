@@ -7,6 +7,7 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\Repository\ComposantRepository;
 use App\E_Commerce\Model\DataObject\Composant;
+use App\E_Commerce\Model\Repository\UserRepository;
 
 
 class ControllerComposant extends GenericController
