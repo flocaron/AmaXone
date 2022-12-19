@@ -23,6 +23,7 @@
         <div class="flex justify-center items-center flex-wrap h-4/6 ">
             <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
                 <form action="frontController.php" method="get">
+
                     <!-- Login input -->
                     <div class="mb-6">
                         <input
@@ -31,7 +32,6 @@
                                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 placeholder="Login"
                                 name="login"
-
                         />
                     </div>
 
@@ -70,7 +70,7 @@
                         <p class="text-sm font-semibold mt-2 pt-1 mb-0">
                             Don't have an account?
                             <a
-                                    href="#"
+                                    href="frontController.php?action=create&controller=user"
                                     class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
                             >Register</a
                             >
