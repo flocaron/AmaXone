@@ -35,7 +35,7 @@ class UserRepository extends AbstractRepository
     public function getHashMdp(string $login) : bool|string {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT mdpHache FROM tp_user WHERE login = :login ;";
+            $sql = "SELECT mdpHache FROM " . self::getNomTable() . " WHERE login = :login ;";
             $statement = $pdo->prepare($sql);
             $statement->execute(["login" => $login]);
             $res = $statement->fetch();
@@ -48,7 +48,7 @@ class UserRepository extends AbstractRepository
     public function getEstAdmin(string $login) : bool {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT estAdmin FROM tp_user WHERE login = :login ;";
+            $sql = "SELECT estAdmin FROM " . self::getNomTable() . " WHERE login = :login ;";
             $statement = $pdo->prepare($sql);
             $statement->execute(["login" => $login]);
             $res = $statement->fetch();
