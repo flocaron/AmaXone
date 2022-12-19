@@ -8,7 +8,15 @@
             </p>
             <p>
                 <label for="email_id">Email</label> :
-                <input type="email" placeholder="john.doo@gmail.com" name="email" id="email_id" required/>
+                <input type="email" placeholder="jhon.richard77@gmail.com" name="email" id="email_id" required/>
+            </p>
+            <p>
+                <label for="mdp_id">Mot de passe</label> :
+                <input type="password" name="mdp" id="mdp_id" required>
+            </p>
+            <p>
+                <label for="mdp2_id">Confirmation</label> :
+                <input type="password" name="mdp2" id="mdp2_id" required>
             </p>
             <p>
                 <label for="nom_id">Nom</label> :
@@ -18,6 +26,16 @@
                 <label for="prenom_id">Prenom</label> :
                 <input type="text" placeholder="John" name="prenom" id="prenom_id" required/>
             </p>
+            <?php
+            if ($estAdmin) {
+                ?>
+                <p>
+                    <label for="admin_id">Admin</label> :
+                    <input type="checkbox" name="estAdmin" id="admin_id"/>
+                </p>
+                <?php
+            }
+            ?>
             <p>
                 <input type="hidden" name="controller" value="user" />
                 <input type="hidden" name="action" value="created" />
@@ -27,3 +45,4 @@
     </form>
 </article>
 
+<!-- TODO fusioner create et update views -->
