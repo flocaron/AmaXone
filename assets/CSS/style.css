@@ -1,0 +1,49 @@
+
+
+
+footer {
+    padding: 5px;
+    background-color: black;
+    color: white;
+    margin: 30px 5px 5px;
+
+}
+
+
+/* Message Flash */
+.alert {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #269428;
+    color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-info {
+    background-color: #3490bd;
+    color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-warning {
+    background-color: #c49441;
+    color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-danger {
+    background-color: #de1713;
+    color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-verif {
+    background-color: #475bc2;
+    color: #f2dede;
+    border-color: #ebccd1;
+}
