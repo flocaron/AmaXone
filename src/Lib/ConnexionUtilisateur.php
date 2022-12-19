@@ -22,7 +22,10 @@ class ConnexionUtilisateur
 
     public static function deconnecter(): void
     {
+        Session::getInstance()->detruire();
         Session::getInstance()->supprimer(static::$cleConnexion);
+        MessageFlash::ajouter("success", "Vous-etes deconnecté !");
+
     }
 
     public static function getLoginUtilisateurConnecte(): ?string

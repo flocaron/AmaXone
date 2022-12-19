@@ -246,7 +246,6 @@ class ControllerUser extends GenericController
 
     public static function logout() {
         ConnexionUtilisateur::deconnecter();
-        MessageFlash::ajouter("success", "Vous-etes deconnecté !");
         header("Location: frontController.php");
     }
 
@@ -266,7 +265,6 @@ class ControllerUser extends GenericController
     }
 
 
-    // TODO vider panier apres deconnection
     // TODO remettre dernier panier apres reconnection
 
 }
