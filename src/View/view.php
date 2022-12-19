@@ -43,6 +43,16 @@
                             </div>
                         </div>
                         <?php
+                    } else {
+                        ?>
+                        <div class="hidden sm:ml-6 sm:block">
+                            <div class="flex space-x-4">
+                                <a href="frontController.php?action=read&controller=user&login=<?php echo rawurlencode($loginUser); ?>"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Profil</a>
+                            </div>
+                        </div>
+                        <?php
                         if ($estAdmin) {
                             ?>
                             <div class="hidden sm:ml-6 sm:block">
@@ -54,15 +64,7 @@
                             </div>
                             <?php
                         }
-                    } else {
                         ?>
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
-                                <a href="frontController.php?action=read&controller=user&login=<?php echo rawurlencode($loginUser); ?>"
-                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                                   aria-current="page">Profil</a>
-                            </div>
-                        </div>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
                                 <a href="frontController.php?action=logout&controller=user"
@@ -70,11 +72,9 @@
                                    aria-current="page">Deconnecter</a>
                             </div>
                         </div>
-
                         <?php
                     }
                     ?>
-
 
                 </div>
             </div>
