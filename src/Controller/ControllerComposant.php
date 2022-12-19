@@ -2,6 +2,7 @@
 
 namespace App\E_Commerce\Controller;
 
+use App\E_Commerce\Lib\ConnexionUtilisateur;
 use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\Repository\ComposantRepository;
@@ -43,146 +44,114 @@ class ControllerComposant extends GenericController
     public static function delete()
     {
         if (isset($_REQUEST['id'])) {
-            $bool = (new ComposantRepository())->delete($_REQUEST['id']);
-            if ($bool) {
-                $composants = (new ComposantRepository)->selectAll();
-                self::afficheVue([
-                    "primary" => $_REQUEST['id'],
-                    "inventaire" => $composants,
-                    "pagetitle" => "Supressed",
-                    "cheminVueBody" => "composant/deleted.php",
-                ] );
+            if (ConnexionUtilisateur::estAdministrateur()) {
+                if (isset($_REQUEST['verif'])) {
+                    $bool = (new ComposantRepository())->delete($_REQUEST['id']);
+                    if ($bool) {
+                        MessageFlash::ajouter("success", "Composant bien supprimé !");
+                    } else {
+                        MessageFlash::ajouter("warning", "ID non trouvé !!");
+                    }
+                } else {
+                    MessageFlash::ajouter("verif", "Etes-vous sur ? " .
+                        " <a href='frontController.php?action=delete&controller=composant&id=" .
+                        rawurlencode($_REQUEST['id']) . "&verif'> oui </a> " .
+                        " <a href='frontController.php?action=readAll&controller=composant'> non</a>"
+                    );
+                }
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "id non trouvée !!",
-                    "cheminVueBody" => "composant/error.php",
-                ] );
+                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "id non renseignée !!",
-                "cheminVueBody" => "composant/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "ID non renseigné !!");
         }
+        header("Location: frontController.php?action=readAll&controller=composant");
     }
 
     public static function update()
     {
         if (isset($_REQUEST['id'])) {
-            $composant = (new ComposantRepository)->select($_REQUEST['id']);
-            if (is_null($composant)) {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "id non trouvée !!",
-                    "cheminVueBody" => "composant/error.php",
-                ]);
+            if (ConnexionUtilisateur::estAdministrateur()) {
+                $composant = (new ComposantRepository)->select($_REQUEST['id']);
+                if (is_null($composant)) {
+                    MessageFlash::ajouter("warning", "ID non trouvé !!");
+                    header("Location: frontController.php?action=readAll&controller=composant");
+                } else {
+                    self::afficheVue([
+                        "composant" => $composant,
+                        "pagetitle" => "Modifier composant",
+                        "cheminVueBody" => "composant/update.php",
+                    ]);
+                }
             } else {
-                self::afficheVue([
-                    "composant" => $composant,
-                    "pagetitle" => "Modifier composant",
-                    "cheminVueBody" => "composant/update.php",
-                ] );
+                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                header("Location: frontController.php?action=readAll&controller=composant");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "id non renseignée !!",
-                "cheminVueBody" => "composant/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "id non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=composant");
         }
     }
 
     public static function create()
     {
-        self::afficheVue([
-            "pagetitle" => "Créer Utilisateur",
-            "cheminVueBody" => "composant/create.php",
-        ] );
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            self::afficheVue([
+                "pagetitle" => "Créer Utilisateur",
+                "cheminVueBody" => "composant/create.php",
+            ]);
+        } else {
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php?action=readAll&controller=composant");
+        }
     }
 
-    public static function updated() {
+    public static function updated(){
         if (isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && isset($_REQUEST['imgPath'])) {
-            $libelle = $_REQUEST['libelle'];
-            $description = $_REQUEST['description'];
-            $prix = $_REQUEST['prix'];
-            $imgPath = $_REQUEST['imgPath'];
-
-            $use = new Composant($libelle, $description, $prix, $imgPath);
-            $bool = (new ComposantRepository)->update($use);
-            if ($bool) {
-                $composants = (new ComposantRepository)->selectAll();
-                self::afficheVue([
-                    "use" => $use,
-                    "inventaire" => $composants,
-                    "pagetitle" => "Updated",
-                    "cheminVueBody" => "composant/updated.php",
-                ] );
+            if (ConnexionUtilisateur::estAdministrateur()) {
+                $bool = (new ComposantRepository)->update(Composant::construireDepuisFormulaire($_REQUEST));
+                if ($bool) {
+                    MessageFlash::ajouter("success", "Composant bien mis à jour");
+                } else {
+                    MessageFlash::ajouter("warning", "Mise à jour échouée");
+                }
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Immatriculation déja existante !!",
-                    "cheminVueBody" => "composant/error.php",
-                ] );
+                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "Immatriculation non renseignée !!",
-                "cheminVueBody" => "composant/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "id non renseignée !!");
         }
+        header("Location: frontController.php?action=readAll&controller=composant");
     }
 
     public static function created()
     {
-        if (isset($_POST['libelle']) && isset($_POST['description']) && isset($_POST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
-            $libelle = $_POST['libelle'];
-            $description = $_POST['description'];
-            $prix = $_POST['prix'];
-
-            $pic_path = __DIR__ . "/../../assets/images" . $_FILES['file-upload']['name'];
-            $explosion = explode('.',$_FILES['file-upload']['name']);
-            if (in_array(end($explosion), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10**7) {
-                if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
-                    $imgPath = $_FILES['file-upload']['name'];
-                    $bool = (new ComposantRepository)->save(new Composant($libelle, $description, $prix, $imgPath));
-                    if ($bool) {
-                        $composants = (new ComposantRepository)->selectAll();
-                        self::afficheVue([
-                            "inventaire" => $composants,
-                            "pagetitle" => "Created",
-                            "cheminVueBody" => "composant/created.php",
-                        ]);
+        if (isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
+            if (ConnexionUtilisateur::estAdministrateur()) {
+                $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
+                $extension = explode('.', $_FILES['file-upload']['name']);
+                if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) {
+                    if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
+                        $_REQUEST['imgPath'] = $_FILES['file-upload']['name'];
+                        $bool = (new ComposantRepository)->save(Composant::construireDepuisFormulaire($_REQUEST));
+                        if ($bool) {
+                            MessageFlash::ajouter("success", "Composant bien crée");
+                        } else {
+                            MessageFlash::ajouter("warning", "ID déja existant");
+                        }
                     } else {
-                        self::afficheVue([
-                            "pagetitle" => "Error",
-                            "msg" => "id déja existant !!",
-                            "cheminVueBody" => "composant/error.php",
-                        ]);
+                        MessageFlash::ajouter("warning", "Importation de l'image échouée");
                     }
                 } else {
-                    self::afficheVue([
-                        "pagetitle" => "Error",
-                        "msg" => "Upload failed !!",
-                        "cheminVueBody" => "composant/error.php",
-                    ]);
+                    MessageFlash::ajouter("warning", "Mauvaise extension ou taille de fichier");
                 }
             } else {
-                self::afficheVue([
-                    "pagetitle" => "Error",
-                    "msg" => "Wrong size or extension !!",
-                    "cheminVueBody" => "composant/error.php",
-                ]);
+                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
             }
         } else {
-            self::afficheVue([
-                "pagetitle" => "Error",
-                "msg" => "id non renseigné !!",
-                "cheminVueBody" => "composant/error.php",
-            ] );
+            MessageFlash::ajouter("danger", "id non renseignée !!");
         }
+        header("Location: frontController.php?action=readAll&controller=composant");
     }
 
     public static function addPanier() {
@@ -192,7 +161,11 @@ class ControllerComposant extends GenericController
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
-        header("Location: frontController.php?action=affichePanier&controller=composant");
+        if (isset($_REQUEST['read'])) {
+            header("Location: frontController.php?action=readAll&controller=composant");
+        } else {
+            header("Location: frontController.php?action=affichePanier&controller=composant");
+        }
     }
 
     public static function removePanier() {
@@ -213,7 +186,7 @@ class ControllerComposant extends GenericController
         self::afficheVue([
             "pagetitle" => "Panier",
             "panierComposant" => $panierComposant,
-            "cheminVueBody" => "composant/cart.php",
+            "cheminVueBody" => "composant/panierTemp.php",
         ] );
     }
 
