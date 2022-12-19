@@ -4,6 +4,11 @@ $total = 0;
 foreach ($panierComposant as $composantSerialize => $qte) {
      $composant = unserialize($composantSerialize);
      echo "<li> " .
+         '<div style="width: 100px; height: 100px">' .
+          "<img src='../assets/images/" .
+         htmlspecialchars($composant->getImgPath()) .
+         "' alt='..' >" .
+         "</div> <p>" .
          htmlspecialchars($composant->getLibelle())  .
          " Prix = " .
          htmlspecialchars($composant->getPrix())  .
@@ -15,7 +20,7 @@ foreach ($panierComposant as $composantSerialize => $qte) {
          "<a href='frontController.php?action=removePanier&controller=composant&id=" .
          rawurlencode($composant->getId()) .
          "'> rm </a>" .
-    "</li>";
+    "</p> </li>\n";
 
      $total += $composant->getPrix() * $qte;
 
