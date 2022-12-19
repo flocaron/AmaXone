@@ -11,6 +11,14 @@ class Composant extends AbstractDataObject
     private int $prix;
     private string $imgPath;
 
+    public function __construct(string $libelle, string $description, int $prix, string $imgPath, int $id = 0) {
+        $this->id = $id;
+        $this->libelle = $libelle;
+        $this->description = $description;
+        $this->prix = $prix;
+        $this->imgPath = $imgPath;
+    }
+
     public function formatTableau(): array
     {
         return [
@@ -21,12 +29,14 @@ class Composant extends AbstractDataObject
         ];
     }
 
-    public function __construct(string $libelle, string $description, int $prix, string $imgPath, int $id = 0) {
-        $this->id = $id;
-        $this->libelle = $libelle;
-        $this->description = $description;
-        $this->prix = $prix;
-        $this->imgPath = $imgPath;
+    public static function construireDepuisFormulaire(array $tableauFormulaire): Composant
+    {
+        return new Composant(
+            $tableauFormulaire['libelle'],
+            $tableauFormulaire['description'],
+            $tableauFormulaire['prix'],
+            $tableauFormulaire['imgPath'],
+        );
     }
 
     /**
