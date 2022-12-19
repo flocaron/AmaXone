@@ -32,13 +32,49 @@
                                aria-current="page">Panier</a>
                         </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:block">
-                        <div class="flex space-x-4">
-                            <a href="frontController.php?action=login&controller=user"
-                               class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                               aria-current="page">Se connecter</a>
+                    <?php
+                    if (!$estConnecte) {
+                        ?>
+                        <div class="hidden sm:ml-6 sm:block">
+                            <div class="flex space-x-4">
+                                <a href="frontController.php?action=login&controller=user"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Se connecter</a>
+                            </div>
                         </div>
-                    </div>
+                        <?php
+                        if ($estAdmin) {
+                            ?>
+                            <div class="hidden sm:ml-6 sm:block">
+                                <div class="flex space-x-4">
+                                    <a href="frontController.php?action=readAll&controller=user"
+                                       class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                       aria-current="page">Panel Admin</a>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <div class="hidden sm:ml-6 sm:block">
+                            <div class="flex space-x-4">
+                                <a href="frontController.php?action=read&controller=user&login=<?php echo htmlspecialchars($loginUser); ?>"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Profil</a>
+                            </div>
+                        </div>
+                        <div class="hidden sm:ml-6 sm:block">
+                            <div class="flex space-x-4">
+                                <a href="frontController.php?action=logout&controller=user"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Deconnecter</a>
+                            </div>
+                        </div>
+
+                        <?php
+                    }
+                    ?>
+
 
                 </div>
             </div>
@@ -63,7 +99,7 @@
         ?>
     </section>
 </main>
-<footer >
+<footer>
     <p style="text-align: right;"> E-Commerce Site of CARON Florimond and COPLEY Dimitri </p>
     <div>
         <div>
