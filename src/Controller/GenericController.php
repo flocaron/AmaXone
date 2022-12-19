@@ -12,7 +12,8 @@ abstract class GenericController
     protected static function afficheVue(array $parametres = []): void {
         $parametres["msgFlash"] = MessageFlash::lireTousMessages();
         $parametres["estConnecte"] = ConnexionUtilisateur::estConnecte();
-        $parametres["login"] = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+        $parametres["estAdmin"] = ConnexionUtilisateur::estAdministrateur();
+        $parametres["loginUser"] = ConnexionUtilisateur::getLoginUtilisateurConnecte();
         $parametres["debug"] = Conf::getDebug();
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require "../src/View/view.php"; // Charge la vue
