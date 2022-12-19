@@ -14,13 +14,19 @@ class ControllerUser extends GenericController
 
     public static function readAll()
     {
-        $users = (new UserRepository)->selectAll();
-        self::afficheVue([
-            'users' => $users,
-            'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
-            "pagetitle" => "Liste des utilisateurs",
-            "cheminVueBody" => "user/list.php",
-        ]);
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            $users = (new UserRepository)->selectAll();
+            self::afficheVue([
+                'users' => $users,
+                'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
+                "pagetitle" => "Liste des utilisateurs",
+                "cheminVueBody" => "user/list.php",
+            ]);
+        } else {
+            MessageFlash::ajouter("danger", "Vous n'etes pas administrateur !");
+            header("Location: frontController.php?action=login&controller=user");
+        }
+
     }
 
     public static function read()
@@ -30,7 +36,7 @@ class ControllerUser extends GenericController
                 $user = (new UserRepository)->select($_REQUEST['login']);
                 if (is_null($user)) {
                     MessageFlash::ajouter("warning", "login non trouvée !!");
-                    header("Location: frontController.php?action=readAll&controller=user");
+                    header("Location: frontController.php?action=login&controller=user");
                 } else {
                     self::afficheVue([
                         'user' => $user,
@@ -41,12 +47,12 @@ class ControllerUser extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur !");
-                header("Location: frontController.php?action=readAll&controller=user");
+                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
+                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=user");
+            header("Location: frontController.php?action=login&controller=user");
         }
     }
 
@@ -68,13 +74,15 @@ class ControllerUser extends GenericController
                         " <a href='frontController.php?action=readAll&controller=user'> non</a>"
                     );
                 }
+                header("Location: frontController.php");
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur !");
+                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
+                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "Login non renseigné !!");
+            header("Location: frontController.php?action=login&controller=user");
         }
-        header("Location: frontController.php?action=readAll&controller=user");
     }
 
     public static function update()
@@ -84,7 +92,7 @@ class ControllerUser extends GenericController
                 $user = (new UserRepository)->select($_REQUEST['login']);
                 if (is_null($user)) {
                     MessageFlash::ajouter("warning", "login non trouvée !!");
-                    header("Location: frontController.php?action=readAll&controller=user");
+                    header("Location: frontController.php?action=login&controller=user");
                 } else {
                     self::afficheVue([
                         "user" => $user,
@@ -94,12 +102,12 @@ class ControllerUser extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
-                header("Location: frontController.php?action=readAll&controller=user");
+                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur connecté !");
+                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=user");
+            header("Location: frontController.php?action=login&controller=user");
         }
     }
 
@@ -154,18 +162,18 @@ class ControllerUser extends GenericController
                     } else {
                         MessageFlash::ajouter("warning", "utilisateur non modifié !!");
                     }
-                    header("Location: frontController.php?action=readAll&controller=user");
+                    header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                 } else {
                     MessageFlash::ajouter("warning", "mauvais mot de passe !!");
                     header("Location: frontController.php?action=update&controller=user&login=" . rawurlencode($_REQUEST['login']));
                 }
             } else {
-                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
-                header("Location: frontController.php?action=readAll&controller=user");
+                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur connecté !");
+                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=user");
+            header("Location: frontController.php?action=login&controller=user");
         }
     }
 
@@ -191,14 +199,14 @@ class ControllerUser extends GenericController
                 } else {
                     MessageFlash::ajouter("warning", "login deja existant !!");
                 }
-                header("Location: frontController.php?action=readAll&controller=user");
+                header("Location: frontController.php?action=login&controller=user");
             } else {
                 MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
                 header("Location: frontController.php?action=create&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=user");
+            header("Location: frontController.php?action=login&controller=user");
         }
     }
 
@@ -249,12 +257,16 @@ class ControllerUser extends GenericController
                 header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
             } else {
                 MessageFlash::ajouter("warning", "Validation failed !");
-                header("Location: frontController.php?action=readAll&controller=user");
+                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
-            header("Location: frontController.php?action=readAll&controller=user");
+            header("Location: frontController.php?action=login&controller=user");
         }
     }
+
+
+    // TODO vider panier apres deconnection
+    // TODO remettre dernier panier apres reconnection
 
 }
