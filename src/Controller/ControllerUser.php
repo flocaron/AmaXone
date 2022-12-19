@@ -26,18 +26,23 @@ class ControllerUser extends GenericController
     public static function read()
     {
         if (isset($_REQUEST['login'])) {
-            $user = (new UserRepository)->select($_REQUEST['login']);
-            if (is_null($user)) {
-                MessageFlash::ajouter("warning", "login non trouvée !!");
-                header("Location: frontController.php?action=readAll&controller=user");
+            if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
+                $user = (new UserRepository)->select($_REQUEST['login']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("warning", "login non trouvée !!");
+                    header("Location: frontController.php?action=readAll&controller=user");
+                } else {
+                    self::afficheVue([
+                        'user' => $user,
+                        'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
+                        "pagetitle" => "Détail de {$user->get('login')}",
+                        "connecte" => ConnexionUtilisateur::estUtilisateur($_REQUEST['login']),
+                        "cheminVueBody" => "user/detail.php",
+                    ]);
+                }
             } else {
-                self::afficheVue([
-                    'user' => $user,
-                    'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
-                    "pagetitle" => "Détail de {$user->get('login')}",
-                    "connecte" => ConnexionUtilisateur::estUtilisateur($_REQUEST['login']),
-                    "cheminVueBody" => "user/detail.php",
-                ]);
+                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur !");
+                header("Location: frontController.php?action=readAll&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
@@ -50,23 +55,24 @@ class ControllerUser extends GenericController
         if (isset($_REQUEST['login'])) {
             if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
                 if (isset($_REQUEST['verif'])) {
-                    if (strcmp($_REQUEST['verif'], 'oui') == 0) {
-                        $boolR = (new UserRepository())->delete($_REQUEST['login']);
-                        if ($boolR) {
-                            MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
-                        } else {
-                            MessageFlash::ajouter("warning", "login non trouvée !!");
-                        }
+                    $boolR = (new UserRepository())->delete($_REQUEST['login']);
+                    if ($boolR) {
+                        MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
+                    } else {
+                        MessageFlash::ajouter("warning", "login non trouvé !!");
                     }
                 } else {
-                    MessageFlash::ajouter("verif", "Etes-vous sur ? <a href='frontController.php?action=delete&controller=user&login=" . rawurlencode($_REQUEST['login']) . "&verif=oui'> oui </a>  <a href='frontController.php?action=readAll&controller=user'> non</a>");
+                    MessageFlash::ajouter("verif", "Etes-vous sur ? " .
+                        " <a href='frontController.php?action=delete&controller=user&login=" .
+                        rawurlencode($_REQUEST['login']) . "&verif'> oui </a> " .
+                        " <a href='frontController.php?action=readAll&controller=user'> non</a>"
+                    );
                 }
             } else {
-                MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur !");
-                header("Location: frontController.php?action=readAll&controller=user");
+                MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur !");
             }
         } else {
-            MessageFlash::ajouter("danger", "Login non renseignée !!");
+            MessageFlash::ajouter("danger", "Login non renseigné !!");
         }
         header("Location: frontController.php?action=readAll&controller=user");
     }
@@ -163,7 +169,7 @@ class ControllerUser extends GenericController
         }
     }
 
-    public static function created() {
+    public static function created(){
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
             if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
                 $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
@@ -230,7 +236,7 @@ class ControllerUser extends GenericController
         }
     }
 
-    public static function unlogin() {
+    public static function logout() {
         ConnexionUtilisateur::deconnecter();
         MessageFlash::ajouter("success", "Vous-etes deconnecté !");
         header("Location: frontController.php");
