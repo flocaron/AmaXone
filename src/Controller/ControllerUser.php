@@ -265,6 +265,4 @@ class ControllerUser extends GenericController
     }
 
 
-    // TODO remettre dernier panier apres reconnection
-
 }

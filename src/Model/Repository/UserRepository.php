@@ -71,7 +71,6 @@ class UserRepository extends AbstractRepository
         }
     }
 
-    // TODO function
     public function setLastPanier(string $login, string $panier) : null|bool|string {
         try {
             $pdo = DatabaseConnection::getPdo();
