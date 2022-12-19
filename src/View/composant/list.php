@@ -19,7 +19,7 @@
                         <?php echo $produit->getLibelle(); ?>
                         <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars ($produit->getPrix()) . " €"; ?></p>
                     </div>
-                    <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&id=<?php echo htmlspecialchars($produit->getId()); ?>">Ajouter au panier</a> </p>
+                    <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo htmlspecialchars($produit->getId()); ?>">Ajouter au panier</a> </p>
 
                 </div>
 
