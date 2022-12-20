@@ -157,8 +157,13 @@ class ControllerComposant extends GenericController
 
     public static function addPanier() {
         if (isset($_REQUEST['id'])) {
-            Panier::ajouter($_REQUEST['id']);
-            MessageFlash::ajouter("success", "Element ajouté au panier !");
+            $obj = (new ComposantRepository())->select($_REQUEST['id']);
+            if (is_null($obj)) {
+                MessageFlash::ajouter("danger", "Cet id n'existe pas !!");
+            } else {
+                Panier::ajouter($_REQUEST['id']);
+                MessageFlash::ajouter("success", "Element ajouté au panier !");
+            }
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
