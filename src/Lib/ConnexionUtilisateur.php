@@ -14,9 +14,10 @@ class ConnexionUtilisateur
     {
         Session::getInstance()->enregistrer(static::$cleConnexion, (new UserRepository())->select($loginUtilisateur));
 
-
-        $lastPanier = (new UserRepository)->getLastPanier($loginUtilisateur);
-        Panier::replacePanier(is_null($lastPanier) ? [] : unserialize($lastPanier) );
+        if (count(Panier::lirePanier()) == 0) {
+            $lastPanier = (new UserRepository)->getLastPanier($loginUtilisateur);
+            Panier::replacePanier(is_null($lastPanier) ? [] : unserialize($lastPanier) );
+        }
     }
 
     public static function deconnecter(): void
