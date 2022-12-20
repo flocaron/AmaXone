@@ -12,7 +12,7 @@ foreach ($panierComposant as $composantSerialize => $qte) {
          htmlspecialchars($composant->getLibelle())  .
          " Prix = " .
          htmlspecialchars($composant->getPrix())  .
-         " Quantité = " .
+         "€ Quantité = " .
          $qte .
          "<a href='frontController.php?action=addPanier&controller=composant&id=" .
          rawurlencode($composant->getId()) .
@@ -26,5 +26,5 @@ foreach ($panierComposant as $composantSerialize => $qte) {
 
  }
 echo "</ul>";
-echo "<p> Total = " . $total . " </p>";
+echo "<p> Total = " . $total . "€ </p>";
 echo "<p> <a href='frontController.php?action=viderPanier&controller=composant'> Vider Panier </a> </p>";
