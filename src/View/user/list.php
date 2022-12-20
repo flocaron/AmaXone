@@ -10,9 +10,11 @@
                 . rawurlencode($user->get('login'))
                 . '" > ✅ </a> Utilisateurs de login <a href=\'frontController.php?controller=user&action=read&login='
                 . rawurlencode($user->get('login'))
-                . "'>"
+                . "'><span "
+                . ($user->get('estAdmin') ? "style='color: red;'" : "")
+                . " >"
                 . htmlspecialchars($user->get('login'))
-                . '</a>.</li>'
+                . '</span> </a>.</li>'
                 . "\n";
         ?>
         <li> <a href="frontController.php?action=create&controller=user"> Créer un nouvel utilisateur </a> </li>
