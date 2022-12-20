@@ -157,7 +157,13 @@ class ControllerUser extends GenericController
                         $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                         if (!$email) {
                             MessageFlash::ajouter('warning', "Votre nouveau email n'est pas valide");
-                            header("Location: frontController.php?action=create&controller=user");
+                            $user->set('email', $_REQUEST['email']);
+                            self::afficheVue([
+                                "user" => $user,
+                                "action" => "update",
+                                "pagetitle" => "Modifier user",
+                                "cheminVueBody" => "user/create.php",
+                            ]);
                             exit(1);
                         } else {
                             $user->set('emailAValider', $email);
@@ -208,17 +214,18 @@ class ControllerUser extends GenericController
                 if ($bool) {
                     VerificationEmail::envoiEmailValidation($newUser);
                     MessageFlash::ajouter("success", "utilisateur bien créé !!");
+                    header("Location: frontController.php");
                 } else {
                     MessageFlash::ajouter("warning", "login deja existant !!");
+                    header("Location: frontController.php?action=create&controller=user");
                 }
-                header("Location: frontController.php");
             } else {
                 MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
                 header("Location: frontController.php?action=create&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php");
+            header("Location: frontController.php?action=create&controller=user");
         }
     }
 
