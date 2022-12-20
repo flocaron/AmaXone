@@ -71,10 +71,10 @@ class ControllerUser extends GenericController
                     MessageFlash::ajouter("verif", "Etes-vous sur ? " .
                         " <a href='frontController.php?action=delete&controller=user&login=" .
                         rawurlencode($_REQUEST['login']) . "&verif'> oui </a> " .
-                        " <a href='frontController.php?action=readAll&controller=user'> non</a>"
+                        " <a href='frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']) . "'> non</a>"
                     );
                 }
-                header("Location: frontController.php");
+                header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
             } else {
                 MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
                 header("Location: frontController.php?action=login&controller=user");
@@ -260,15 +260,13 @@ class ControllerUser extends GenericController
         if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
             if (VerificationEmail::traiterEmailValidation($_REQUEST['login'], $_REQUEST['nonce'])) {
                 MessageFlash::ajouter("success", "Email validé !");
-                header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
             } else {
                 MessageFlash::ajouter("warning", "Validation failed !");
-                header("Location: frontController.php?action=login&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
-            header("Location: frontController.php?action=login&controller=user");
         }
+        header("Location: frontController.php?action=login&controller=user");
     }
 
 
