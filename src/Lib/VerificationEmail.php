@@ -17,8 +17,8 @@ class VerificationEmail
         $lienValidationEmail = "$absoluteURL?action=validerEmail&controller=user&login=$loginURL&nonce=$nonceURL";
         $corpsEmail = "<a href='$lienValidationEmail'>Validation</a>";
 
-        MessageFlash::ajouter('info', $corpsEmail);
-        // mail($utilisateur->get('emailAValider'), "Validation", $corpsEmail);
+        // MessageFlash::ajouter('info', $corpsEmail);
+        mail($utilisateur->get('emailAValider'), "Validation", $corpsEmail);
     }
 
     public static function traiterEmailValidation($login, $nonce): bool
