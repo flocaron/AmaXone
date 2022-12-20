@@ -26,4 +26,5 @@ foreach ($panierComposant as $composantSerialize => $qte) {
 
  }
 echo "</ul>";
-echo "Total = " . $total;
+echo "<p> Total = " . $total . " </p>";
+echo "<p> <a href='frontController.php?action=viderPanier&controller=composant'> Vider Panier </a> </p>";

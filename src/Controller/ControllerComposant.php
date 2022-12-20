@@ -196,5 +196,10 @@ class ControllerComposant extends GenericController
         ] );
     }
 
+    public static function viderPanier() {
+        Panier::viderPanier();
+        header("Location: frontController.php?action=affichePanier&controller=composant");
+    }
+
 
 }

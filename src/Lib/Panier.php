@@ -64,5 +64,10 @@ class Panier
         Session::getInstance()->enregistrer(static::$clePanier, $panier);
     }
 
+    public static function viderPanier() : void
+    {
+        Session::getInstance()->supprimer(static::$clePanier);
+    }
+
 
 }
