@@ -96,8 +96,9 @@ class ControllerUser extends GenericController
                 } else {
                     self::afficheVue([
                         "user" => $user,
+                        "action" => "update",
                         "pagetitle" => "Modifier user",
-                        "cheminVueBody" => "user/update.php",
+                        "cheminVueBody" => "user/create.php",
                     ]);
                 }
             } else {
@@ -113,6 +114,7 @@ class ControllerUser extends GenericController
     public static function create()
     {
         self::afficheVue([
+            "action" => "create",
             "pagetitle" => "Créer Utilisateur",
             "cheminVueBody" => "user/create.php",
         ]);
@@ -134,7 +136,7 @@ class ControllerUser extends GenericController
                     $password = $user->get('mdpHache');
                 }
                 if (MotDePasse::verifier($_REQUEST['mdp'], $password)) {
-                    if (strlen($_REQUEST['mdpN']) > 0 ){
+                    if (strlen($_REQUEST['mdpN']) > 0) {
                         if (strcmp($_REQUEST['mdpN'], $_REQUEST['mdpC']) == 0) {
                             $user->setMdpHache($_REQUEST['mdpN']);
                         } else {
@@ -184,7 +186,8 @@ class ControllerUser extends GenericController
         }
     }
 
-    public static function created(){
+    public static function created()
+    {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
             if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
                 $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
@@ -217,46 +220,66 @@ class ControllerUser extends GenericController
         }
     }
 
-    public static function login() {
-        self::afficheVue([
-            "pagetitle" => "Se connecter",
-            "cheminVueBody" => "user/login.php",
-        ] );
+    public static function login()
+    {
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            header('Location: frontController.php');
+        } else {
+            self::afficheVue([
+                "pagetitle" => "Se connecter",
+                "cheminVueBody" => "user/login.php",
+            ]);
+        }
+
     }
 
-    public static function logined() {
-        if (isset($_REQUEST['login']) && isset($_REQUEST['mdp'])) {
-            $user = (new UserRepository())->select($_REQUEST['login']);
-            if (!is_null($user)) {
-                if (VerificationEmail::aValideEmail($user)) {
-                    if (MotDePasse::verifier($_REQUEST['mdp'], $user->get('mdpHache'))) {
-                        ConnexionUtilisateur::connecter($_REQUEST['login']);
-                        MessageFlash::ajouter("success", "Vous etes bien connecté !");
-                        header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
+    public static function logined()
+    {
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez-vous deconnecter !!');
+            header('Location: frontController.php');
+        } else {
+            if (isset($_REQUEST['login']) && isset($_REQUEST['mdp'])) {
+                $user = (new UserRepository())->select($_REQUEST['login']);
+                if (!is_null($user)) {
+                    if (VerificationEmail::aValideEmail($user)) {
+                        if (MotDePasse::verifier($_REQUEST['mdp'], $user->get('mdpHache'))) {
+                            ConnexionUtilisateur::connecter($_REQUEST['login']);
+                            MessageFlash::ajouter("success", "Vous etes bien connecté !");
+                            header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
+                        } else {
+                            MessageFlash::ajouter("warning", "Mauvais mot de passe ou login !");
+                            header("Location: frontController.php?action=login&controller=user");
+                        }
                     } else {
-                        MessageFlash::ajouter("warning", "Mauvais mot de passe ou login !");
+                        MessageFlash::ajouter("warning", "Vous n'avez pas verifié votre email !");
                         header("Location: frontController.php?action=login&controller=user");
                     }
                 } else {
-                    MessageFlash::ajouter("warning", "Vous n'avez pas verifié votre email !");
+                    MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas !");
                     header("Location: frontController.php?action=login&controller=user");
                 }
             } else {
-                MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas !");
+                MessageFlash::ajouter("danger", "Il manque le login et/ou le mdp !");
                 header("Location: frontController.php?action=login&controller=user");
             }
-        } else {
-            MessageFlash::ajouter("danger", "Il manque le login et/ou le mdp !");
-            header("Location: frontController.php?action=login&controller=user");
         }
     }
 
-    public static function logout() {
-        ConnexionUtilisateur::deconnecter();
+    public static function logout()
+    {
+        if (ConnexionUtilisateur::estConnecte()) {
+            ConnexionUtilisateur::deconnecter();
+        } else {
+            MessageFlash::ajouter("danger", "vous n'etes pas connecté");
+
+        }
         header("Location: frontController.php");
     }
 
-    public static function validerEmail() {
+    public static function validerEmail()
+    {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
             if (VerificationEmail::traiterEmailValidation($_REQUEST['login'], $_REQUEST['nonce'])) {
                 MessageFlash::ajouter("success", "Email validé !");
