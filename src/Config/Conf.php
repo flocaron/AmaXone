@@ -11,7 +11,7 @@ class Conf
         'login' => 'caronf',
         'password' => '080087921DC'
     );
-    private static $debug = true;
+    private static $debug = false;
 
     static public function getLogin(): string
     {

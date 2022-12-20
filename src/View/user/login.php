@@ -2,7 +2,7 @@
     <div class="px-6 h-full text-gray-800">
         <div class="flex justify-center items-center flex-wrap h-4/6 ">
             <div class="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-                <form action="frontController.php" method="get">
+                <form action="frontController.php" method="<?php echo $debug ? "get" : "post" ?>">
 
                     <!-- Login input -->
                     <div class="mb-6">
