@@ -1,18 +1,16 @@
-<?php
-
-
-?>
 <article id="form">
     <form method="get" action="frontController.php">
         <fieldset>
             <legend>Mon formulaire :</legend>
             <p>
                 <label for="login_id">Login</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?> name="login" id="login_id" <?php echo $action == "create" ? "required" : "readonly" ?> />
+                <input type="text" <?php echo $action == "create" ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
+                       name="login" id="login_id" <?php echo $action == "create" ? "required" : "readonly" ?> />
             </p>
             <p>
                 <label for="email_id">Email</label> :
-                <input type="email" <?php echo $action == "create" ? 'placeholder="jhon.richard77@gmail.com"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?> name="email" id="email_id" required/>
+                <input type="email" <?php echo $action == "create" ? 'placeholder="jhon.richard77@gmail.com"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
+                       name="email" id="email_id" required/>
             </p>
             <?php
             if ($action == "create") {
@@ -41,18 +39,21 @@
             ?>
             <p>
                 <label for="nom_id">Nom</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="Doo"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?> name="nom" id="nom_id" required/>
+                <input type="text" <?php echo $action == "create" ? 'placeholder="Doo"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?>
+                       name="nom" id="nom_id" required/>
             </p>
             <p>
                 <label for="prenom_id">Prenom</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="John"' : "value='" . htmlspecialchars($user->get('prenom')) . "'" ?> name="prenom" id="prenom_id" required/>
+                <input type="text" <?php echo $action == "create" ? 'placeholder="John"' : "value='" . htmlspecialchars($user->get('prenom')) . "'" ?>
+                       name="prenom" id="prenom_id" required/>
             </p>
             <?php
             if ($estAdmin) {
                 ?>
                 <p>
                     <label for="admin_id">Admin</label> :
-                    <input type="checkbox" name="estAdmin" id="admin_id" <?php echo $action == "update" ? ($user->get('estAdmin') ? "checked" : "") : ""; ?> />
+                    <input type="checkbox" name="estAdmin"
+                           id="admin_id" <?php echo $action == "update" ? ($user->get('estAdmin') ? "checked" : "") : ""; ?> />
                 </p>
                 <?php
             }
@@ -67,11 +68,9 @@
             ?>
             <p>
                 <input type="hidden" name="controller" value="user"/>
-                <input type="hidden" name="action" value="<?php echo $action == "create" ? "created" : "updated" ?>" />
+                <input type="hidden" name="action" value="<?php echo $action == "create" ? "created" : "updated" ?>"/>
                 <input type="submit" value="Envoyer"/>
             </p>
         </fieldset>
     </form>
 </article>
-
-<!-- TODO fusioner create et update views -->
