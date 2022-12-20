@@ -12,19 +12,15 @@ class ConnexionUtilisateur
 
     public static function connecter(string $loginUtilisateur): void
     {
-        Session::getInstance()->enregistrer(static::$cleConnexion, $loginUtilisateur);
+        Session::getInstance()->enregistrer(static::$cleConnexion, (new UserRepository())->select($loginUtilisateur));
+
+
         $lastPanier = (new UserRepository)->getLastPanier($loginUtilisateur);
         Panier::replacePanier(is_null($lastPanier) ? [] : unserialize($lastPanier) );
     }
 
-    public static function estConnecte(): bool
-    {
-        return Session::getInstance()->contient(static::$cleConnexion);
-    }
-
     public static function deconnecter(): void
     {
-
         (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize(Panier::lirePanier()));
         Session::getInstance()->detruire();
         Session::getInstance()->supprimer(static::$cleConnexion);
@@ -32,9 +28,14 @@ class ConnexionUtilisateur
 
     }
 
+    public static function estConnecte(): bool
+    {
+        return Session::getInstance()->contient(static::$cleConnexion);
+    }
+
     public static function getLoginUtilisateurConnecte(): ?string
     {
-        return self::estConnecte() ? Session::getInstance()->lire(static::$cleConnexion) : null;
+        return self::estConnecte() ? Session::getInstance()->lire(static::$cleConnexion)->get('login') : null;
     }
 
     public static function estUtilisateur($login): bool
@@ -44,7 +45,7 @@ class ConnexionUtilisateur
 
     public static function estAdministrateur() : bool
     {
-        return self::estConnecte() && (new UserRepository)->getEstAdmin(self::getLoginUtilisateurConnecte());
+        return self::estConnecte() && Session::getInstance()->lire(static::$cleConnexion)->get('estAdmin');
     }
 
 }

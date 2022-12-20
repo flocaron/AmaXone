@@ -45,19 +45,6 @@ class UserRepository extends AbstractRepository
         }
     }
 
-    public function getEstAdmin(string $login) : bool {
-        try {
-            $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT estAdmin FROM " . self::getNomTable() . " WHERE login = :login ;";
-            $statement = $pdo->prepare($sql);
-            $statement->execute(["login" => $login]);
-            $res = $statement->fetch();
-            return $res && $res["estAdmin"] == 1;
-        } catch (PDOException) {
-            return false;
-        }
-    }
-
     public function getLastPanier(string $login) : null|bool|string {
         try {
             $pdo = DatabaseConnection::getPdo();
