@@ -32,19 +32,6 @@ class UserRepository extends AbstractRepository
         return new User($login, $nom, $prenom, $mdpHache, $estAdmin, $email, $emailAValider, $nonce);
     }
 
-    public function getHashMdp(string $login) : bool|string {
-        try {
-            $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT mdpHache FROM " . self::getNomTable() . " WHERE login = :login ;";
-            $statement = $pdo->prepare($sql);
-            $statement->execute(["login" => $login]);
-            $res = $statement->fetch();
-            return !$res ? false : $res["mdpHache"];
-        } catch (PDOException) {
-            return false;
-        }
-    }
-
     public function getLastPanier(string $login) : null|bool|string {
         try {
             $pdo = DatabaseConnection::getPdo();

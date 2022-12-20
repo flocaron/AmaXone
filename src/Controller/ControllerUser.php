@@ -97,7 +97,6 @@ class ControllerUser extends GenericController
                     self::afficheVue([
                         "user" => $user,
                         "pagetitle" => "Modifier user",
-                        "estAdmin" => ConnexionUtilisateur::estAdministrateur(),
                         "cheminVueBody" => "user/update.php",
                     ]);
                 }
@@ -115,24 +114,29 @@ class ControllerUser extends GenericController
     {
         self::afficheVue([
             "pagetitle" => "Créer Utilisateur",
-            "estAdmin" => ConnexionUtilisateur::estAdministrateur(),
             "cheminVueBody" => "user/create.php",
         ]);
     }
 
     public static function updated()
     {
-        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdpN']) && isset($_REQUEST['mdpC'])) {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdpN']) && isset($_REQUEST['mdpC']) && isset($_REQUEST['email'])) {
             if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
+                $user = (new UserRepository())->select($_REQUEST['login']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    header("Location: frontController.php");
+                    exit(1);
+                }
                 if (ConnexionUtilisateur::estAdministrateur()) {
-                    $password = (new UserRepository())->getHashMdp(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+                    $password = (new UserRepository())->select(ConnexionUtilisateur::getLoginUtilisateurConnecte())->get('mdpHache');
                 } else {
-                    $password = (new UserRepository())->getHashMdp($_REQUEST['login']);
+                    $password = $user->get('mdpHache');
                 }
                 if (MotDePasse::verifier($_REQUEST['mdp'], $password)) {
                     if (strlen($_REQUEST['mdpN']) > 0 ){
                         if (strcmp($_REQUEST['mdpN'], $_REQUEST['mdpC']) == 0) {
-                            $_REQUEST['mdp'] = $_REQUEST['mdpN'];
+                            $user->setMdpHache($_REQUEST['mdpN']);
                         } else {
                             MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
                             header("Location: frontController.php?action=update&controller=user&login=" . rawurlencode($_REQUEST['login']));
@@ -143,22 +147,25 @@ class ControllerUser extends GenericController
                         unset($_REQUEST['estAdmin']);
                         MessageFlash::ajouter("danger", "Vous n'etes pas admin !");
                     }
-                    $user = (new UserRepository())->select($_REQUEST['login']);
+                    $emailModif = false;
                     if ($user->get('email') != $_REQUEST['email']) {
+                        $emailModif = true;
                         $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                         if (!$email) {
                             MessageFlash::ajouter('warning', "Votre nouveau email n'est pas valide");
                             header("Location: frontController.php?action=create&controller=user");
                             exit(1);
                         } else {
-                            $_REQUEST['email'] = $email;
+                            $user->set('emailAValider', $email);
+                            $user->set('nonce', MotDePasse::genererChaineAleatoire(6));
                         }
                     }
-                    $newUser = User::construireDepuisFormulaire($_REQUEST);
-                    $bool = (new UserRepository)->update($newUser);
+                    $bool = (new UserRepository)->update($user);
                     if ($bool) {
                         MessageFlash::ajouter("success", "utilisateur bien modifié !!");
-                        VerificationEmail::envoiEmailValidation($newUser);
+                        if ($emailModif) {
+                            VerificationEmail::envoiEmailValidation($user);
+                        }
                     } else {
                         MessageFlash::ajouter("warning", "utilisateur non modifié !!");
                     }
@@ -178,7 +185,7 @@ class ControllerUser extends GenericController
     }
 
     public static function created(){
-        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
+        if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
             if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
                 $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                 if (!$email) {
@@ -266,3 +273,4 @@ class ControllerUser extends GenericController
 
 
 }
+// TODO passer les form en Conf::debug ? "get" : "post"

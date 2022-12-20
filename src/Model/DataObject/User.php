@@ -50,9 +50,15 @@ class User extends AbstractDataObject
 
     public function set($nom_attribut, $valeur)
     {
-        if (property_exists($this, $nom_attribut))
+        if (property_exists($this, $nom_attribut)) {
             $this->$nom_attribut = $valeur;
+            return true;
+        }
         return false;
+    }
+
+    public function setMdpHache($mdp) {
+        $this->mdpHache = MotDePasse::hacher($mdp);
     }
 
     public static function construireDepuisFormulaire(array $tableauFormulaire): User
