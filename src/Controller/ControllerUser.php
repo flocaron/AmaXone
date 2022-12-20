@@ -24,7 +24,7 @@ class ControllerUser extends GenericController
             ]);
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas administrateur !");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
 
     }
@@ -36,7 +36,7 @@ class ControllerUser extends GenericController
                 $user = (new UserRepository)->select($_REQUEST['login']);
                 if (is_null($user)) {
                     MessageFlash::ajouter("warning", "login non trouvée !!");
-                    header("Location: frontController.php?action=login&controller=user");
+                    header("Location: frontController.php");
                 } else {
                     self::afficheVue([
                         'user' => $user,
@@ -48,11 +48,11 @@ class ControllerUser extends GenericController
                 }
             } else {
                 MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
-                header("Location: frontController.php?action=login&controller=user");
+                header("Location: frontController.php");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
     }
 
@@ -77,11 +77,11 @@ class ControllerUser extends GenericController
                 header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
             } else {
                 MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
-                header("Location: frontController.php?action=login&controller=user");
+                header("Location: frontController.php");
             }
         } else {
             MessageFlash::ajouter("danger", "Login non renseigné !!");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
     }
 
@@ -92,7 +92,7 @@ class ControllerUser extends GenericController
                 $user = (new UserRepository)->select($_REQUEST['login']);
                 if (is_null($user)) {
                     MessageFlash::ajouter("warning", "login non trouvée !!");
-                    header("Location: frontController.php?action=login&controller=user");
+                    header("Location: frontController.php");
                 } else {
                     self::afficheVue([
                         "user" => $user,
@@ -103,11 +103,11 @@ class ControllerUser extends GenericController
                 }
             } else {
                 MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur connecté !");
-                header("Location: frontController.php?action=login&controller=user");
+                header("Location: frontController.php");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
     }
 
@@ -130,6 +130,8 @@ class ControllerUser extends GenericController
                     header("Location: frontController.php");
                     exit(1);
                 }
+                $user->set('nom', $_REQUEST['nom']);
+                $user->set('prenom', $_REQUEST['prenom']);
                 if (ConnexionUtilisateur::estAdministrateur()) {
                     $password = (new UserRepository())->select(ConnexionUtilisateur::getLoginUtilisateurConnecte())->get('mdpHache');
                 } else {
@@ -178,11 +180,11 @@ class ControllerUser extends GenericController
                 }
             } else {
                 MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur connecté !");
-                header("Location: frontController.php?action=login&controller=user");
+                header("Location: frontController.php");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
     }
 
@@ -209,14 +211,14 @@ class ControllerUser extends GenericController
                 } else {
                     MessageFlash::ajouter("warning", "login deja existant !!");
                 }
-                header("Location: frontController.php?action=login&controller=user");
+                header("Location: frontController.php");
             } else {
                 MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
                 header("Location: frontController.php?action=create&controller=user");
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
-            header("Location: frontController.php?action=login&controller=user");
+            header("Location: frontController.php");
         }
     }
 
@@ -289,7 +291,7 @@ class ControllerUser extends GenericController
         } else {
             MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
         }
-        header("Location: frontController.php?action=login&controller=user");
+        header("Location: frontController.php");
     }
 
 
