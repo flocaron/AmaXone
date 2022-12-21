@@ -32,16 +32,16 @@ class UserRepository extends AbstractRepository
         return new User($login, $nom, $prenom, $mdpHache, $estAdmin, $email, $emailAValider, $nonce);
     }
 
-    public function getLastPanier(string $login) : bool|string {
+    public function getLastPanier(string $login) : ?string {
         try {
             $pdo = DatabaseConnection::getPdo();
             $sql = "SELECT dernierPanier FROM " . self::getNomTable() . " WHERE login = :login ;";
             $statement = $pdo->prepare($sql);
             $statement->execute(["login" => $login]);
             $res = $statement->fetch();
-            return !$res ? false : $res["dernierPanier"];
+            return !$res ? null : $res["dernierPanier"];
         } catch (PDOException) {
-            return false;
+            return null;
         }
     }
 
