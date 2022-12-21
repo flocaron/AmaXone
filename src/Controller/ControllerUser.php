@@ -201,7 +201,7 @@ class ControllerUser extends GenericController
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
             if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
-                $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
+                $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);// TODO preremplir
                 if (!$email) {
                     MessageFlash::ajouter('warning', "Votre email n'est pas valide");
                     header("Location: frontController.php?action=create&controller=user");
@@ -307,6 +307,105 @@ class ControllerUser extends GenericController
             MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
         }
         header("Location: frontController.php");
+    }
+
+    public static function passwordForget() { // demandeLogin
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            header('Location: frontController.php');
+        } else {
+            self::afficheVue([
+                "pagetitle" => "Changement Mot de passe",
+                "cheminVueBody" => "user/passwordForget.php",
+            ]);
+        }
+    }
+
+    public static function passwordForgeted() {
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            header('Location: frontController.php');
+        } else {
+            if (isset($_REQUEST['login'])) {
+                $user = (new UserRepository())->select($_REQUEST['login']);
+                if (!is_null($user)) {
+                    $user->set('nonce', MotDePasse::genererChaineAleatoire(6));
+                    (new UserRepository())->update($user);
+                    VerificationEmail::envoiEmailChangementPassword($user);
+                    MessageFlash::ajouter("success", "Un email a était envoyer à l'adresse mail enregistré !");
+                    header("Location: frontController.php?action=login&controller=user");
+
+                } else {
+                    MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas !");
+                    header("Location: frontController.php?action=passwordForget&controller=user");
+                }
+            } else {
+                MessageFlash::ajouter("danger", "Il manque le login !");
+                header("Location: frontController.php?action=passwordForget&controller=user");
+            }
+        }
+    }
+
+    public static function passwordChange () { // changePassword
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            header('Location: frontController.php');
+        } else {
+            if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
+                $user = (new UserRepository())->select($_REQUEST['login']);
+                if (!is_null($user)) {
+                    if ($user->get('nonce') == "") {
+                        MessageFlash::ajouter("danger", "Vous devez cliquez sur Forgot password ?");
+                        header("Location: frontController.php?action=login&controller=user");
+                    } else {
+                        if ($user->get('nonce') == $_REQUEST['nonce']) {
+                            self::afficheVue([
+                                "login" => $user->get('login'),
+                                "pagetitle" => "Se connecter",
+                                "cheminVueBody" => "user/passwordChange.php",
+                            ]);
+                        } else {
+                            MessageFlash::ajouter("warning", "Le nonce ne correspond pas");
+                            header("Location: frontController.php?action=login&controller=user");
+                        }
+                    }
+                } else {
+                    MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
+                    header("Location: frontController.php?action=login&controller=user");
+                }
+            } else {
+                MessageFlash::ajouter("danger", "Il manque le login et/ou le nonce !");
+                header("Location: frontController.php?action=login&controller=user");
+            }
+        }
+    }
+
+    public static function passwordChanged() {
+        if (ConnexionUtilisateur::estConnecte()) {
+            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            header('Location: frontController.php');
+        } else {
+            if (isset($_REQUEST['login']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
+                if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+                    $user = (new UserRepository())->select($_REQUEST['login']);
+                    if (!is_null($user)) {
+                        $user->setMdpHache($_REQUEST['mdp']);
+                        if ((new UserRepository())->update($user)) {
+                            MessageFlash::ajouter("success", "Votre mot de passe est bien changé");
+                        } else {
+                            MessageFlash::ajouter("warning", "Modification échouée");
+                        }
+                    } else {
+                        MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
+                    }
+                } else {
+                    MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
+                }
+            } else {
+                MessageFlash::ajouter("danger", "Il manque le login !");
+            }
+            header("Location: frontController.php?action=login&controller=user");
+        }
     }
 
 

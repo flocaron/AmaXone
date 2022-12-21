@@ -9,13 +9,27 @@ use App\E_Commerce\Model\Repository\UserRepository;
 
 class VerificationEmail
 {
+
+    public static function envoiEmailChangementPassword(User $utilisateur): void
+    {
+        $loginURL = rawurlencode($utilisateur->get('login'));
+        $nonceURL = rawurlencode($utilisateur->get('nonce'));
+        $absoluteURL = Conf::getAbsoluteURL();
+
+        $lienChangementPassword = "$absoluteURL?action=passwordChange&controller=user&login=$loginURL&nonce=$nonceURL";
+        $corpsEmail = "Cliquez sur le lien pour pouvoir changer votre mot de passe !\n$lienChangementPassword";
+
+        mail($utilisateur->get('email'), "Changement Mot de Passe", $corpsEmail);
+    }
+
+
     public static function envoiEmailValidation(User $utilisateur): void
     {
         $loginURL = rawurlencode($utilisateur->get('login'));
         $nonceURL = rawurlencode($utilisateur->get('nonce'));
         $absoluteURL = Conf::getAbsoluteURL();
         $lienValidationEmail = "$absoluteURL?action=validerEmail&controller=user&login=$loginURL&nonce=$nonceURL";
-        $corpsEmail = "<a href='$lienValidationEmail'>Validation</a>";
+        $corpsEmail = "Cliquez sur le lien pour valider votre Compte !\n$lienValidationEmail";
 
         // MessageFlash::ajouter('info', $corpsEmail);
         mail($utilisateur->get('emailAValider'), "Validation", $corpsEmail);
