@@ -39,25 +39,16 @@ class Composant extends AbstractDataObject
         );
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getLibelle(): string
     {
         return $this->libelle;
     }
 
-    /**
-     * @return int
-     */
     public function getPrix(): int
     {
         return $this->prix;
@@ -71,6 +62,26 @@ class Composant extends AbstractDataObject
 
     public function getDescription() : string {
         return $this->description;
+    }
+
+    public function setLibelle(string $libelle): void
+    {
+        $this->libelle = $libelle;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setPrix(int $prix): void
+    {
+        $this->prix = $prix;
+    }
+
+    public function setImgPath(string $imgPath): void
+    {
+        $this->imgPath = $imgPath;
     }
 
 
