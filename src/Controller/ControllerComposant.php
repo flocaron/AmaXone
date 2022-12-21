@@ -54,7 +54,7 @@ class ControllerComposant extends GenericController
                         MessageFlash::ajouter("warning", "ID non trouvé !!");
                     }
                 } else {
-                    MessageFlash::ajouter("verif", "Etes-vous sur ? " .
+                    MessageFlash::ajouter("info", "Etes-vous sur ? " .
                         " <a href='frontController.php?action=delete&controller=composant&id=" .
                         rawurlencode($_REQUEST['id']) . "&verif'> oui </a> " .
                         " <a href='frontController.php?action=readAll&controller=composant'> non</a>"
@@ -196,9 +196,27 @@ class ControllerComposant extends GenericController
         ] );
     }
 
+    public static function replacePanier() {
+        if (ConnexionUtilisateur::estConnecte()) {
+            $panier = Panier::lirePanier();
+            Panier::replacePanier();
+            Panier::enregistrePanier($panier);
+            MessageFlash::ajouter("success", "Vous avez recupérer votre ancien panier !");
+            header("Location: frontController.php?action=affichePanier&controller=composant");
+        } else {
+            MessageFlash::ajouter("success", "Vous-etes deconnecté !");
+            header("Location: frontController.php?action=login&controller=user");
+        }
+    }
+
     public static function viderPanier() {
-        Panier::viderPanier();
+        if (isset($_REQUEST['verif'])) {
+            Panier::viderPanier();
+        } else {
+            MessageFlash::ajouter("info", "vous etes sur ? <a href='frontController.php?action=viderPanier&controller=composant&verif'> oui </a> <a href='frontController.php?action=affichePanier&controller=composant'> non </a>");
+        }
         header("Location: frontController.php?action=affichePanier&controller=composant");
+
     }
 
 

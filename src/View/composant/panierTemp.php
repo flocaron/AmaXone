@@ -28,3 +28,6 @@ foreach ($panierComposant as $composantSerialize => $qte) {
 echo "</ul>";
 echo "<p> Total = " . $total . "€ </p>";
 echo "<p> <a href='frontController.php?action=viderPanier&controller=composant'> Vider Panier </a> </p>";
+if ($estConnecte) {
+    echo "<p> <a href='frontController.php?action=replacePanier&controller=composant'> Recuperer Panier </a> </p>";
+}

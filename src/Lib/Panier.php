@@ -3,6 +3,7 @@
 namespace App\E_Commerce\Lib;
 
 use App\E_Commerce\Model\HTTP\Session;
+use App\E_Commerce\Model\Repository\UserRepository;
 
 class Panier
 {
@@ -60,13 +61,22 @@ class Panier
         return [];
     }
 
-    public static function replacePanier(array $panier) : void {
-        Session::getInstance()->enregistrer(static::$clePanier, $panier);
+    public static function replacePanier() : void {
+        $lastPanier = (new UserRepository)->getLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        Session::getInstance()->enregistrer(static::$clePanier, is_null($lastPanier) ? [] : unserialize($lastPanier));
     }
 
     public static function viderPanier() : void
     {
         Session::getInstance()->supprimer(static::$clePanier);
+    }
+
+    public static function enregistrePanier(array $panier = []) : void {
+        if (count($panier) == 0) {
+            (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize(Panier::lirePanier()));
+        } else {
+            (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize($panier));
+        }
     }
 
 

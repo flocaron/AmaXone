@@ -5,6 +5,7 @@ namespace App\E_Commerce\Controller;
 use App\E_Commerce\Lib\ConnexionUtilisateur;
 use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\MotDePasse;
+use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Lib\VerificationEmail;
 use App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
@@ -63,12 +64,14 @@ class ControllerUser extends GenericController
                 if (isset($_REQUEST['verif'])) {
                     $boolR = (new UserRepository())->delete($_REQUEST['login']);
                     if ($boolR) {
+                        // TODO logout si l'utilisareur delete est celui qui est connecte
+
                         MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
                     } else {
                         MessageFlash::ajouter("warning", "login non trouvé !!");
                     }
                 } else {
-                    MessageFlash::ajouter("verif", "Etes-vous sur ? " .
+                    MessageFlash::ajouter("info", "Etes-vous sur ? " .
                         " <a href='frontController.php?action=delete&controller=user&login=" .
                         rawurlencode($_REQUEST['login']) . "&verif'> oui </a> " .
                         " <a href='frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']) . "'> non</a>"
@@ -255,6 +258,9 @@ class ControllerUser extends GenericController
                     if (VerificationEmail::aValideEmail($user)) {
                         if (MotDePasse::verifier($_REQUEST['mdp'], $user->get('mdpHache'))) {
                             ConnexionUtilisateur::connecter($_REQUEST['login']);
+                            if (count(Panier::lirePanier()) == 0) {
+                                Panier::replacePanier();
+                            }
                             MessageFlash::ajouter("success", "Vous etes bien connecté !");
                             header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                         } else {
@@ -279,7 +285,9 @@ class ControllerUser extends GenericController
     public static function logout()
     {
         if (ConnexionUtilisateur::estConnecte()) {
+            Panier::enregistrePanier();
             ConnexionUtilisateur::deconnecter();
+            MessageFlash::ajouter("success", "Vous-etes deconnecté !");
         } else {
             MessageFlash::ajouter("danger", "vous n'etes pas connecté");
 
@@ -303,4 +311,8 @@ class ControllerUser extends GenericController
 
 
 }
-// TODO passer les form en Conf::debug ? "get" : "post"
+
+// quel plan de base de donée puis je avoir pour mon site de commerce en ligne en php et sql
+
+// comment mettre plusieurs produit dans un seul tuple de ma table commande
+
