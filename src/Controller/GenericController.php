@@ -5,6 +5,7 @@ namespace App\E_Commerce\Controller;
 use App\E_Commerce\Config\Conf;
 use App\E_Commerce\Lib\ConnexionUtilisateur;
 use App\E_Commerce\Lib\MessageFlash;
+use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Lib\PreferenceControleur;
 
 abstract class GenericController
@@ -14,6 +15,7 @@ abstract class GenericController
         $parametres["estConnecte"] = ConnexionUtilisateur::estConnecte();
         $parametres["estAdmin"] = ConnexionUtilisateur::estAdministrateur();
         $parametres["loginUser"] = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+        $parametres["nbPanier"] = Panier::nbPanier();
         $parametres["debug"] = Conf::getDebug();
         extract($parametres); // Crée des variables à partir du tableau $parametres
         require "../src/View/view.php"; // Charge la vue

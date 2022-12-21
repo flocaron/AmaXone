@@ -29,7 +29,7 @@
                         <div class="flex space-x-4">
                             <a href="frontController.php?action=affichePanier&controller=composant"
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                               aria-current="page">Panier</a>
+                               aria-current="page">Panier : <?php echo $nbPanier ?> </a>
                         </div>
                     </div>
                     <?php
