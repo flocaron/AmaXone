@@ -5,25 +5,30 @@
             <?php foreach ($inventaire as $produit) { ?>
                 <div class="group relative">
                     <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:aspect-none lg:h-80">
-                        <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>"
-                             alt=".."
-                             class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
+                        <a href="frontController.php?controller=composant&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
+                            <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>"
+                                 alt=".."
+                                 class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
+                        </a>
+
                     </div>
                     <div class="mt-4 flex justify-between">
                         <div>
-                            <h3 class="text-sm text-gray-700">
-                                <a href="frontController.php?controller=composant&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
-                                </a>
-                            </h3>
                         </div>
                         <?php echo htmlspecialchars($produit->getLibelle()); ?>
-                        <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars ($produit->getPrix()) . " €"; ?></p>
+                        <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($produit->getPrix()) . " €"; ?></p>
                     </div>
-                    <p class="text-sm font-medium text-gray-900"> <a href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter au panier</a> </p>
+                    <p class="text-sm font-medium text-gray-900"><a
+                                href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter
+                            au panier</a></p>
 
                 </div>
-
             <?php } ?>
         </div>
+        <?php
+        if ($estAdmin) {
+            echo "<a href='frontController.php?action=create&controller=composant'> Nouveau Produit </a>";
+        }
+        ?>
     </div>
 </div>
