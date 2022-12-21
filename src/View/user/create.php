@@ -4,12 +4,12 @@
             <legend>Mon formulaire :</legend>
             <p>
                 <label for="login_id">Login</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
+                <input type="text" <?php echo !isset($user) ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
                        name="login" id="login_id" <?php echo $action == "create" ? "required" : "readonly" ?> />
             </p>
             <p>
                 <label for="email_id">Email</label> :
-                <input type="email" <?php echo $action == "create" ? 'placeholder="jhon.richard77@gmail.com"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
+                <input type="email" <?php echo !isset($user) ? 'placeholder="jhon.richard77@gmail.com"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
                        name="email" id="email_id" required/>
             </p>
             <?php
@@ -39,12 +39,12 @@
             ?>
             <p>
                 <label for="nom_id">Nom</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="Doo"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?>
+                <input type="text" <?php echo !isset($user) ? 'placeholder="Doo"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?>
                        name="nom" id="nom_id" required/>
             </p>
             <p>
                 <label for="prenom_id">Prenom</label> :
-                <input type="text" <?php echo $action == "create" ? 'placeholder="John"' : "value='" . htmlspecialchars($user->get('prenom')) . "'" ?>
+                <input type="text" <?php echo !isset($user) ? 'placeholder="John"' : "value='" . htmlspecialchars($user->get('prenom')) . "'" ?>
                        name="prenom" id="prenom_id" required/>
             </p>
             <?php

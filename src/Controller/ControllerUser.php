@@ -202,11 +202,17 @@ class ControllerUser extends GenericController
     public static function created()
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
+            $user = new User($_REQUEST['login'], $_REQUEST['nom'], $_REQUEST['prenom'], "", false, $_REQUEST['email'], "", "");
             if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
-                $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);// TODO preremplir
+                $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                 if (!$email) {
                     MessageFlash::ajouter('warning', "Votre email n'est pas valide");
-                    header("Location: frontController.php?action=create&controller=user");
+                    self::afficheVue([
+                        "user" => $user,
+                        "action" => "create",
+                        "pagetitle" => "Créer Utilisateur",
+                        "cheminVueBody" => "user/create.php",
+                    ]);
                     exit(1);
                 } else {
                     $_REQUEST['email'] = $email;
@@ -222,11 +228,21 @@ class ControllerUser extends GenericController
                     header("Location: frontController.php");
                 } else {
                     MessageFlash::ajouter("warning", "login deja existant !!");
-                    header("Location: frontController.php?action=create&controller=user");
+                    self::afficheVue([
+                        "user" => $user,
+                        "action" => "create",
+                        "pagetitle" => "Créer Utilisateur",
+                        "cheminVueBody" => "user/create.php",
+                    ]);
                 }
             } else {
                 MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
-                header("Location: frontController.php?action=create&controller=user");
+                self::afficheVue([
+                    "user" => $user,
+                    "action" => "create",
+                    "pagetitle" => "Créer Utilisateur",
+                    "cheminVueBody" => "user/create.php",
+                ]);
             }
         } else {
             MessageFlash::ajouter("danger", "login non renseignée !!");
@@ -392,6 +408,7 @@ class ControllerUser extends GenericController
                     $user = (new UserRepository())->select($_REQUEST['login']);
                     if (!is_null($user)) {
                         $user->setMdpHache($_REQUEST['mdp']);
+                        $user->set('nonce', '');
                         if ((new UserRepository())->update($user)) {
                             MessageFlash::ajouter("success", "Votre mot de passe est bien changé");
                         } else {
