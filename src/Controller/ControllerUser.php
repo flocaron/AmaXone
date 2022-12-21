@@ -64,8 +64,10 @@ class ControllerUser extends GenericController
                 if (isset($_REQUEST['verif'])) {
                     $boolR = (new UserRepository())->delete($_REQUEST['login']);
                     if ($boolR) {
-                        // TODO logout si l'utilisareur delete est celui qui est connecte
-
+                        if ($_REQUEST['login'] == ConnexionUtilisateur::getLoginUtilisateurConnecte()) {
+                            header("Location: frontController.php?action=logout&controller=user");
+                            exit(1);
+                        }
                         MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
                     } else {
                         MessageFlash::ajouter("warning", "login non trouvé !!");
@@ -292,7 +294,7 @@ class ControllerUser extends GenericController
             MessageFlash::ajouter("danger", "vous n'etes pas connecté");
 
         }
-        header("Location: frontController.php");
+        header("Location: frontController.php?action=login&controller=user");
     }
 
     public static function validerEmail()
