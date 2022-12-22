@@ -17,7 +17,7 @@ class Panier
      */
     private static string $clePanier = "_panier";
 
-    public static function ajouter(int $idComposant)
+    public static function ajouter(int $idComposant) : void
     {
         if (self::exist()) {
             $panier = self::lirePanier();
@@ -33,24 +33,42 @@ class Panier
         Session::getInstance()->enregistrer(static::$clePanier, $panier);
     }
 
-    public static function retirer(int $idComposant)
+    public static function ajouterAll(int $idComposant, int $qte): void
     {
         if (self::exist()) {
-            if (self::contient($idComposant)) {
-                $panier = self::lirePanier();
-                if ($panier[$idComposant] == 1) {
-                    unset($panier[$idComposant]);
-                } else {
-                    $panier[$idComposant] = $panier[$idComposant] - 1;
-                }
+            $panier = self::lirePanier();
+        } else {
+            $panier = [];
+        }
+        $panier[$idComposant] = $qte;
+        Session::getInstance()->enregistrer(static::$clePanier, $panier);
+    }
+
+    public static function retirer(int $idComposant) : void
+    {
+        if (self::contient($idComposant)) {
+            $panier = self::lirePanier();
+            if ($panier[$idComposant] == 1) {
+                unset($panier[$idComposant]);
+            } else {
+                $panier[$idComposant] = $panier[$idComposant] - 1;
             }
+            Session::getInstance()->enregistrer(static::$clePanier, $panier);
+        }
+    }
+
+    public static function retirerAll(int $idComposant) : void
+    {
+        if (self::contient($idComposant)) {
+            $panier = self::lirePanier();
+            unset($panier[$idComposant]);
             Session::getInstance()->enregistrer(static::$clePanier, $panier);
         }
     }
 
     public static function contient(int $idComposant): bool
     {
-        return isset(self::lirePanier()[$idComposant]);
+        return self::exist() && isset(self::lirePanier()[$idComposant]);
     }
 
     public static function exist(): bool

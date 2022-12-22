@@ -245,6 +245,21 @@ class ControllerComposant extends GenericController
         }
     }
 
+    public static function addAllPanier() {
+        if (isset($_REQUEST['id']) && isset($_REQUEST['qte'])) {
+            $obj = (new ComposantRepository())->select($_REQUEST['id']);
+            if (is_null($obj)) {
+                MessageFlash::ajouter("danger", "Cet id n'existe pas !!");
+            } else {
+                Panier::ajouterAll($_REQUEST['id'], $_REQUEST['qte']);
+                MessageFlash::ajouter("success", "Element ajouté au panier !");
+            }
+        } else {
+            MessageFlash::ajouter("danger", "Il manque l'id ou la quantité de l'objet !");
+        }
+        header("Location: frontController.php?action=affichePanier&controller=composant");
+    }
+
     public static function removePanier()
     {
         if (isset($_REQUEST['id'])) {
@@ -255,6 +270,15 @@ class ControllerComposant extends GenericController
         }
         header("Location: frontController.php?action=affichePanier&controller=composant");
     }
+
+    public static function removeAllPanier() {
+        if (isset($_REQUEST['id'])) {
+            Panier::retirerAll($_REQUEST['id']);
+            MessageFlash::ajouter("success", "Element supprimé du panier !");
+        } else {
+            MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
+        }
+        header("Location: frontController.php?action=affichePanier&controller=composant");    }
 
     public static function affichePanier()
     {
@@ -291,7 +315,6 @@ class ControllerComposant extends GenericController
             MessageFlash::ajouter("info", "vous etes sur ? <a href='frontController.php?action=viderPanier&controller=composant&verif'> oui </a> <a href='frontController.php?action=affichePanier&controller=composant'> non </a>");
         }
         header("Location: frontController.php?action=affichePanier&controller=composant");
-
     }
 
 // TODO affiche quantité a selectionné pour les composant
