@@ -13,7 +13,8 @@ use App\E_Commerce\Model\Repository\UserRepository;
 class ControllerComposant extends GenericController
 {
 
-    public static function readAll() {
+    public static function readAll()
+    {
         $composants = (new ComposantRepository())->selectAll();
         self::afficheVue([
             'inventaire' => $composants,
@@ -80,8 +81,9 @@ class ControllerComposant extends GenericController
                 } else {
                     self::afficheVue([
                         "composant" => $composant,
+                        "action" => "update",
                         "pagetitle" => "Modifier composant",
-                        "cheminVueBody" => "composant/update.php",
+                        "cheminVueBody" => "composant/create.php",
                     ]);
                 }
             } else {
@@ -98,6 +100,7 @@ class ControllerComposant extends GenericController
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
+                "action" => "create",
                 "pagetitle" => "Créer Utilisateur",
                 "cheminVueBody" => "composant/create.php",
             ]);
@@ -107,22 +110,68 @@ class ControllerComposant extends GenericController
         }
     }
 
-    public static function updated(){
-        if (isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && isset($_REQUEST['imgPath'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
-                $bool = (new ComposantRepository)->update(Composant::construireDepuisFormulaire($_REQUEST));
-                if ($bool) {
-                    MessageFlash::ajouter("success", "Composant bien mis à jour");
+    public static function updated()
+    {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix'])) {
+                $composant = (new ComposantRepository())->select($_REQUEST['id']);
+                if (!is_null($composant)) {
+                    $composant->setLibelle($_REQUEST['libelle']);
+                    $composant->setDescription($_REQUEST['description']);
+                    $composant->setPrix($_REQUEST['prix']);
+
+                    if (!empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
+                        $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
+                        $extension = explode('.', $_FILES['file-upload']['name']);
+                        if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) {
+                            if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
+                                $composant->setImgPath($_FILES['file-upload']['name']);
+                            } else {
+                                MessageFlash::ajouter("warning", "Importation de l'image échouée");
+                                self::afficheVue([
+                                    "composant" => $composant,
+                                    "action" => "update",
+                                    "pagetitle" => "Modifier composant",
+                                    "cheminVueBody" => "composant/create.php",
+                                ]);
+                                exit(1);
+                            }
+                        } else {
+                            MessageFlash::ajouter("warning", "Mauvaise extension ou taille de fichier");
+                            self::afficheVue([
+                                "composant" => $composant,
+                                "action" => "update",
+                                "pagetitle" => "Modifier composant",
+                                "cheminVueBody" => "composant/create.php",
+                            ]);
+                            exit(1);
+                        }
+                    }
+                    $bool = (new ComposantRepository)->update($composant);
+                    if ($bool) {
+                        MessageFlash::ajouter("success", "Composant bien mis à jour");
+                    } else {
+                        MessageFlash::ajouter("warning", "Mise à jour échouée");
+                    }
+                    header("Location: frontController.php?action=readAll&controller=composant");
                 } else {
-                    MessageFlash::ajouter("warning", "Mise à jour échouée");
+                    MessageFlash::ajouter("warning", "Ce composant n'existe pas");
+                    self::afficheVue([
+                        "composant" => $composant,
+                        "action" => "update",
+                        "pagetitle" => "Modifier composant",
+                        "cheminVueBody" => "composant/create.php",
+                    ]);
+                    exit(1);
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "id non renseignée !!");
+                header("Location: frontController.php?action=readAll&controller=composant");
             }
         } else {
-            MessageFlash::ajouter("danger", "id non renseignée !!");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php?action=readAll&controller=composant");
         }
-        header("Location: frontController.php?action=readAll&controller=composant");
     }
 
     public static function created()
@@ -155,7 +204,8 @@ class ControllerComposant extends GenericController
         header("Location: frontController.php?action=readAll&controller=composant");
     }
 
-    public static function addPanier() {
+    public static function addPanier()
+    {
         if (isset($_REQUEST['id'])) {
             $obj = (new ComposantRepository())->select($_REQUEST['id']);
             if (is_null($obj)) {
@@ -174,7 +224,8 @@ class ControllerComposant extends GenericController
         }
     }
 
-    public static function removePanier() {
+    public static function removePanier()
+    {
         if (isset($_REQUEST['id'])) {
             Panier::retirer($_REQUEST['id']);
             MessageFlash::ajouter("success", "Element supprimé du panier !");
@@ -184,7 +235,8 @@ class ControllerComposant extends GenericController
         header("Location: frontController.php?action=affichePanier&controller=composant");
     }
 
-    public static function affichePanier() {
+    public static function affichePanier()
+    {
         $panierComposant = [];
         foreach (Panier::lirePanier() as $id => $qte) {
             $panierComposant[serialize((new ComposantRepository())->select($id))] = $qte;
@@ -193,10 +245,11 @@ class ControllerComposant extends GenericController
             "pagetitle" => "Panier",
             "panierComposant" => $panierComposant,
             "cheminVueBody" => "composant/panierTemp.php",
-        ] );
+        ]);
     }
 
-    public static function replacePanier() {
+    public static function replacePanier()
+    {
         if (ConnexionUtilisateur::estConnecte()) {
             $panier = Panier::lirePanier();
             Panier::replacePanier();
@@ -209,7 +262,8 @@ class ControllerComposant extends GenericController
         }
     }
 
-    public static function viderPanier() {
+    public static function viderPanier()
+    {
         if (isset($_REQUEST['verif'])) {
             Panier::viderPanier();
         } else {
@@ -218,6 +272,8 @@ class ControllerComposant extends GenericController
         header("Location: frontController.php?action=affichePanier&controller=composant");
 
     }
+
+// TODO affiche quantité a selectionné pour les composant
 
 
 }
