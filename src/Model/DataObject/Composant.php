@@ -22,19 +22,16 @@ class Composant extends AbstractDataObject
 
     public function formatTableau(): array
     {
-        return $this->id == -1
-            ? [
-                'libelle' => $this->libelle,
-                'description' => $this->description,
-                'prix' => $this->prix,
-                'imgPath' => $this->imgPath,
-            ] : [
-                'id' => $this->id,
-                'libelle' => $this->libelle,
-                'description' => $this->description,
-                'prix' => $this->prix,
-                'imgPath' => $this->imgPath
-            ];
+        $formatTab = [
+            'libelle' => $this->libelle,
+            'description' => $this->description,
+            'prix' => $this->prix,
+            'imgPath' => $this->imgPath,
+        ];
+        if ($this->id != -1) {
+            $formatTab['id'] = $this->id;
+        }
+        return $formatTab;
     }
 
     public static function construireDepuisFormulaire(array $tableauFormulaire): Composant
