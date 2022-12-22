@@ -10,6 +10,7 @@ $loader->register();
 use App\E_Commerce\Controller\ControllerComposant;
 use App\E_Commerce\Controller\ControllerUser;
 use App\E_Commerce\Controller\GenericController;
+use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\PreferenceControleur;
 
 $action = $_REQUEST['action'] ?? 'welcome';
@@ -22,8 +23,10 @@ if (class_exists($controllerClassName)) {
     if (in_array($action, get_class_methods($controllerClassName))) {
         $controllerClassName::$action();
     } else {
-        GenericController::error("Action inconnu !!");
+        MessageFlash::ajouter("danger", "Action inconnue !");
+        header("Location: frontController.php");
     }
 } else {
-    GenericController::error("Controller inconnu !!");
+    MessageFlash::ajouter("danger", "Controller inconnu  !");
+    header("Location: frontController.php");
 }

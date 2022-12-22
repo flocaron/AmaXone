@@ -21,14 +21,6 @@ abstract class GenericController
         require "../src/View/view.php"; // Charge la vue
     }
 
-    public static function error($errorMsg = "") : void {
-        self::afficheVue([
-            "pagetitle" => "Error",
-            "msg" => $errorMsg,
-            "cheminVueBody" => "composant/error.php",
-        ] );
-    }
-
     public static function welcome() {
         self::afficheVue([
             "pagetitle" => "Bienvenue",
