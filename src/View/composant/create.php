@@ -19,13 +19,13 @@
                         <div class="col-span-6 sm:col-span-3">
                             <label for="libelle" class="block text-sm font-medium text-gray-700">Nom Produit</label>
                             <input type="text" name="libelle" id="libelle" required
-                                <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getLibelle()) . "'" : "" ?>
+                                <?php echo isset($composant) ? "value='" . htmlspecialchars($composant->getLibelle()) . "'" : "placeholder='ex: Casque Audio'" ?>
                                    class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="prix" class="block text-sm font-medium text-gray-700">Prix</label>
                             <input type="number" name="prix" id="prix" required
-                                <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getPrix()) . "'" : "" ?>
+                                <?php echo isset($composant) ? "value='" . htmlspecialchars($composant->getPrix()) . "'" : "placeholder='36'" ?>
                                    class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
@@ -36,7 +36,7 @@
                             <label for="about" class="block text-sm font-medium text-gray-700">Description</label>
                             <div class="mt-1">
                                 <input id="about" name="description"
-                                          <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getDescription()) . "'" : "" ?>
+                                          <?php echo isset($composant) ? "value='" . htmlspecialchars($composant->getDescription()) . "'" : "placeholder='ex: Superbe casque audio avec un son en stéréo defiant la chronique !'" ?>
                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                             </div>
                         </div>
@@ -72,5 +72,4 @@
         </form>
     </div>
 </div>
-
 

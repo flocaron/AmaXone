@@ -101,7 +101,7 @@ class ControllerComposant extends GenericController
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
                 "action" => "create",
-                "pagetitle" => "Créer Utilisateur",
+                "pagetitle" => "Créer Composant",
                 "cheminVueBody" => "composant/create.php",
             ]);
         } else {
@@ -176,8 +176,9 @@ class ControllerComposant extends GenericController
 
     public static function created()
     {
-        if (isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
+        if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
             if (ConnexionUtilisateur::estAdministrateur()) {
+                $composant = new Composant($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "");
                 $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
                 $extension = explode('.', $_FILES['file-upload']['name']);
                 if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) {
@@ -186,22 +187,42 @@ class ControllerComposant extends GenericController
                         $bool = (new ComposantRepository)->save(Composant::construireDepuisFormulaire($_REQUEST));
                         if ($bool) {
                             MessageFlash::ajouter("success", "Composant bien crée");
+                            header("Location: frontController.php?action=readAll&controller=composant");
                         } else {
                             MessageFlash::ajouter("warning", "ID déja existant");
+                            self::afficheVue([
+                                "composant" => $composant,
+                                "action" => "create",
+                                "pagetitle" => "Créer Composant",
+                                "cheminVueBody" => "composant/create.php",
+                            ]);
                         }
                     } else {
                         MessageFlash::ajouter("warning", "Importation de l'image échouée");
+                        self::afficheVue([
+                            "composant" => $composant,
+                            "action" => "create",
+                            "pagetitle" => "Créer Composant",
+                            "cheminVueBody" => "composant/create.php",
+                        ]);
                     }
                 } else {
                     MessageFlash::ajouter("warning", "Mauvaise extension ou taille de fichier");
+                    self::afficheVue([
+                        "composant" => $composant,
+                        "action" => "create",
+                        "pagetitle" => "Créer Composant",
+                        "cheminVueBody" => "composant/create.php",
+                    ]);
                 }
             } else {
                 MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                header("Location: frontController.php?action=readAll&controller=composant");
             }
         } else {
             MessageFlash::ajouter("danger", "id non renseignée !!");
+            header("Location: frontController.php?action=readAll&controller=composant");
         }
-        header("Location: frontController.php?action=readAll&controller=composant");
     }
 
     public static function addPanier()
