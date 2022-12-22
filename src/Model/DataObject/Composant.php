@@ -11,7 +11,8 @@ class Composant extends AbstractDataObject
     private int $prix;
     private string $imgPath;
 
-    public function __construct(string $libelle, string $description, int $prix, string $imgPath, int $id = 0) {
+    public function __construct(int $id, string $libelle, string $description, int $prix, string $imgPath)
+    {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->description = $description;
@@ -21,17 +22,25 @@ class Composant extends AbstractDataObject
 
     public function formatTableau(): array
     {
-        return [
-            'libelle' => $this->libelle,
-            'description' => $this->description,
-            'prix' => $this->prix,
-            'imgPath' => $this->imgPath,
-        ];
+        return $this->id == -1
+            ? [
+                'libelle' => $this->libelle,
+                'description' => $this->description,
+                'prix' => $this->prix,
+                'imgPath' => $this->imgPath,
+            ] : [
+                'id' => $this->id,
+                'libelle' => $this->libelle,
+                'description' => $this->description,
+                'prix' => $this->prix,
+                'imgPath' => $this->imgPath
+            ];
     }
 
     public static function construireDepuisFormulaire(array $tableauFormulaire): Composant
     {
         return new Composant(
+            $tableauFormulaire['id'],
             $tableauFormulaire['libelle'],
             $tableauFormulaire['description'],
             $tableauFormulaire['prix'],
@@ -60,7 +69,8 @@ class Composant extends AbstractDataObject
 
     }
 
-    public function getDescription() : string {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 
@@ -83,7 +93,6 @@ class Composant extends AbstractDataObject
     {
         $this->imgPath = $imgPath;
     }
-
 
 
 }

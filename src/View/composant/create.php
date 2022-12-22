@@ -12,7 +12,9 @@
                                    value='<?php echo htmlspecialchars($composant->getId()) ?>'
                                    class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
-                    <?php } ?>
+                    <?php } else {
+                        echo "<input type='hidden' name='id' value='-1' />";
+                    } ?>
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
                             <label for="libelle" class="block text-sm font-medium text-gray-700">Nom Produit</label>
@@ -55,7 +57,7 @@
                                     </label>
                                     <p class="pl-1">or drag and drop</p>
                                 </div>
-                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                <p class="text-xs text-gray-500">PNG, JPG, JPEG up to 10MB</p>
                             </div>
                         </div>
                     </div>
