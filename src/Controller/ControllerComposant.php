@@ -317,7 +317,4 @@ class ControllerComposant extends GenericController
         header("Location: frontController.php?action=affichePanier&controller=composant");
     }
 
-// TODO affiche quantité a selectionné pour les composant
-
-
 }
