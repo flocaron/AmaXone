@@ -1,18 +1,29 @@
 <div class="mt-10 sm:mt-0">
     <div class="mt-5 px-10 md:col-span-2 md:mt-0">
-        <form enctype="multipart/form-data" action="frontController.php?action=created&controller=composant"
+        <form enctype="multipart/form-data"
+              action="frontController.php?action=<?php echo $action == "create" ? "created" : "updated" ?>&controller=composant"
               method="post">
             <div class="overflow-hidden shadow sm:rounded-md">
                 <div class=" flex flex-col gap-6 bg-white px-4 py-5 sm:p-6">
+                    <?php if ($action == "update") { ?>
+                        <div class="col-span-6 sm:col-span-3">
+                            <label for="id" class="block text-sm font-medium text-gray-700">ID</label>
+                            <input type="text" name="id" id="id" readonly
+                                   value='<?php echo htmlspecialchars($composant->getId()) ?>'
+                                   class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        </div>
+                    <?php } ?>
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
                             <label for="libelle" class="block text-sm font-medium text-gray-700">Nom Produit</label>
                             <input type="text" name="libelle" id="libelle" required
+                                <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getLibelle()) . "'" : "" ?>
                                    class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="prix" class="block text-sm font-medium text-gray-700">Prix</label>
                             <input type="number" name="prix" id="prix" required
+                                <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getPrix()) . "'" : "" ?>
                                    class="mt-1 block h-7 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         </div>
 
@@ -22,8 +33,9 @@
                         <div>
                             <label for="about" class="block text-sm font-medium text-gray-700">Description</label>
                             <div class="mt-1">
-                                <textarea id="about" name="description" rows="3"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+                                <input id="about" name="description"
+                                          <?php echo $action == "update" ? "value='" . htmlspecialchars($composant->getDescription()) . "'" : "" ?>
+                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                             </div>
                         </div>
                         <label class="block text-sm font-medium text-gray-700">Image Article</label>
@@ -38,7 +50,8 @@
                                     <label for="file-upload"
                                            class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" required>
+                                        <input id="file-upload" name="file-upload" type="file"
+                                               class="sr-only" <?php echo $action == "create" ? "required" : "" ?>>
                                     </label>
                                     <p class="pl-1">or drag and drop</p>
                                 </div>
