@@ -8,7 +8,7 @@ use PDOException;
 
 abstract class AbstractRepository
 {
-    protected abstract function getNomTable() : string;
+    protected abstract function getNomTable(): string;
 
     protected abstract function getNomClePrimaire(): string;
 
@@ -16,16 +16,20 @@ abstract class AbstractRepository
 
     protected abstract function construire(array $objetFormatTableau);
 
-    public function selectAll() : array
+    public function selectAll(): array
     {
-        $pdo = DatabaseConnection::getPdo();
-        $query = "SELECT * FROM " . static::getNomTable() . ";";
-        $pdoStatement = $pdo->query($query);
-        $tab = array();
-        foreach ($pdoStatement as $voitureTab) {
-            $tab[] = static::construire($voitureTab);
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $query = "SELECT * FROM " . static::getNomTable() . ";";
+            $pdoStatement = $pdo->query($query);
+            $tab = array();
+            foreach ($pdoStatement as $formatTab) {
+                $tab[] = static::construire($formatTab);
+            }
+            return $tab;
+        } catch (PDOException) {
+            return [];
         }
-        return $tab;
     }
 
     public function select(string $primaryKey)
@@ -65,16 +69,17 @@ abstract class AbstractRepository
         return true;
     }
 
-    public function update($obj) : bool{
+    public function update($obj): bool
+    {
         try {
             $pdo = DatabaseConnection::getPdo();
             $sql = "UPDATE " . static::getNomTable() . " SET ";
             foreach (static::getNomsColonnes() as $value) {
-                if (!strcmp($value, static::getNomClePrimaire()) == 0){
-                    $sql .= $value . " = :" . $value .  ' , ';
+                if (!strcmp($value, static::getNomClePrimaire()) == 0) {
+                    $sql .= $value . " = :" . $value . ' , ';
                 }
             }
-            $sql = rtrim($sql,", ");
+            $sql = rtrim($sql, ", ");
             $sql .= " WHERE  " . static::getNomClePrimaire() . " = :" . static::getNomClePrimaire() . ";";
             $rep = $pdo->prepare($sql);
             $tab = $obj->formatTableau();
@@ -93,12 +98,12 @@ abstract class AbstractRepository
             foreach (static::getNomsColonnes() as $value) {
                 $sql .= $value . " , ";
             }
-            $sql = rtrim($sql,", ");
+            $sql = rtrim($sql, ", ");
             $sql .= ") VALUES (";
             foreach (static::getNomsColonnes() as $value) {
                 $sql .= ":" . $value . " , ";
             }
-            $sql = rtrim($sql,", ");
+            $sql = rtrim($sql, ", ");
             $sql .= ");";
             $rep = $pdo->prepare($sql);
             $rep->execute($obj->formatTableau());
