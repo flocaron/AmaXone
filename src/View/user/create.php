@@ -1,7 +1,7 @@
 <article>
     <form method="<?php echo $debug ? "get" : "post" ?>" action="frontController.php">
         <fieldset>
-            <legend>Mon formulaire :</legend>
+            <legend><?php echo $action == "create" ? "Création" : "Modification" ?> d'un Utilisateur :</legend>
             <p>
                 <label for="login_id">Login</label> :
                 <input type="text" <?php echo !isset($user) ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
