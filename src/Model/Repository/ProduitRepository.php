@@ -23,14 +23,16 @@ class ProduitRepository extends AbstractRepository {
         return ['libelle', 'description', 'prix', 'imgPath'];
     }
 
-    protected function construire(array $objetFormatTableau)
+    protected function construire(array $objetFormatTableau): Produit
     {
-        $id = $objetFormatTableau['id'];
-        $libelle = $objetFormatTableau['libelle'];
-        $description = $objetFormatTableau['description'];
-        $prix = $objetFormatTableau['prix'];
-        $img = $objetFormatTableau['imgPath'];
-        return new Produit($id, $libelle, $description, $prix, $img);
-
+        return new Produit(
+            $objetFormatTableau['id'],
+            $objetFormatTableau['libelle'],
+            $objetFormatTableau['description'],
+            $objetFormatTableau['prix'],
+            $objetFormatTableau['imgPath'],
+        );
     }
+
+
 }
