@@ -16,7 +16,10 @@ foreach ($panierProduit as $produitSerialize => $qte) {
         $qte .
         "<a href='frontController.php?action=addPanier&controller=produit&id=" .
         rawurlencode($produit->getId()) .
-        "'> add </a>";
+        "'> addOne </a>" .
+        "<a href='frontController.php?action=removePanier&controller=produit&id=" .
+        rawurlencode($produit->getId()) .
+        "'> rmOne </a>";
 
     echo "<form style='display: inline;' method='" .
         ($debug ? "get" : "post") .
@@ -38,10 +41,7 @@ foreach ($panierProduit as $produitSerialize => $qte) {
         "<input type='submit' value='addAll' />" .
         "</form>";
 
-    echo "<a href='frontController.php?action=removePanier&controller=produit&id=" .
-        rawurlencode($produit->getId()) .
-        "'> rm </a>" .
-        "<a href='frontController.php?action=removeAllPanier&controller=produit&id=" .
+    echo "<a href='frontController.php?action=removeAllPanier&controller=produit&id=" .
         rawurlencode($produit->getId()) .
         "'> rmAll </a>" .
         "</p> </li>\n";
@@ -54,4 +54,8 @@ echo "<p> Total = " . $total . "€ </p>";
 echo "<p> <a href='frontController.php?action=viderPanier&controller=produit'> Vider Panier </a> </p>";
 if ($estConnecte) {
     echo "<p> <a href='frontController.php?action=replacePanier&controller=produit'> Recuperer Panier </a> </p>";
+    echo "<p> <a href='frontController.php?action=passerCommande&controller=commande'> Passer Commande </a> </p>";
 }
+
+// si pas connecte affiche lien vers login page
+// puis redirection vers passerCommande
