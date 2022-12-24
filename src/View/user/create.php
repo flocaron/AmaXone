@@ -1,4 +1,4 @@
-<article id="form">
+<article>
     <form method="<?php echo $debug ? "get" : "post" ?>" action="frontController.php">
         <fieldset>
             <legend>Mon formulaire :</legend>
