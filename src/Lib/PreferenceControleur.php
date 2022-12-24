@@ -15,7 +15,7 @@ class PreferenceControleur {
 
     public static function lire() : string
     {
-        return self::existe() ? Cookie::lire(static::$clePreference) : 'composant';
+        return self::existe() ? Cookie::lire(static::$clePreference) : 'produit';
     }
 
     public static function existe() : bool

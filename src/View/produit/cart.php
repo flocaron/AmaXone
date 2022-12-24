@@ -49,14 +49,14 @@
 
                                         <?php
                                         $total = 0;
-                                        foreach ($panierComposant as $composantSerialize => $qte) {
-                                            $composant = unserialize($composantSerialize);
+                                        foreach ($panierProduit as $produitSerialize => $qte) {
+                                            $produit = unserialize($produitSerialize);
 
                                             ?>
 
                                             <li class="flex py-6">
                                                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                    <img src="<?php echo "assets/" . htmlspecialchars($composant->getImgPath()); ?>"
+                                                    <img src="<?php echo "assets/" . htmlspecialchars($produit->getImgPath()); ?>"
                                                          alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch."
                                                          class="h-full w-full object-cover object-center">
                                                 </div>
@@ -65,16 +65,16 @@
                                                     <div>
                                                         <div class="flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
-                                                                <a href="#"><?php echo htmlspecialchars($composant->getLibelle())  ?> </a>
+                                                                <a href="#"><?php echo htmlspecialchars($produit->getLibelle())  ?> </a>
                                                             </h3>
-                                                            <p class="ml-4"><?php echo htmlspecialchars($composant->getPrix()) ?></p>
+                                                            <p class="ml-4"><?php echo htmlspecialchars($produit->getPrix()) ?></p>
                                                         </div>
                                                     </div>
                                                     <div class="flex flex-1 items-end justify-between text-sm">
                                                         <p class="text-gray-500">Qty <?php echo $qte; ?></p>
 
                                                         <div class="flex">
-                                                            <a href="frontController.php?action=addPanier&controller=composant&id=<?php echo htmlspecialchars($composant->getId()) ?>">
+                                                            <a href="frontController.php?action=addPanier&controller=produit&id=<?php echo htmlspecialchars($produit->getId()) ?>">
                                                                 <button type="button"
                                                                         class="font-medium text-indigo-600 hover:text-indigo-500">
 
@@ -85,7 +85,7 @@
 
                                                         <div class="flex">
 
-                                                            <a href="frontController.php?action=removePanier&controller=composant&id=<?php echo htmlspecialchars($composant->getId()) ?>">
+                                                            <a href="frontController.php?action=removePanier&controller=produit&id=<?php echo htmlspecialchars($produit->getId()) ?>">
                                                                 <button type="button"
                                                                         class="font-medium text-indigo-600 hover:text-indigo-500">
 
@@ -98,7 +98,7 @@
                                                 </div>
                                             </li>
                                             <?php
-                                            $total += $composant->getPrix() * $qte;
+                                            $total += $produit->getPrix() * $qte;
                                         } ?>
                                     </ul>
                                 </div>
@@ -118,7 +118,7 @@
                             <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                                 <p>
                                     or
-                                    <a href="frontController.php?action=readAll&controller=composant">
+                                    <a href="frontController.php?action=readAll&controller=produit">
                                         <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
                                             Continue Shopping
                                             <span aria-hidden="true"> &rarr;</span>

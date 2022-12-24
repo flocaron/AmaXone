@@ -5,7 +5,7 @@
             <?php foreach ($inventaire as $produit) { ?>
                 <div class="group relative">
                     <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:aspect-none lg:h-80">
-                        <a href="frontController.php?controller=composant&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
+                        <a href="frontController.php?controller=produit&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
                             <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>"
                                  alt=".."
                                  class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
@@ -19,7 +19,7 @@
                         <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($produit->getPrix()) . " €"; ?></p>
                     </div>
                     <p class="text-sm font-medium text-gray-900"><a
-                                href="frontController.php?controller=composant&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter
+                                href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter
                             au panier</a></p>
 
                 </div>
@@ -27,7 +27,7 @@
         </div>
         <?php
         if ($estAdmin) {
-            echo "<a href='frontController.php?action=create&controller=composant'> Nouveau Produit </a>";
+            echo "<a href='frontController.php?action=create&controller=produit'> Nouveau Produit </a>";
         }
         ?>
     </div>

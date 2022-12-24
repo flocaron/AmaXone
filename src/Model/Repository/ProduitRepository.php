@@ -3,14 +3,14 @@
 namespace App\E_Commerce\Model\Repository;
 
 use App\E_Commerce\Model\Repository\AbstractRepository;
-use App\E_Commerce\Model\DataObject\Composant;
+use App\E_Commerce\Model\DataObject\Produit;
 
-class ComposantRepository extends AbstractRepository {
+class ProduitRepository extends AbstractRepository {
 
 
     protected function getNomTable(): string
     {
-        return "projet_composant";
+        return "projet_produit";
     }
 
     protected function getNomClePrimaire(): string
@@ -30,7 +30,7 @@ class ComposantRepository extends AbstractRepository {
         $description = $objetFormatTableau['description'];
         $prix = $objetFormatTableau['prix'];
         $img = $objetFormatTableau['imgPath'];
-        return new Composant($id, $libelle, $description, $prix, $img);
+        return new Produit($id, $libelle, $description, $prix, $img);
 
     }
 }

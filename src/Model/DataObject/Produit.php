@@ -2,7 +2,7 @@
 
 namespace App\E_Commerce\Model\DataObject;
 
-class Composant extends AbstractDataObject
+class Produit extends AbstractDataObject
 {
 
     private int $id;
@@ -34,9 +34,9 @@ class Composant extends AbstractDataObject
         return $formatTab;
     }
 
-    public static function construireDepuisFormulaire(array $tableauFormulaire): Composant
+    public static function construireDepuisFormulaire(array $tableauFormulaire): Produit
     {
-        return new Composant(
+        return new Produit(
             $tableauFormulaire['id'],
             $tableauFormulaire['libelle'],
             $tableauFormulaire['description'],

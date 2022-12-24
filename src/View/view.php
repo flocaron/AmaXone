@@ -27,7 +27,7 @@
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <a href="frontController.php?action=affichePanier&controller=composant"
+                            <a href="frontController.php?action=affichePanier&controller=produit"
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                aria-current="page">Panier : <?php echo $nbPanier ?> </a>
                         </div>
