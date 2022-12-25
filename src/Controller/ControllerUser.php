@@ -132,7 +132,7 @@ class ControllerUser extends GenericController
                 }
                 if (MotDePasse::verifier($_REQUEST['mdp'], $password)) {
                     if (strlen($_REQUEST['mdpN']) > 0) {
-                        if (strcmp($_REQUEST['mdpN'], $_REQUEST['mdpC']) == 0) {
+                        if ($_REQUEST['mdpN'] == $_REQUEST['mdpC']) {
                             $user->setMdpHache($_REQUEST['mdpN']);
                         } else {
                             MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
@@ -191,7 +191,7 @@ class ControllerUser extends GenericController
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
             $user = new User($_REQUEST['login'], $_REQUEST['nom'], $_REQUEST['prenom'], "", false, $_REQUEST['email'], "", "");
-            if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+            if ($_REQUEST['mdp'] == $_REQUEST['mdp2']) {
                 $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                 if (!$email) {
                     MessageFlash::ajouter('warning', "Votre email n'est pas valide");
@@ -392,7 +392,7 @@ class ControllerUser extends GenericController
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
-                if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+                if ($_REQUEST['mdp'] == $_REQUEST['mdp2']) {
                     $user = (new UserRepository())->select($_REQUEST['login']);
                     if (!is_null($user)) {
                         $user->setMdpHache($_REQUEST['mdp']);
