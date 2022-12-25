@@ -45,7 +45,7 @@ class CommandeRepository extends AbstractRepository
             $sql = "INSERT INTO projet_commandeProduit (idCommande, idProduit, quantite) VALUES ";
             $i = 0;
             foreach ($panier as $ignored) {
-                $sql .= "((SELECT id FROM projet_commande WHERE userLogin = :login ORDER BY id DESC LIMIT 1), ";
+                $sql .= "((SELECT MAX(id) FROM projet_commande WHERE userLogin = :login), ";
                 $sql .= " :idProduit$i, :quantite$i ) ,";
                 $i++;
             }

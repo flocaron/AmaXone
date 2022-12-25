@@ -190,3 +190,7 @@ class ControllerCommande extends GenericController
     }
 
 }
+
+// TODO categorie de produit
+// TODO formulaire de paiement
+// TODO modifier produit par commandes
