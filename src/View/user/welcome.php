@@ -8,7 +8,7 @@
                              alt="ELECTRONIQUE BIP BOOOP" class="h-full w-full object-cover object-center">
                     </div>
                     <h3 class="mt-6 text-sm text-gray-500">
-                        <a href="frontController.php?action=readAll&controller=produit">
+                        <a href="frontController.php?action=catalogue&controller=produit">
                             <span class="absolute inset-0"></span>
                             Électronique
                         </a>

@@ -7,7 +7,6 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\Repository\ProduitRepository;
 use App\E_Commerce\Model\DataObject\Produit;
-use App\E_Commerce\Model\Repository\UserRepository;
 
 
 class ControllerProduit extends GenericController
@@ -15,12 +14,17 @@ class ControllerProduit extends GenericController
 
     public static function readAll()
     {
-        $produits = (new ProduitRepository())->selectAll();
-        self::afficheVue([
-            'inventaire' => $produits,
-            "pagetitle" => "Catalogue",
-            "cheminVueBody" => "produit/list.php",
-        ]);
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            $produits = (new ProduitRepository())->selectAll();
+            self::afficheVue([
+                'inventaire' => $produits,
+                "pagetitle" => "Catalogue",
+                "cheminVueBody" => "produit/list.php",
+            ]);
+        } else {
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
+        }
     }
 
     public static function read()
@@ -29,7 +33,7 @@ class ControllerProduit extends GenericController
             $produit = (new ProduitRepository)->select($_REQUEST['id']);
             if (is_null($produit)) {
                 MessageFlash::ajouter("warning", "id non trouvée !!");
-                header("Location: frontController.php?action=readAll&controller=produit");
+                header("Location: frontController.php?action=catalogue&controller=produit");
             } else {
                 self::afficheVue([
                     'produit' => $produit,
@@ -39,7 +43,7 @@ class ControllerProduit extends GenericController
             }
         } else {
             MessageFlash::ajouter("danger", "id non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            header("Location: frontController.php?action=catalogue&controller=produit");
         }
     }
 
@@ -225,6 +229,16 @@ class ControllerProduit extends GenericController
         }
     }
 
+    public static function catalogue()
+    {
+        $produits = (new ProduitRepository())->selectAll();
+        self::afficheVue([
+            'inventaire' => $produits,
+            "pagetitle" => "Catalogue",
+            "cheminVueBody" => "produit/catalogue.php",
+        ]);
+    }
+
     public static function addPanier()
     {
         if (isset($_REQUEST['id'])) {
@@ -245,7 +259,8 @@ class ControllerProduit extends GenericController
         }
     }
 
-    public static function addAllPanier() {
+    public static function addAllPanier()
+    {
         if (isset($_REQUEST['id']) && isset($_REQUEST['qte'])) {
             $obj = (new ProduitRepository())->select($_REQUEST['id']);
             if (is_null($obj)) {
@@ -271,24 +286,22 @@ class ControllerProduit extends GenericController
         header("Location: frontController.php?action=affichePanier&controller=produit");
     }
 
-    public static function removeAllPanier() {
+    public static function removeAllPanier()
+    {
         if (isset($_REQUEST['id'])) {
             Panier::retirerAll($_REQUEST['id']);
             MessageFlash::ajouter("success", "Element supprimé du panier !");
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
-        header("Location: frontController.php?action=affichePanier&controller=produit");    }
+        header("Location: frontController.php?action=affichePanier&controller=produit");
+    }
 
     public static function affichePanier()
     {
-        $panierProduit = [];
-        foreach (Panier::lirePanier() as $id => $qte) {
-            $panierProduit[serialize((new ProduitRepository())->select($id))] = $qte;
-        }
         self::afficheVue([
             "pagetitle" => "Panier",
-            "panierProduit" => $panierProduit,
+            "panierProduit" => Panier::toSerialize(),
             "cheminVueBody" => "produit/panierTemp.php",
         ]);
     }
@@ -316,5 +329,14 @@ class ControllerProduit extends GenericController
         }
         header("Location: frontController.php?action=affichePanier&controller=produit");
     }
+
+    /*
+     * Catégorie de produit -> Table catégorie( #nomCategorie )
+     *                          rajouter un un champs catégorie dans la table produit
+     *
+     *
+     *
+     */
+
 
 }

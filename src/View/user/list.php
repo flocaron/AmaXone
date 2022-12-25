@@ -1,6 +1,13 @@
-<h2> 🧔 Liste des utilisateurs 🧔 </h2>
+<article >
+    <div class="flex m-3">
+        <div class="ml-5"> <a href="frontController.php?action=readAll&controller=user"> Utilisateurs </a></div>
+        <div class="ml-5"> <a href="frontController.php?action=readAll&controller=produit"> Produits </a></div>
+        <div class="ml-5"> <a href="frontController.php?action=readAll&controller=commande"> Commandes </a></div>
+    </div>
 
-<article>
+
+    <h2> 🧔 Liste des utilisateurs 🧔 </h2>
+
     <ol>
         <?php
         foreach ($users as $user)
@@ -17,7 +24,7 @@
                 . '</span> </a>.</li>'
                 . "\n";
         ?>
-        <li> <a href="frontController.php?action=create&controller=user"> Créer un nouvel utilisateur </a> </li>
+        <li><a href="frontController.php?action=create&controller=user"> Créer un nouvel utilisateur </a></li>
     </ol>
 </article>
 
