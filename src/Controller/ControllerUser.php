@@ -417,8 +417,3 @@ class ControllerUser extends GenericController
 
 
 }
-
-// quel plan de base de donée puis je avoir pour mon site de commerce en ligne en php et sql
-
-// comment mettre plusieurs produit dans un seul tuple de ma table commande
-
