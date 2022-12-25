@@ -3,6 +3,7 @@
 namespace App\E_Commerce\Model\Repository;
 
 use App\E_Commerce\Model\DataObject\Commande;
+use App\E_Commerce\Model\DataObject\Produit;
 use PDOException;
 
 class CommandeRepository extends AbstractRepository
@@ -64,15 +65,28 @@ class CommandeRepository extends AbstractRepository
         return true;
     }
 
-    public function getCommandeParLogin(string $login) : array {
+    public function getCommandeParLogin(string $login) : array
+    {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT * FROM projet_commande WHERE userLogin = :login ;";
-            $statement = $pdo->prepare($sql);
-            $statement->execute(["login" => $login]);
+            $sql = "SELECT c.id, c.date, c.statut, c.userLogin, p.id AS idProduit, p.libelle, p.description, p.prix, p.imgPath, cp.quantite
+                    FROM projet_commande c
+                    JOIN projet_commandeProduit cp ON c.id = cp.idCommande
+                    JOIN projet_produit p ON p.id = cp.idProduit
+                    WHERE userLogin = :login ;";
+            $rep = $pdo->prepare($sql);
+            $rep->execute(["login" => $login]);
             $commandes = [];
-            foreach ($statement as $formatTab) {
-                $commandes[] = static::construire($formatTab);
+            foreach ($rep as $tab) {
+                $commandes[serialize(static::construire($tab))][] = [
+                    serialize(new Produit(
+                        $tab['idProduit'],
+                        $tab['libelle'],
+                        $tab['description'],
+                        $tab['prix'],
+                        $tab['imgPath']
+                    )) => $tab['quantite']
+                ];
             }
             return $commandes;
         } catch (PDOException) {
@@ -84,24 +98,20 @@ class CommandeRepository extends AbstractRepository
     {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT * FROM projet_commandeProduit WHERE idCommande = :id";
-
-            // $sql = "SELECT *(prod), quantite
-            // FROM projet_produit p
-            // JOIN projet_commandeProduit c ON p.id = c.idProduit
-            // WHERE idCommande = :id";
-
+            $sql = "SELECT p.id, p.libelle, p.description, p.prix, p.imgPath, cp.quantite
+                    FROM projet_commandeProduit cp
+                    JOIN projet_produit p ON p.id = cp.idProduit
+                    WHERE cp.idCommande = :idCommande ;";
             $rep = $pdo->prepare($sql);
-            $rep->execute(["id" => $idCommande]);
+            $rep->execute(["idCommande" => $idCommande]);
             $produits = [];
-            foreach ($rep as $row) {
-                $produits[$row["idProduit"]] = $row["quantite"];
+            foreach ($rep as $tab) {
+                $produits[serialize((new ProduitRepository)->construire($tab))] = $tab['quantite'];
             }
             return $produits;
         } catch (PDOException) {
             return [];
         }
     }
-
 
 }

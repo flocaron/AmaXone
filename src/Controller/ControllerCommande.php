@@ -26,8 +26,8 @@ class ControllerCommande extends GenericController
                     MessageFlash::ajouter("warning", "id non trouvée !!");
                     header("Location: frontController.php?action=readAll&controller=produit");
                 } else {
-                    // "produitCommande" => Panier::toSerialize((new CommandeRepository)->getProduitParCommande($_REQUEST['id'])),
                     self::afficheVue([
+                        "produits" => (new CommandeRepository())->getProduitParCommande($_REQUEST['id']),
                         'commande' => $commande,
                         "pagetitle" => "Détail de {$commande->getId()}",
                         "cheminVueBody" => "commande/detail.php",
