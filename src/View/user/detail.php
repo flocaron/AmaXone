@@ -12,6 +12,23 @@
                 . '" > ❌ </a> <a href="frontController.php?controller=user&action=update&login='
                 . rawurlencode($user->get('login'))
                 . '" > ✅ </a> </p>';
+        ?>
+
+        <div class="mt-5"> Historique des commandes :
+
+        <?php
+        foreach ($commandes as $commande) {
+            echo "<p> Commande <a href='frontController.php?action=read&controller=commande&id=" .
+                rawurlencode($commande->getId()) .
+                "'> " .
+                htmlspecialchars($commande->getId()) .
+                "</a> du " .
+                htmlspecialchars($commande->getDate()) .
+                " </p>";
+        }
+
+
     ?>
+        </div>
 </article>
 

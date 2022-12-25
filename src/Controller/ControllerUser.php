@@ -7,6 +7,7 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\MotDePasse;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Lib\VerificationEmail;
+use App\E_Commerce\Model\Repository\CommandeRepository;
 use App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
 
@@ -40,10 +41,9 @@ class ControllerUser extends GenericController
                     header("Location: frontController.php");
                 } else {
                     self::afficheVue([
+                        'commandes' =>  (new CommandeRepository())->getCommandeParLogin($_REQUEST['login']),
                         'user' => $user,
-                        'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
                         "pagetitle" => "Détail de {$user->get('login')}",
-                        "connecte" => ConnexionUtilisateur::estUtilisateur($_REQUEST['login']),
                         "cheminVueBody" => "user/detail.php",
                     ]);
                 }

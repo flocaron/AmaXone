@@ -3,6 +3,7 @@
 namespace App\E_Commerce\Lib;
 
 use App\E_Commerce\Model\HTTP\Session;
+use App\E_Commerce\Model\Repository\ProduitRepository;
 use App\E_Commerce\Model\Repository\UserRepository;
 
 class Panier
@@ -17,7 +18,7 @@ class Panier
      */
     private static string $clePanier = "_panier";
 
-    public static function ajouter(int $idComposant) : void
+    public static function ajouter(int $idComposant): void
     {
         if (self::exist()) {
             $panier = self::lirePanier();
@@ -44,7 +45,7 @@ class Panier
         Session::getInstance()->enregistrer(static::$clePanier, $panier);
     }
 
-    public static function retirer(int $idComposant) : void
+    public static function retirer(int $idComposant): void
     {
         if (self::contient($idComposant)) {
             $panier = self::lirePanier();
@@ -57,7 +58,7 @@ class Panier
         }
     }
 
-    public static function retirerAll(int $idComposant) : void
+    public static function retirerAll(int $idComposant): void
     {
         if (self::contient($idComposant)) {
             $panier = self::lirePanier();
@@ -97,7 +98,7 @@ class Panier
 
     public static function enregistrePanier(array $panier = []): void
     {
-        if (count($panier) == 0) {
+        if (!$panier) {
             (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize(Panier::lirePanier()));
         } else {
             (new UserRepository())->setLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte(), serialize($panier));
@@ -107,10 +108,19 @@ class Panier
     public static function nbPanier(): int
     {
         $res = 0;
-        foreach (self::lirePanier() as $id => $qte) {
+        foreach (self::lirePanier() as $qte) {
             $res += $qte;
         }
         return $res;
+    }
+
+    public static function toSerialize($panier = false): array
+    {
+        $panierProduit = [];
+        foreach ((!$panier ? Panier::lirePanier() : $panier) as $id => $qte) {
+            $panierProduit[serialize((new ProduitRepository())->select($id))] = $qte;
+        }
+        return $panierProduit;
     }
 
 }
