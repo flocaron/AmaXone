@@ -7,6 +7,7 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\DataObject\Commande;
 use App\E_Commerce\Model\Repository\CommandeRepository;
+use App\E_Commerce\Model\Repository\UserRepository;
 
 class ControllerCommande extends GenericController
 {
@@ -25,9 +26,9 @@ class ControllerCommande extends GenericController
                     MessageFlash::ajouter("warning", "id non trouvée !!");
                     header("Location: frontController.php?action=readAll&controller=produit");
                 } else {
+                    // "produitCommande" => Panier::toSerialize((new CommandeRepository)->getProduitParCommande($_REQUEST['id'])),
                     self::afficheVue([
                         'commande' => $commande,
-                        "produitCommande" => Panier::toSerialize((new CommandeRepository)->getProduitParCommande($_REQUEST['id'])),
                         "pagetitle" => "Détail de {$commande->getId()}",
                         "cheminVueBody" => "commande/detail.php",
                     ]);
@@ -83,6 +84,7 @@ class ControllerCommande extends GenericController
                     self::afficheVue([
                         "commande" => $commande,
                         "action" => "update",
+                        "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Modifier commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
@@ -102,6 +104,7 @@ class ControllerCommande extends GenericController
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
                 "action" => "create",
+                "users" => (new UserRepository())->selectAll(),
                 "pagetitle" => "Créer Commande",
                 "cheminVueBody" => "commande/create.php",
             ]);
@@ -123,19 +126,20 @@ class ControllerCommande extends GenericController
                 $bool = (new CommandeRepository())->update($commande);
                 if ($bool) {
                     MessageFlash::ajouter("success", "Commande bien modifié !");
+                    header("Location: frontController.php?controller=commande&action=readAll");
                 } else {
                     MessageFlash::ajouter("warning", "ID non trouvé !!");
                     self::afficheVue([
                         "commande" => $commande,
                         "action" => "update",
+                        "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Modifier commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
                 }
             } else {
                 MessageFlash::ajouter("danger", "ID non renseigné !!");
-                header("Location: frontController.php&controller=commande&action=readAll");
-
+                header("Location: frontController.php?controller=commande&action=readAll");
             }
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
@@ -150,19 +154,20 @@ class ControllerCommande extends GenericController
                 $bool = (new CommandeRepository())->save(Commande::construireDepuisFormulaire($_REQUEST));
                 if ($bool) {
                     MessageFlash::ajouter("success", "Commande bien créé !");
-                    header("Location: frontController.php&controller=commande&action=readAll");
+                    header("Location: frontController.php?controller=commande&action=readAll");
                 } else {
                     MessageFlash::ajouter("warning", "ID déjà utilisé !!");
                     self::afficheVue([
                         "commande" => Commande::construireDepuisFormulaire($_REQUEST),
                         "action" => "create",
+                        "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Créer Commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
                 }
             } else {
                 MessageFlash::ajouter("danger", "ID non renseigné !!");
-                header("Location: frontController.php&controller=commande&action=readAll");
+                header("Location: frontController.php?controller=commande&action=readAll");
             }
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
