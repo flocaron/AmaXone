@@ -18,13 +18,13 @@
     <?php
     echo "<ul>";
     $total = 0;
-    foreach ($produitCommande as $produitSerialize => $qte) {
+    foreach ($produits as $produitSerialize => $qte) {
         $produit = unserialize($produitSerialize);
-        echo "<li> " .
+        echo "<li> ->" .
             htmlspecialchars($produit->getLibelle()) .
-            " Prix = " .
+            " " .
             htmlspecialchars($produit->getPrix()) .
-            "€ Quantité = $qte </li>";
+            "€ x$qte </li>";
 
         $total += $produit->getPrix() * $qte;
     }

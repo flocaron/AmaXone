@@ -17,6 +17,7 @@
         <div class="mt-5"> Historique des commandes :
 
         <?php
+        /*
         foreach ($commandes as $commande) {
             echo "<p> Commande <a href='frontController.php?action=read&controller=commande&id=" .
                 rawurlencode($commande->getId()) .
@@ -25,6 +26,27 @@
                 "</a> du " .
                 htmlspecialchars($commande->getDate()) .
                 " </p>";
+        }
+        */
+
+        foreach ($commandes as $commandeSerialize => $tab ) {
+            $commande = unserialize($commandeSerialize);
+            echo "<p class='mt-4'> <div> Commande " . htmlspecialchars($commande->getId()) . " du " . htmlspecialchars($commande->getDate()) . ", avec les produits suivants :</div>";
+            $total = 0;
+            foreach ($tab as $tabProduit) {
+                foreach ($tabProduit as $produitSerialize => $qte ) {
+                    $produit = unserialize($produitSerialize);
+                    echo "<div> -> "
+                        . htmlspecialchars($produit->getLibelle())
+                        . " "
+                        . htmlspecialchars($produit->getPrix())
+                        . "€ x$qte </div>";
+                    $total += $produit->getPrix() * $qte;
+                }
+            }
+            echo "<div> Total = {$total}€</div>";
+            echo "</p>";
+
         }
 
 
