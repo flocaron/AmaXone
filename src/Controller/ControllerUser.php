@@ -14,21 +14,9 @@ use App\E_Commerce\Model\DataObject\User;
 class ControllerUser extends GenericController
 {
 
-    public static function readAll()
+    protected static function getNomController(): string
     {
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            $users = (new UserRepository)->selectAll();
-            self::afficheVue([
-                'users' => $users,
-                'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
-                "pagetitle" => "Liste des utilisateurs",
-                "cheminVueBody" => "user/list.php",
-            ]);
-        } else {
-            MessageFlash::ajouter("danger", "Vous n'etes pas administrateur !");
-            header("Location: frontController.php");
-        }
-
+        return "user";
     }
 
     public static function read()

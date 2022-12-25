@@ -11,20 +11,10 @@ use App\E_Commerce\Model\Repository\CommandeRepository;
 class ControllerCommande extends GenericController
 {
 
-    public static function readAll()
+    protected static function getNomController(): string
     {
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            self::afficheVue([
-                'commandes' => (new CommandeRepository())->selectAll(),
-                "pagetitle" => "Catalogue",
-                "cheminVueBody" => "commande/list.php",
-            ]);
-        } else {
-            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php");
-        }
+        return "commande";
     }
-
 
     public static function read()
     {

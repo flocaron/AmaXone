@@ -12,19 +12,9 @@ use App\E_Commerce\Model\DataObject\Produit;
 class ControllerProduit extends GenericController
 {
 
-    public static function readAll()
+    protected static function getNomController(): string
     {
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            $produits = (new ProduitRepository())->selectAll();
-            self::afficheVue([
-                'inventaire' => $produits,
-                "pagetitle" => "Catalogue",
-                "cheminVueBody" => "produit/list.php",
-            ]);
-        } else {
-            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php");
-        }
+        return "produit";
     }
 
     public static function read()

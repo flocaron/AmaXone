@@ -10,7 +10,7 @@
 
     <ol>
         <?php
-        foreach ($inventaire as $produit)
+        foreach ($produits as $produit)
             echo '<li> <a href="frontController.php?controller=produit&action=delete&id='
                 . rawurlencode($produit->getId())
                 . '" > ❌ </a> <a href="frontController.php?controller=produit&action=update&id='
