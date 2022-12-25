@@ -8,6 +8,8 @@ class PreferenceControleur {
 
     private static string $clePreference = "preference";
 
+    private static array $controller = ["user", "produit", "commande", "categorie"];
+
     public static function enregistrer(string $preference) : void
     {
         Cookie::enregistrer(static::$clePreference, $preference);
@@ -15,7 +17,7 @@ class PreferenceControleur {
 
     public static function lire() : string
     {
-        return self::existe() ? Cookie::lire(static::$clePreference) : 'user';
+        return self::existe() ? (in_array(Cookie::lire(static::$clePreference), static::$controller) ? Cookie::lire(static::$clePreference) : 'user') : 'user';
     }
 
     public static function existe() : bool
