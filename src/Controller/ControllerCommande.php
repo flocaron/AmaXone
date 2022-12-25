@@ -182,7 +182,7 @@ class ControllerCommande extends GenericController
         if ($bool) {
             (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
             MessageFlash::ajouter("success", "Votre commande est enregistré !");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            header("Location: frontController.php?action=catalogue&controller=produit");
         } else {
             MessageFlash::ajouter("warning", "L'enregistrement a échoué");
             header("Location: frontController.php?action=affichePanier&controller=produit");

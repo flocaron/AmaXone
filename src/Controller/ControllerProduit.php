@@ -243,7 +243,7 @@ class ControllerProduit extends GenericController
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
         if (isset($_REQUEST['read'])) {
-            header("Location: frontController.php?action=readAll&controller=produit");
+            header("Location: frontController.php?action=catalogue&controller=produit");
         } else {
             header("Location: frontController.php?action=affichePanier&controller=produit");
         }
@@ -289,9 +289,13 @@ class ControllerProduit extends GenericController
 
     public static function affichePanier()
     {
+        $panierProduit = [];
+        foreach (Panier::lirePanier() as $id => $qte) {
+            $panierProduit[serialize((new ProduitRepository())->select($id))] = $qte;
+        }
         self::afficheVue([
             "pagetitle" => "Panier",
-            "panierProduit" => Panier::toSerialize(),
+            "panierProduit" => $panierProduit,
             "cheminVueBody" => "produit/panierTemp.php",
         ]);
     }
