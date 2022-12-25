@@ -7,9 +7,6 @@ $loader = new App\E_Commerce\Lib\Psr4AutoloaderClass();
 $loader->addNamespace('App\E_Commerce', __DIR__ . '/../src');
 $loader->register();
 
-use App\E_Commerce\Controller\ControllerProduit;
-use App\E_Commerce\Controller\ControllerUser;
-use App\E_Commerce\Controller\GenericController;
 use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\PreferenceControleur;
 
