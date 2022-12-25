@@ -33,7 +33,7 @@ class ConnexionUtilisateur
 
     public static function estUtilisateur($login): bool
     {
-        return self::estConnecte() && strcmp(self::getLoginUtilisateurConnecte(), $login) == 0;
+        return self::estConnecte() && self::getLoginUtilisateurConnecte() == strtolower($login);
     }
 
     public static function estAdministrateur() : bool
