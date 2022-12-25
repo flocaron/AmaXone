@@ -178,18 +178,25 @@ class ControllerCommande extends GenericController
 
     public static function passerCommande()
     {
-        $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
-        if ($bool) {
-            (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
-            MessageFlash::ajouter("success", "Votre commande est enregistré !");
-            header("Location: frontController.php?action=catalogue&controller=produit");
+        if (isset($_REQUEST['verif'])) {
+            $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
+            if ($bool) {
+                (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
+                MessageFlash::ajouter("success", "Votre commande est enregistré !");
+                header("Location: frontController.php?action=catalogue&controller=produit");
+            } else {
+                MessageFlash::ajouter("warning", "L'enregistrement a échoué");
+                header("Location: frontController.php?action=affichePanier&controller=produit");
+            }
         } else {
-            MessageFlash::ajouter("warning", "L'enregistrement a échoué");
+            MessageFlash::ajouter("info", "Valider ? <a href='frontController.php?action=passerCommande&verif&controller=commande'>oui</a> <a href='frontController.php?action=affichePanier&controller=produit'>non</a>");
             header("Location: frontController.php?action=affichePanier&controller=produit");
         }
+
     }
 
 }
+
 
 // TODO categorie de produit
 // TODO formulaire de paiement
