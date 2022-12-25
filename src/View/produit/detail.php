@@ -1,7 +1,12 @@
+<?php if ($estAdmin) { ?>
 <h3> Détail de <?php echo htmlspecialchars($produit->getId()); ?> : </h3>
+<?php } ?>
 
 <article>
     <?php
+    if ($estAdmin) {
+        echo "<p> ID = " . htmlspecialchars($produit->getId()) . " </p>\n";
+    }
     echo "<p> Libelle = " . htmlspecialchars($produit->getLibelle()) . " </p>\n";
     echo "<p> Prix = " . htmlspecialchars($produit->getPrix()) . " </p>\n";
     echo "<p> ImgPath = " . htmlspecialchars($produit->getImgPath()) . " </p>\n";

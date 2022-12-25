@@ -2,6 +2,7 @@
 
 <article>
     <?php
+    echo "<p> ID = " . htmlspecialchars($commande->getId()) . " </p>\n";
     echo "<p> Date = " . htmlspecialchars($commande->getDate()) . " </p>\n";
     echo "<p> Statut = " . htmlspecialchars($commande->getStatut()) . " </p>\n";
     echo "<p> Login = " . htmlspecialchars($commande->getUserLogin()) . " </p>\n";

@@ -18,7 +18,7 @@
                 . '" > ✅ </a> Commande '
                 . ' <a href=\'frontController.php?controller=commande&action=read&id='
                 . rawurlencode($commande->getId())
-                . "'> "
+                . "'> N°"
                 . htmlspecialchars($commande->getId())
                 . " </a> "
                 . "</li>\n";
