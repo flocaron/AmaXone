@@ -128,6 +128,7 @@ class ControllerCommande extends GenericController
                 $commande = new Commande();
                 $commande->setId($_REQUEST['id']);
                 $commande->setDate($_REQUEST['date']);
+                $commande->setStatut($_REQUEST['statut']);
                 $commande->setUserLogin($_REQUEST['userLogin']);
                 $bool = (new CommandeRepository())->update($commande);
                 if ($bool) {
