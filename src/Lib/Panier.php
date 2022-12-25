@@ -114,13 +114,4 @@ class Panier
         return $res;
     }
 
-    public static function toSerialize($panier = false): array
-    {
-        $panierProduit = [];
-        foreach ((!$panier ? Panier::lirePanier() : $panier) as $id => $qte) {
-            $panierProduit[serialize((new ProduitRepository())->select($id))] = $qte;
-        }
-        return $panierProduit;
-    }
-
 }
