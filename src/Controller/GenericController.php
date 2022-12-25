@@ -40,7 +40,7 @@ abstract class GenericController
         if (isset($_REQUEST['controleur_defaut'])) {
             PreferenceControleur::enregistrer($_REQUEST['controleur_defaut']);
             MessageFlash::ajouter("success", "Préférence choisit !");
-            header("Location: frontController.php");
+            header("Location: frontController.php?action=readAll");
         } else {
             MessageFlash::ajouter("warning", "Préférence non renseignée !");
             header("Location: frontController.php?action=formulairePreference");
