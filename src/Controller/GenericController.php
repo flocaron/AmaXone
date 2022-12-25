@@ -55,7 +55,7 @@ abstract class GenericController
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
                 static::getNomController() . "s" => (new $className())->selectAll(),
-                "pagetitle" => "Catalogue",
+                "pagetitle" => "Liste",
                 "cheminVueBody" => static::getNomController() . "/list.php",
             ]);
         } else {
