@@ -16,13 +16,10 @@
                 . '" > ❌ </a> <a href="frontController.php?controller=commande&action=update&id='
                 . rawurlencode($commande->getId())
                 . '" > ✅ </a> Commande '
-                . " de "
-                . htmlspecialchars($commande->getUserLogin())
-                . " le "
                 . ' <a href=\'frontController.php?controller=commande&action=read&id='
                 . rawurlencode($commande->getId())
                 . "'> "
-                . htmlspecialchars($commande->getDate())
+                . htmlspecialchars($commande->getId())
                 . " </a> "
                 . "</li>\n";
         ?>
