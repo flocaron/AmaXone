@@ -289,7 +289,7 @@ class ControllerProduit extends GenericController
         self::afficheVue([
             "pagetitle" => "Panier",
             "panierProduit" => $panierProduit,
-            "cheminVueBody" => "produit/panierTemp.php",
+            "cheminVueBody" => "produit/panier.php",
         ]);
     }
 
