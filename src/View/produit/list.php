@@ -6,7 +6,7 @@
     </div>
 
 
-    <h2> 🧔 Liste des produits 🧔 </h2>
+    <h2 class="m-4"> 🧔 Liste des produits 🧔 </h2>
 
     <ol>
         <?php
