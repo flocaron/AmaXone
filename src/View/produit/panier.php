@@ -37,7 +37,7 @@ if ($estConnecte) {
                                         <button type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                             <span class="sr-only">Close panel</span>
                                             <!-- Heroicon name: outline/x-mark -->
-                                            <a href="frontController.php?action=readAll&controller=produit">
+                                            <a href="frontController.php?action=catalogue&controller=produit">
                                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                      aria-hidden="true">

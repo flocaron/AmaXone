@@ -4,7 +4,7 @@
         <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <?php foreach ($inventaire as $produit) { ?>
                 <div class="group relative">
-                    <div class="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:aspect-none lg:h-80">
+                    <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
                         <a href="frontController.php?controller=produit&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
                             <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>"
                                  alt=".."
@@ -12,16 +12,14 @@
                         </a>
 
                     </div>
-                    <div class="mt-4 flex justify-between">
-                        <div>
-                        </div>
-                        <?php echo htmlspecialchars($produit->getLibelle()); ?>
+                    <div class="mt-4 flex justify-between items-center">
+                        <p class=" py-1.5 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-blue-600 text-white rounded">
+                            <?php echo htmlspecialchars($produit->getLibelle()); ?> </p>
                         <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($produit->getPrix()) . " €"; ?></p>
+                        <a href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">
+                            <img src="../assets/images/panier.svg" class="max-w-xs hover:scale-110 transition duration-300 ease-in-out" alt="panier">
+                        </a>
                     </div>
-                    <p class="text-sm font-medium text-gray-900"><a
-                                href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">Ajouter
-                            au panier</a></p>
-
                 </div>
             <?php } ?>
         </div>
