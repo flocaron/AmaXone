@@ -40,14 +40,29 @@ abstract class GenericController
         if (isset($_REQUEST['controleur_defaut'])) {
             PreferenceControleur::enregistrer($_REQUEST['controleur_defaut']);
             MessageFlash::ajouter("success", "Préférence choisit !");
-            header("Location: frontController.php");
+            header("Location: frontController.php?action=readAll");
         } else {
             MessageFlash::ajouter("warning", "Préférence non renseignée !");
             header("Location: frontController.php?action=formulairePreference");
         }
     }
 
-    public abstract static function readAll();
+    protected abstract static function getNomController(): string;
+
+    public static function readAll()
+    {
+        $className = 'App\E_Commerce\Model\Repository\\' . ucfirst(static::getNomController()) . "Repository";
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            self::afficheVue([
+                static::getNomController() . "s" => (new $className())->selectAll(),
+                "pagetitle" => "Liste",
+                "cheminVueBody" => static::getNomController() . "/list.php",
+            ]);
+        } else {
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
+        }
+    }
 
     public abstract static function read();
 

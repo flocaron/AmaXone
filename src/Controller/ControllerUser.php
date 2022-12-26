@@ -7,27 +7,16 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\MotDePasse;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Lib\VerificationEmail;
+use App\E_Commerce\Model\Repository\CommandeRepository;
 use App\E_Commerce\Model\Repository\UserRepository;
 use App\E_Commerce\Model\DataObject\User;
 
 class ControllerUser extends GenericController
 {
 
-    public static function readAll()
+    protected static function getNomController(): string
     {
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            $users = (new UserRepository)->selectAll();
-            self::afficheVue([
-                'users' => $users,
-                'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
-                "pagetitle" => "Liste des utilisateurs",
-                "cheminVueBody" => "user/list.php",
-            ]);
-        } else {
-            MessageFlash::ajouter("danger", "Vous n'etes pas administrateur !");
-            header("Location: frontController.php");
-        }
-
+        return "user";
     }
 
     public static function read()
@@ -40,10 +29,9 @@ class ControllerUser extends GenericController
                     header("Location: frontController.php");
                 } else {
                     self::afficheVue([
+                        'commandes' =>  (new CommandeRepository())->getCommandeParLogin($_REQUEST['login']),
                         'user' => $user,
-                        'estAdmin' => ConnexionUtilisateur::estAdministrateur(),
                         "pagetitle" => "Détail de {$user->get('login')}",
-                        "connecte" => ConnexionUtilisateur::estUtilisateur($_REQUEST['login']),
                         "cheminVueBody" => "user/detail.php",
                     ]);
                 }
@@ -144,7 +132,7 @@ class ControllerUser extends GenericController
                 }
                 if (MotDePasse::verifier($_REQUEST['mdp'], $password)) {
                     if (strlen($_REQUEST['mdpN']) > 0) {
-                        if (strcmp($_REQUEST['mdpN'], $_REQUEST['mdpC']) == 0) {
+                        if ($_REQUEST['mdpN'] == $_REQUEST['mdpC']) {
                             $user->setMdpHache($_REQUEST['mdpN']);
                         } else {
                             MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
@@ -203,7 +191,7 @@ class ControllerUser extends GenericController
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['email'])) {
             $user = new User($_REQUEST['login'], $_REQUEST['nom'], $_REQUEST['prenom'], "", false, $_REQUEST['email'], "", "");
-            if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+            if ($_REQUEST['mdp'] == $_REQUEST['mdp2']) {
                 $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                 if (!$email) {
                     MessageFlash::ajouter('warning', "Votre email n'est pas valide");
@@ -404,7 +392,7 @@ class ControllerUser extends GenericController
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
-                if (strcmp($_REQUEST['mdp'], $_REQUEST['mdp2']) == 0) {
+                if ($_REQUEST['mdp'] == $_REQUEST['mdp2']) {
                     $user = (new UserRepository())->select($_REQUEST['login']);
                     if (!is_null($user)) {
                         $user->setMdpHache($_REQUEST['mdp']);
@@ -429,8 +417,3 @@ class ControllerUser extends GenericController
 
 
 }
-
-// quel plan de base de donée puis je avoir pour mon site de commerce en ligne en php et sql
-
-// comment mettre plusieurs produit dans un seul tuple de ma table commande
-

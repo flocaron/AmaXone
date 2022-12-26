@@ -57,9 +57,16 @@
                             ?>
                             <div class="hidden sm:ml-6 sm:block">
                                 <div class="flex space-x-4">
-                                    <a href="frontController.php?action=readAll&controller=user"
+                                    <a href="frontController.php?action=readAll"
                                        class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                        aria-current="page">Panel Admin</a>
+                                </div>
+                            </div>
+                            <div class="hidden sm:ml-6 sm:block">
+                                <div class="flex space-x-4">
+                                    <a href="frontController.php?action=formulairePreference"
+                                       class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                       aria-current="page">Preference Controller</a>
                                 </div>
                             </div>
                             <?php
