@@ -43,13 +43,13 @@
                     ?>
                     <div>
                         <label for="mdp_id" class="sr-only">Nouveau mot de passe</label>
-                        <input id="mdp_id" name="mdpN" type="password" required placeholder="Nouveau mot de passe"
+                        <input id="mdp_id" name="mdpN" type="password" placeholder="Nouveau mot de passe"
                                class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         >
                     </div>
                     <div>
                         <label for="mdp2_id" class="sr-only">Confirmation</label>
-                        <input id="mdp2_id" name="mdpC" type="password" required
+                        <input id="mdp2_id" name="mdpC" type="password"
                                placeholder="Confirmation du nouveau mot de passe"
                                class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         >
@@ -89,7 +89,6 @@
                 <button type="submit" value="Envoyer"
                         class="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-            <!-- Heroicon name: mini/lock-closed -->
             <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd"
