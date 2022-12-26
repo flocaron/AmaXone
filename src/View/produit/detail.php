@@ -13,12 +13,13 @@
                 <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>" class="object-cover object-center w-full"/>
             </div>
             <div class="grid gap-10 prod-info">
-                <div class="flex flex-col items-center justify-between text-gray-900 md:flex-row">
+                <div class="flex flex-col items-center justify-between text-gray-900 md:flex-row mt-10">
                     <p class="text-xl font-bold">
                         <?php echo htmlspecialchars($produit->getPrix()) . " €"; ?>
                     </p>
-                    <button href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>" class="px-6 py-2 uppercase transition duration-200 ease-in border-2 border-gray-900 rounded-full hover:bg-gray-800 hover:text-white focus:outline-none">
-                        Ajouter au Panier
+                    <button class="px-6 py-2 uppercase transition duration-200 ease-in border-2 border-gray-900 rounded-full hover:bg-gray-800 hover:text-white focus:outline-none">
+                        <a href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">
+                            Ajouter au Panier </a>
                     </button>
                 </div>
             </div>
