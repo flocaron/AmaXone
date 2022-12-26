@@ -149,7 +149,7 @@ class ControllerUser extends GenericController
                         $emailModif = true;
                         $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                         if (!$email) {
-                            MessageFlash::ajouter('warning', "Votre nouveau email n'est pas valide");
+                            MessageFlash::ajouter('warning', "Votre nouvel email n'est pas valide");
                             $user->set('email', $_REQUEST['email']);
                             self::afficheVue([
                                 "user" => $user,
