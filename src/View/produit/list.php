@@ -24,18 +24,9 @@
             <?php } ?>
         </div>
         <?php
-        foreach ($produits as $produit)
-            echo '<li> <a href="frontController.php?controller=produit&action=delete&id='
-                . rawurlencode($produit->getId())
-                . '" > ❌ </a> <a href="frontController.php?controller=produit&action=update&id='
-                . rawurlencode($produit->getId())
-                . '" > ✅ </a> Produit <a href=\'frontController.php?controller=produit&action=read&id='
-                . rawurlencode($produit->getId())
-                . "'> "
-                . htmlspecialchars($produit->getLibelle())
-                . " </a></li>\n";
+        if ($estAdmin) {
+            echo "<a href='frontController.php?action=create&controller=produit'> Nouveau Produit </a>";
+        }
         ?>
-        <li><a href="frontController.php?action=create&controller=produit"> Créer un nouveau produit </a></li>
-    </ol>
-</article>
-
+    </div>
+</div>

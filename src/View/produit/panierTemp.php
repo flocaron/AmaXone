@@ -26,8 +26,12 @@ foreach ($panierProduit as $produitSerialize => $qte) {
         "' action='frontController.php'> " .
         " <select name='qte'> ";
 
+    echo "<option value='$qte' > $qte </option>";
     for ($i = 1; $i < 100; $i++) {
-        echo "<option value='$i' " . ($i == $qte ? "selected" : "") . " > $i </option>";
+        if ($i == $qte) {
+            continue;
+        }
+        echo "<option value='$i' > $i </option>";
     }
 
     echo " </select> " .
@@ -51,8 +55,6 @@ echo "<p> <a href='frontController.php?action=viderPanier&controller=produit'> V
 if ($estConnecte) {
     echo "<p> <a href='frontController.php?action=replacePanier&controller=produit'> Recuperer Panier </a> </p>";
     echo "<p> <a href='frontController.php?action=passerCommande&controller=commande'> Passer Commande </a> </p>";
-} else {
-    echo "<p> <a href='frontController.php?action=login&controller=user'> Passer Commande </a> </p>";
 }
 
 // si pas connecte affiche lien vers login page

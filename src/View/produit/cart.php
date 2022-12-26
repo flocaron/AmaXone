@@ -118,7 +118,7 @@
                             <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                                 <p>
                                     or
-                                    <a href="frontController.php?action=catalogue&controller=produit">
+                                    <a href="frontController.php?action=readAll&controller=produit">
                                         <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">
                                             Continue Shopping
                                             <span aria-hidden="true"> &rarr;</span>
