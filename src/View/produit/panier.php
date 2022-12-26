@@ -124,7 +124,7 @@ if ($estConnecte) {
                                 <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                                     <p>
                                         ou
-                                        <a href="frontController.php?action=readAll&controller=produit">
+                                        <a href="frontController.php?action=catalogue&controller=produit">
                                             <button type="button"
                                                     class="font-medium text-indigo-600 hover:text-indigo-500">
                                                 Continuer d'explorer
