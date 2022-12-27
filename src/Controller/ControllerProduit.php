@@ -119,8 +119,8 @@ class ControllerProduit extends GenericController
                         MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
                         self::afficheVue([
                             "produit" => $produit,
-                            "action" => "create",
-                            "pagetitle" => "Créer Produit",
+                            "action" => "update",
+                            "pagetitle" => "Modifier produit",
                             "cheminVueBody" => "produit/create.php",
                         ]);
                         exit(1);
