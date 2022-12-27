@@ -10,15 +10,15 @@
             <div class="-space-y-px rounded-md shadow-sm">
                 <div>
                     <label for="login_id" class="sr-only">Identifiant</label>
-                    <input type="text" placeholder="Identifiant"
-                           class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" <?php echo !isset($user) ? '' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
+                    <input type="text"
+                           class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" <?php echo !isset($user) ? 'placeholder="Identifiant"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
                            name="login" id="login_id" <?php echo $action == "create" ? "required" : "readonly" ?> />
                 </div>
                 <div>
                     <label for="email_id" class="sr-only">Adresse Email</label>
-                    <input id="email_id" name="email" type="email" required placeholder="Email"
+                    <input id="email_id" name="email" type="email" required
                            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                        <?php echo !isset($user) ? '' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
+                        <?php echo !isset($user) ? 'placeholder="Email"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
                     >
                 </div>
                 <?php
@@ -61,13 +61,13 @@
                 <div>
                     <label for="nom_id" class="sr-only">Nom</label>
                     <input id="nom_id" name="nom" type="text"
-                           autocomplete="email" <?php echo !isset($user) ? 'placeholder="Nom"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?>
+                           <?php echo !isset($user) ? 'placeholder="Nom"' : "value='" . htmlspecialchars($user->get('nom')) . "'" ?>
                            required
                            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                 </div>
                 <div>
                     <label for="prenom_id" class="sr-only">Prénom</label>
-                    <input id="prenom_id" name="prenom" type="text" autocomplete="email" required
+                    <input id="prenom_id" name="prenom" type="text" required
                            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" <?php echo !isset($user) ? 'placeholder="Prénom"' : "value='" . htmlspecialchars($user->get('prenom')) . "'" ?>>
                 </div>
                 <?php
