@@ -126,7 +126,7 @@ class ControllerProduit extends GenericController
                         exit(1);
                     }
                     if (!empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
-                        $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
+                        $pic_path = __DIR__ . "/../../assets/images/produits/" . $_FILES['file-upload']['name'];
                         $extension = explode('.', $_FILES['file-upload']['name']);
                         if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) {
                             if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
@@ -195,7 +195,7 @@ class ControllerProduit extends GenericController
                     ]);
                     exit(1);
                 }
-                $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
+                $pic_path = __DIR__ . "/../../assets/images/produits/" . $_FILES['file-upload']['name'];
                 $extension = explode('.', $_FILES['file-upload']['name']);
                 if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) { // 10 Mo
                     if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
