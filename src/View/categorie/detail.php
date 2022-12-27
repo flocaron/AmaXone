@@ -8,8 +8,8 @@
 
     if ($estAdmin) {
         echo "<div class='mt-5'>" .
-            "<a href='frontController.php?controller=categorie&action=delete&id=" . rawurlencode($categorie->getNom()) . "' > ❌ </a>" .
-            "<a href='frontController.php?controller=categorie&action=update&id=" . rawurlencode($categorie->getNom()) . "' > ✅ </a>" .
+            "<a href='frontController.php?controller=categorie&action=delete&nom=" . rawurlencode($categorie->getNom()) . "' > ❌ </a>" .
+            "<a href='frontController.php?controller=categorie&action=update&nom=" . rawurlencode($categorie->getNom()) . "' > ✅ </a>" .
             "</div>";
     }
     ?>
