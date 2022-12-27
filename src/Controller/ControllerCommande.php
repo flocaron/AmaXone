@@ -23,7 +23,7 @@ class ControllerCommande extends GenericController
             if (isset($_REQUEST['id'])) {
                 $commande = (new CommandeRepository)->select($_REQUEST['id']);
                 if (is_null($commande)) {
-                    MessageFlash::ajouter("warning", "id non trouvée !!");
+                    MessageFlash::ajouter("warning", "id non trouvé !!");
                     header("Location: frontController.php?action=readAll&controller=produit");
                 } else {
                     self::afficheVue([
@@ -34,7 +34,7 @@ class ControllerCommande extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "id non renseignée !!");
+                MessageFlash::ajouter("danger", "id non renseigné !!");
                 header("Location: frontController.php?action=readAll&controller=produit");
             }
         } else {
@@ -91,7 +91,7 @@ class ControllerCommande extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "id non renseignée !!");
+                MessageFlash::ajouter("danger", "id non renseigné !!");
                 header("Location: frontController.php?action=readAll&controller=commande");
             }
         } else {
@@ -204,6 +204,5 @@ class ControllerCommande extends GenericController
 }
 
 
-// TODO categorie de produit
 // TODO formulaire de paiement
 // TODO modifier produit par commandes
