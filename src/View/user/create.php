@@ -11,14 +11,14 @@
                 <div>
                     <label for="login_id" class="sr-only">Identifiant</label>
                     <input type="text" placeholder="Identifiant"
-                           class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" <?php echo !isset($user) ? 'placeholder="jhon77"' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
+                           class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" <?php echo !isset($user) ? '' : "value='" . htmlspecialchars($user->get('login')) . "'" ?>
                            name="login" id="login_id" <?php echo $action == "create" ? "required" : "readonly" ?> />
                 </div>
                 <div>
                     <label for="email_id" class="sr-only">Adresse Email</label>
-                    <input id="email_id" name="email" type="email" autocomplete="email" required placeholder="Email"
+                    <input id="email_id" name="email" type="email" required placeholder="Email"
                            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                        <?php echo !isset($user) ? 'autocomplete="jhon.richard77@gmail.com"' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
+                        <?php echo !isset($user) ? '' : "value='" . htmlspecialchars($user->get('email')) . "'" ?>
                     >
                 </div>
                 <?php
@@ -26,14 +26,14 @@
                     ?>
                     <div>
                         <label for="mdp_id" class="sr-only">Mot de passe</label>
-                        <input id="mdp_id" name="mdp" type="password" autocomplete="current-password" required
+                        <input id="mdp_id" name="mdp" type="password" required
                                placeholder="Mot de passe"
                                class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         >
                     </div>
                     <div>
                         <label for="mdp2_id" class="sr-only">Confirmation du mot de passe</label>
-                        <input id="mdp2_id" name="mdp2" type="password" autocomplete="current-password" required
+                        <input id="mdp2_id" name="mdp2" type="password" required
                                placeholder="Confirmation du mot de passe"
                                class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         >
