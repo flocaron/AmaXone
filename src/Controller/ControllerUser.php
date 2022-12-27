@@ -125,6 +125,7 @@ class ControllerUser extends GenericController
                 }
                 $user->set('nom', $_REQUEST['nom']);
                 $user->set('prenom', $_REQUEST['prenom']);
+                $user->set('email', $_REQUEST['email']);
                 if (ConnexionUtilisateur::estAdministrateur()) {
                     $password = (new UserRepository())->select(ConnexionUtilisateur::getLoginUtilisateurConnecte())->get('mdpHache');
                 } else {
@@ -150,11 +151,10 @@ class ControllerUser extends GenericController
                         $email = filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL);
                         if (!$email) {
                             MessageFlash::ajouter('warning', "Votre nouvel email n'est pas valide");
-                            $user->set('email', $_REQUEST['email']);
                             self::afficheVue([
                                 "user" => $user,
                                 "action" => "update",
-                                "pagetitle" => "Modifier user",
+                                "pagetitle" => "Modifier Utilisateur",
                                 "cheminVueBody" => "user/create.php",
                             ]);
                             exit(1);
@@ -175,7 +175,12 @@ class ControllerUser extends GenericController
                     header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                 } else {
                     MessageFlash::ajouter("warning", "mauvais mot de passe !!");
-                    header("Location: frontController.php?action=update&controller=user&login=" . rawurlencode($_REQUEST['login']));
+                    self::afficheVue([
+                        "user" => $user,
+                        "action" => "update",
+                        "pagetitle" => "Modifier Utilisateur",
+                        "cheminVueBody" => "user/create.php",
+                    ]);
                 }
             } else {
                 MessageFlash::ajouter("danger", "vous n'etes pas le bon utilisateur connecté !");
