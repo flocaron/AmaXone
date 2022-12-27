@@ -50,10 +50,8 @@ echo "<p> Total = " . $total . "€ </p>";
 echo "<p> <a href='frontController.php?action=viderPanier&controller=produit'> Vider Panier </a> </p>";
 if ($estConnecte) {
     echo "<p> <a href='frontController.php?action=replacePanier&controller=produit'> Recuperer Panier </a> </p>";
-    echo "<p> <a href='frontController.php?action=passerCommande&controller=commande'> Passer Commande </a> </p>";
-} else {
-    echo "<p> <a href='frontController.php?action=login&controller=user'> Passer Commande </a> </p>";
 }
+echo "<p> <a href='frontController.php?action=passerCommande&controller=commande'> Passer Commande </a> </p>";
 
 // si pas connecte affiche lien vers login page
 // puis redirection vers passerCommande
