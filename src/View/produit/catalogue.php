@@ -6,7 +6,7 @@
                 <div class="group relative">
                     <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
                         <a href="frontController.php?controller=produit&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
-                            <img src="<?php echo "../assets/images/" . htmlspecialchars($produit->getImgPath()); ?>"
+                            <img src="<?php echo "../assets/images/produits/" . htmlspecialchars($produit->getImgPath()); ?>"
                                  alt=".."
                                  class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
                         </a>
