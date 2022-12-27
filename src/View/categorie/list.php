@@ -7,12 +7,12 @@
     <ol>
         <?php
         foreach ($categories as $categorie)
-            echo '<li> <a href="frontController.php?controller=categorie&action=delete&id='
+            echo '<li> <a href="frontController.php?controller=categorie&action=delete&nom='
                 . rawurlencode($categorie->getNom())
-                . '" > ❌ </a> <a href="frontController.php?controller=categorie&action=update&id='
+                . '" > ❌ </a> <a href="frontController.php?controller=categorie&action=update&nom='
                 . rawurlencode($categorie->getNom())
                 . '" > ✅ </a> Catégorie '
-                . ' <a href=\'frontController.php?controller=categorie&action=read&id='
+                . ' <a href=\'frontController.php?controller=categorie&action=read&nom='
                 . rawurlencode($categorie->getNom())
                 . "'> "
                 . htmlspecialchars($categorie->getNom())
