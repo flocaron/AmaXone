@@ -47,8 +47,8 @@ class ControllerCommande extends GenericController
 
     public static function delete()
     {
-        if (isset($_REQUEST['id'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            if (isset($_REQUEST['id'])) {
                 if (isset($_REQUEST['verif'])) {
                     $bool = (new CommandeRepository())->delete($_REQUEST['id']);
                     if ($bool) {
@@ -64,18 +64,19 @@ class ControllerCommande extends GenericController
                     );
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "ID non renseigné !!");
             }
+            header("Location: frontController.php?action=readAll&controller=commande");
         } else {
-            MessageFlash::ajouter("danger", "ID non renseigné !!");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
         }
-        header("Location: frontController.php?action=readAll&controller=commande");
     }
 
     public static function update()
     {
-        if (isset($_REQUEST['id'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            if (isset($_REQUEST['id'])) {
                 $commande = (new CommandeRepository)->select($_REQUEST['id']);
                 if (is_null($commande)) {
                     MessageFlash::ajouter("warning", "ID non trouvé !!");
@@ -90,12 +91,12 @@ class ControllerCommande extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "id non renseignée !!");
                 header("Location: frontController.php?action=readAll&controller=commande");
             }
         } else {
-            MessageFlash::ajouter("danger", "id non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=commande");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
         }
     }
 
@@ -110,7 +111,7 @@ class ControllerCommande extends GenericController
             ]);
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php?action=readAll&controller=commande");
+            header("Location: frontController.php");
         }
     }
 
