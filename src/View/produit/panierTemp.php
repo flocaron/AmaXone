@@ -53,5 +53,4 @@ if ($estConnecte) {
 }
 echo "<p> <a href='frontController.php?action=passerCommande&controller=commande'> Passer Commande </a> </p>";
 
-// si pas connecte affiche lien vers login page
-// puis redirection vers passerCommande
+// l'action passerCmmande redirige direct vers login si pas connecte
