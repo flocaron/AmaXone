@@ -16,6 +16,10 @@
                     <input type="radio" name="controleur_defaut" value="commande" id="commande_id" <?php echo $preference == "commande" ? "checked" : "" ?> />
                     <label for="commande_id">Commandes</label>
                 </div>
+                <div class="ml-3">
+                    <input type="radio" name="controleur_defaut" value="categorie" id="categorie_id" <?php echo $preference == "categorie" ? "checked" : "" ?> />
+                    <label for="categorie_id">Catégories</label>
+                </div>
             </div>
 
             <p>
