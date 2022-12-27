@@ -39,8 +39,8 @@ class ControllerProduit extends GenericController
 
     public static function delete()
     {
-        if (isset($_REQUEST['id'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            if (isset($_REQUEST['id'])) {
                 if (isset($_REQUEST['verif'])) {
                     $bool = (new ProduitRepository())->delete($_REQUEST['id']);
                     if ($bool) {
@@ -56,18 +56,20 @@ class ControllerProduit extends GenericController
                     );
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "ID non renseigné !!");
             }
+            header("Location: frontController.php?action=readAll&controller=produit");
+
         } else {
-            MessageFlash::ajouter("danger", "ID non renseigné !!");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
         }
-        header("Location: frontController.php?action=readAll&controller=produit");
     }
 
     public static function update()
     {
-        if (isset($_REQUEST['id'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            if (isset($_REQUEST['id'])) {
                 $produit = (new ProduitRepository)->select($_REQUEST['id']);
                 if (is_null($produit)) {
                     MessageFlash::ajouter("warning", "ID non trouvé !!");
@@ -81,12 +83,12 @@ class ControllerProduit extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "id non renseignée !!");
                 header("Location: frontController.php?action=readAll&controller=produit");
             }
         } else {
-            MessageFlash::ajouter("danger", "id non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
         }
     }
 
@@ -100,7 +102,7 @@ class ControllerProduit extends GenericController
             ]);
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            header("Location: frontController.php");
         }
     }
 
@@ -113,7 +115,16 @@ class ControllerProduit extends GenericController
                     $produit->setLibelle($_REQUEST['libelle']);
                     $produit->setDescription($_REQUEST['description']);
                     $produit->setPrix($_REQUEST['prix']);
-
+                    if ($_REQUEST['prix'] <= 0) {
+                        MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
+                        self::afficheVue([
+                            "produit" => $produit,
+                            "action" => "create",
+                            "pagetitle" => "Créer Produit",
+                            "cheminVueBody" => "produit/create.php",
+                        ]);
+                        exit(1);
+                    }
                     if (!empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
                         $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
                         $extension = explode('.', $_FILES['file-upload']['name']);
@@ -164,18 +175,29 @@ class ControllerProduit extends GenericController
             }
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            header("Location: frontController.php");
         }
     }
 
     public static function created()
     {
-        if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
-            if (ConnexionUtilisateur::estAdministrateur()) {
+        if (ConnexionUtilisateur::estAdministrateur()) {
+
+            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
                 $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "");
+                if ($_REQUEST['prix'] <= 0) {
+                    MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
+                    self::afficheVue([
+                        "produit" => $produit,
+                        "action" => "create",
+                        "pagetitle" => "Créer Produit",
+                        "cheminVueBody" => "produit/create.php",
+                    ]);
+                    exit(1);
+                }
                 $pic_path = __DIR__ . "/../../assets/images/" . $_FILES['file-upload']['name'];
                 $extension = explode('.', $_FILES['file-upload']['name']);
-                if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) {
+                if (in_array(end($extension), ["jpg", "jpeg", "png"]) && $_FILES['file-upload']['size'] < 10 ** 7) { // 10 Mo
                     if (move_uploaded_file($_FILES['file-upload']['tmp_name'], $pic_path)) {
                         $_REQUEST['imgPath'] = $_FILES['file-upload']['name'];
                         $bool = (new ProduitRepository)->save(Produit::construireDepuisFormulaire($_REQUEST));
@@ -210,12 +232,12 @@ class ControllerProduit extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+                MessageFlash::ajouter("danger", "id non renseignée !!");
                 header("Location: frontController.php?action=readAll&controller=produit");
             }
         } else {
-            MessageFlash::ajouter("danger", "id non renseignée !!");
-            header("Location: frontController.php?action=readAll&controller=produit");
+            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
+            header("Location: frontController.php");
         }
     }
 
