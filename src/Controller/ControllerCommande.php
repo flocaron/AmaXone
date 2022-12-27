@@ -178,7 +178,7 @@ class ControllerCommande extends GenericController
 
     public static function passerCommande()
     {
-        // if (isset($_REQUEST['verif'])) {
+        if (ConnexionUtilisateur::estConnecte()) {
             $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
             if ($bool) {
                 (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
@@ -188,10 +188,16 @@ class ControllerCommande extends GenericController
                 MessageFlash::ajouter("warning", "L'enregistrement a échoué");
                 header("Location: frontController.php?action=affichePanier&controller=produit");
             }
-        // } else {
-        //     MessageFlash::ajouter("info", "Valider ? <a href='frontController.php?action=passerCommande&verif&controller=commande'>oui</a> <a href='frontController.php?action=affichePanier&controller=produit'>non</a>");
-        //     header("Location: frontController.php?action=affichePanier&controller=produit");
-        // }
+            /*
+                } else {
+                    MessageFlash::ajouter("info", "Valider ? <a href='frontController.php?action=passerCommande&verif&controller=commande'>oui</a> <a href='frontController.php?action=affichePanier&controller=produit'>non</a>");
+                    header("Location: frontController.php?action=affichePanier&controller=produit");
+                }
+            */
+        } else {
+            MessageFlash::ajouter("warning", "Veuillez-vous connecter pour passer une commande");
+            header("Location: frontController.php?action=login&controller=user");
+        }
     }
 
 }
