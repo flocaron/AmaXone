@@ -92,9 +92,10 @@
     <section>
         <?php foreach ($msgFlash as $type => $subTab) {
             foreach ($subTab as $msg) { ?>
-                <div class="flex fixed bottom-10 right-10 z-40 ">
+                <div class="flex fixed bottom-10 left-10 z-40" role="alert">
+                    <script
                     <div class="m-auto">
-                        <div class="transition ease-in-out delay-150 bg-white hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 rounded-lg border-gray-300 border p-3 shadow-lg">
+                        <div class="transition ease-in-out delay-150 bg-white hover:-translate-y-1 hover:text-white hover:scale-110 hover:bg-blue-600 duration-300 rounded-lg border-gray-300 border p-3 shadow-lg">
                             <div class="flex flex-row">
                                 <div class="px-2">
                                     <svg width="24" height="24" viewBox="0 0 1792 1792" fill="#44C997"
