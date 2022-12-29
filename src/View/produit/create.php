@@ -1,5 +1,5 @@
-<div class="mt-10 sm:mt-0">
-    <div class="mt-5 px-10 md:col-span-2 md:mt-0">
+
+    <div class="w-full px-10 py-20 md:col-span-2 md:mt-0">
         <form enctype="multipart/form-data"
               action="frontController.php?action=<?php echo $action == "create" ? "created" : "updated" ?>&controller=produit"
               method="post">
@@ -71,5 +71,4 @@
             </div>
         </form>
     </div>
-</div>
 

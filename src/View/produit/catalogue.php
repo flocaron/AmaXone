@@ -17,16 +17,25 @@
                             <?php echo htmlspecialchars($produit->getLibelle()); ?> </p>
                         <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($produit->getPrix()) . " €"; ?></p>
                         <a href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">
-                            <img src="../assets/images/panier.svg" class="max-w-xs hover:scale-110 transition duration-300 ease-in-out" alt="panier">
+                            <img src="../assets/images/panier.svg"
+                                 class="max-w-xs hover:scale-110 transition duration-300 ease-in-out" alt="panier">
                         </a>
                     </div>
                 </div>
             <?php } ?>
+
+            <?php
+            if ($estAdmin) { ?>
+            <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md object-center hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
+                <a href="frontController.php?action=create&controller=produit">
+                    <img src="../assets/images/add.png"
+                         alt="Ajouter un produit"
+                         class=" h-1/2 object-fit object-center">
+                </a>
+
+            </div>
         </div>
-        <?php
-        if ($estAdmin) {
-            echo "<a href='frontController.php?action=create&controller=produit'> Nouveau Produit </a>";
-        }
-        ?>
+        <?php } ?>
     </div>
 </div>
+

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html class="scroll-smooth" lang="fr">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpg" href="../assets/images/alteer.png"/>
@@ -8,9 +8,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
     <title><?php echo $pagetitle; ?></title>
 </head>
-<body>
+<body class ="bg-gray-100">
 <header>
-    <nav class="bg-gray-800 z-5">
+    <nav class=" fixed bg-gray-800 z-40 w-full">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -92,8 +92,7 @@
     <section>
         <?php foreach ($msgFlash as $type => $subTab) {
             foreach ($subTab as $msg) { ?>
-                <div class="flex fixed bottom-10 left-10 z-40" role="alert">
-                    <script
+                <div class="flex bottom-20 left-10 fixed z-40" role="alert">
                     <div class="m-auto">
                         <div class="transition ease-in-out delay-150 bg-white hover:-translate-y-1 hover:text-white hover:scale-110 hover:bg-blue-600 duration-300 rounded-lg border-gray-300 border p-3 shadow-lg">
                             <div class="flex flex-row">
@@ -113,21 +112,17 @@
             <?php }
         } ?>
     </section>
-    <section>
+    <section >
         <?php
         require __DIR__ . "/{$cheminVueBody}";
         ?>
     </section>
 </main>
-<footer>
-    <p style="text-align: right;"> E-Commerce Site of CARON Florimond and COPLEY Dimitri </p>
-    <div>
-        <div>
-            <a href="frontController.php"> Page d’accueil </a>
-        </div>
-        <div>
-            <a href="#"> Politique de confidentialité </a>
-        </div>
+<footer class=" fixed w-full bottom-0 z-5 text-center lg:text-left">
+    <div class="bg-gray-800 text-center p-4 text-white">
+        <h6>
+            © 2022 Copyright: Florimond Caron & Dimitri Copley
+        </h6>
     </div>
 </footer>
 </body>
