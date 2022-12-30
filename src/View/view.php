@@ -8,35 +8,47 @@
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
     <title><?php echo $pagetitle; ?></title>
 </head>
-<body class ="bg-gray-100">
+<body class="bg-gray-100">
 <header>
     <nav class=" fixed bg-gray-800 z-40 w-full">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 items-center">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
                         <img src="../assets/images/alteer.png" alt="..."
                              class="block aspect-auto object-cover h-10 w-auto">
                     </div>
-                    <div class="hidden sm:ml-6 sm:block">
-                        <div class="flex space-x-4">
+                    <div class="hidden sm:ml-6 sm:block items-center">
+                        <div class="flex space-x-4 mt-2 items-center">
                             <a href="frontController.php"
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                aria-current="page">Accueil</a>
                         </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:block">
-                        <div class="flex space-x-4">
-                            <a href="frontController.php?action=affichePanier&controller=produit"
-                               class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                               aria-current="page">Panier : <?php echo $nbPanier ?> </a>
+                    <!-- component -->
+                    <?php
+                    if ($estAdmin && $estConnecte) { ?>
+                        <div class="hidden sm:ml-6 sm:block items-center">
+                            <div class="flex space-x-4 mt-2 items-center">
+                                <a href="frontController.php?action=readAll"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Panel Admin</a>
+                            </div>
                         </div>
-                    </div>
+                        <div class="hidden sm:ml-6 sm:block items-center">
+                            <div class="flex space-x-4 mt-2 items-center">
+                                <a href="frontController.php?action=formulairePreference"
+                                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                                   aria-current="page">Preference Controller</a>
+                            </div>
+                        </div>
+                        <?php
+                    } ?>
                     <?php
                     if (!$estConnecte) {
                         ?>
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
+                        <div class="hidden sm:ml-6 sm:block items-center">
+                            <div class="flex space-x-4 mt-2 items-center">
                                 <a href="frontController.php?action=login&controller=user"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Se connecter</a>
@@ -45,44 +57,34 @@
                         <?php
                     } else {
                         ?>
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
+                        <div class="hidden sm:ml-6 sm:block items-center">
+                            <div class="flex space-x-4 mt-2 items-center">
                                 <a href="frontController.php?action=read&controller=user&login=<?php echo rawurlencode($loginUser); ?>"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Profil</a>
                             </div>
                         </div>
-                        <?php
-                        if ($estAdmin) {
-                            ?>
-                            <div class="hidden sm:ml-6 sm:block">
-                                <div class="flex space-x-4">
-                                    <a href="frontController.php?action=readAll"
-                                       class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                                       aria-current="page">Panel Admin</a>
-                                </div>
-                            </div>
-                            <div class="hidden sm:ml-6 sm:block">
-                                <div class="flex space-x-4">
-                                    <a href="frontController.php?action=formulairePreference"
-                                       class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                                       aria-current="page">Preference Controller</a>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                        ?>
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
+                        <div class="hidden sm:ml-6 sm:block items-center">
+                            <div class="flex space-x-4 mt-2 items-center">
                                 <a href="frontController.php?action=logout&controller=user"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                                   aria-current="page">Deconnecter</a>
+                                   aria-current="page">Se Deconnecter</a>
                             </div>
                         </div>
                         <?php
                     }
                     ?>
-
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="block mt-2">
+                            <a href="frontController.php?action=affichePanier&controller=produit">
+                                <img src="../assets/images/cart.jpeg" alt="..."
+                                     class="block aspect-auto object-cover h-8 rounded-full w-auto">
+                                <div class="absolute left-0 top-0  bg-red-500 rounded-full">
+                                    <span class="text-sm text-white"><?php echo $nbPanier ?></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -112,7 +114,7 @@
             <?php }
         } ?>
     </section>
-    <section >
+    <section>
         <?php
         require __DIR__ . "/{$cheminVueBody}";
         ?>
