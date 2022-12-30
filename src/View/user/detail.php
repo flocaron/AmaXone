@@ -64,11 +64,11 @@
                     <div class="flex flex-wrap p-2 w-full gap-4">
                         <div class="flex flex-col w-full">
                             <div class="flex flex-col">
-                                <h4 class="text-xs">N° Commande</h4>
+                                <h4 class="text-xs font-bold">N° Commande</h4>
                                 <h1 class="text-md font-bold">
                                     QUITTANCE-<?php echo htmlspecialchars($commande->getId()) ?></h1>
                             </div>
-                            <h4 class="text-xs">Articles</h4>
+                            <h4 class="text-xs font-bold">Articles</h4>
                             <?php foreach ($tab
 
                             as $tabProduit) {
@@ -77,7 +77,7 @@
                             as $produitSerialize => $qte) {
                             $produit = unserialize($produitSerialize);
                             ?>
-                            <h1 class="text-xs"> <?php
+                            <h1 class="text-xs">- <?php
                                 echo htmlspecialchars($produit->getLibelle())
                                     . " "
                                     . htmlspecialchars($produit->getPrix())
@@ -87,7 +87,7 @@
                                 } ?>
 
                                 <div class="flex flex-col">
-                                    <h4 class="text-xs">Date Quittance</h4>
+                                    <h4 class="text-xs font-bold">Date Quittance</h4>
                                     <h1 class="text-md"><?php echo htmlspecialchars($commande->getDate()) ?>
                                 </div>
                                 <div class="p-4 border-t flex mt-4">
