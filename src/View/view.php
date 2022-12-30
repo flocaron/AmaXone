@@ -117,7 +117,7 @@
         ?>
     </section>
 </main>
-<footer class="absolute w-full bottom-0 z-5 text-center lg:text-left">
+<footer class="relative w-full bottom-0 z-5 text-center lg:text-left">
     <div class="bg-gray-800 text-center p-4 text-white">
         <h6>
             © 2022 Copyright: Florimond Caron & Dimitri Copley
