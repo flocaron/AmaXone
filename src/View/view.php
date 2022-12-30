@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="fr">
+<html class="scroll-smooth" lang="fr" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpg" href="../assets/images/alteer.png"/>
@@ -8,35 +8,34 @@
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
     <title><?php echo $pagetitle; ?></title>
 </head>
-<body class="bg-gray-100">
+<body class="bg-white">
 <header>
-    <nav class=" fixed bg-gray-800 z-40 w-full">
+    <nav class=" sticky bg-gray-800 z-40 w-full">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 items-center">
-            <div class="relative flex h-16 items-center justify-between">
+            <div class="relative flex h-16 items-center justify-around">
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
                         <img src="../assets/images/alteer.png" alt="..."
                              class="block aspect-auto object-cover h-10 w-auto">
                     </div>
                     <div class="hidden sm:ml-6 sm:block items-center">
-                        <div class="flex space-x-4 mt-2 items-center">
+                        <div class="flex space-x-4 mt-4 items-center">
                             <a href="frontController.php"
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                aria-current="page">Accueil</a>
                         </div>
                     </div>
-                    <!-- component -->
                     <?php
                     if ($estAdmin && $estConnecte) { ?>
                         <div class="hidden sm:ml-6 sm:block items-center">
-                            <div class="flex space-x-4 mt-2 items-center">
+                            <div class="flex space-x-4 mt-4 items-center">
                                 <a href="frontController.php?action=readAll"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Panel Admin</a>
                             </div>
                         </div>
                         <div class="hidden sm:ml-6 sm:block items-center">
-                            <div class="flex space-x-4 mt-2 items-center">
+                            <div class="flex space-x-4 mt-4 items-center">
                                 <a href="frontController.php?action=formulairePreference"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Preference Controller</a>
@@ -48,7 +47,7 @@
                     if (!$estConnecte) {
                         ?>
                         <div class="hidden sm:ml-6 sm:block items-center">
-                            <div class="flex space-x-4 mt-2 items-center">
+                            <div class="flex space-x-4 mt-4 items-center">
                                 <a href="frontController.php?action=login&controller=user"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Se connecter</a>
@@ -58,14 +57,14 @@
                     } else {
                         ?>
                         <div class="hidden sm:ml-6 sm:block items-center">
-                            <div class="flex space-x-4 mt-2 items-center">
+                            <div class="flex space-x-4 mt-4 items-center">
                                 <a href="frontController.php?action=read&controller=user&login=<?php echo rawurlencode($loginUser); ?>"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Profil</a>
                             </div>
                         </div>
                         <div class="hidden sm:ml-6 sm:block items-center">
-                            <div class="flex space-x-4 mt-2 items-center">
+                            <div class="flex space-x-4 mt-4 items-center">
                                 <a href="frontController.php?action=logout&controller=user"
                                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                    aria-current="page">Se Deconnecter</a>
@@ -75,14 +74,12 @@
                     }
                     ?>
                     <div class="hidden sm:ml-6 sm:block">
-                        <div class="block mt-2">
-                            <a href="frontController.php?action=affichePanier&controller=produit">
+                        <div class="inline-flex relative">
+                            <div class="absolute inline-block top-2 left-4 bottom-auto translate-x-3/4 -translate-y-1/2 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 py-1 px-2.5 text-xs leading-none text-center whitespace-nowrap align-baseline font-bold bg-indigo-700 text-white rounded-full z-10"><?php echo $nbPanier ?></div>
+                            <a href="frontController.php?action=affichePanier&controller=produit"
+                               class="inline-block px-7 py-3 leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                 <img src="../assets/images/cart.jpeg" alt="..."
-                                     class="block aspect-auto object-cover h-8 rounded-full w-auto">
-                                <div class="absolute left-0 top-0  bg-red-500 rounded-full">
-                                    <span class="text-sm text-white"><?php echo $nbPanier ?></span>
-                                </div>
-                            </a>
+                                     class=" mt-2 block aspect-auto object-cover h-8 rounded-full w-auto"></a>
                         </div>
                     </div>
                 </div>
@@ -120,7 +117,7 @@
         ?>
     </section>
 </main>
-<footer class=" fixed w-full bottom-0 z-5 text-center lg:text-left">
+<footer class="absolute w-full bottom-0 z-5 text-center lg:text-left">
     <div class="bg-gray-800 text-center p-4 text-white">
         <h6>
             © 2022 Copyright: Florimond Caron & Dimitri Copley
