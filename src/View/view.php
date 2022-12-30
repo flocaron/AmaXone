@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="fr" xmlns="http://www.w3.org/1999/html">
+<html class="scroll-smooth bg-gray-800" lang="fr" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpg" href="../assets/images/alteer.png"/>
@@ -117,7 +117,7 @@
         ?>
     </section>
 </main>
-<footer class="relative w-full bottom-0 z-5 text-center lg:text-left">
+<footer class="relative w-full bottom-0 z-5 text-center">
     <div class="bg-gray-800 text-center p-4 text-white">
         <h6>
             © 2022 Copyright: Florimond Caron & Dimitri Copley
