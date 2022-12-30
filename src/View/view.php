@@ -15,8 +15,10 @@
             <div class="relative flex h-16 items-center justify-around">
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
+                        <a href="frontController.php">
                         <img src="../assets/images/alteer.png" alt="..."
                              class="block aspect-auto object-cover h-10 w-auto">
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:block items-center">
                         <div class="flex space-x-4 mt-4 items-center">
