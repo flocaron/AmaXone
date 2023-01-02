@@ -99,7 +99,7 @@ class CommandeRepository extends AbstractRepository
     {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT p.id, p.libelle, p.description, p.prix, p.imgPath, cp.quantite
+            $sql = "SELECT p.id, p.libelle, p.description, p.prix, p.imgPath, p.categorie, cp.quantite
                     FROM projet_commandeProduit cp
                     JOIN projet_produit p ON p.id = cp.idProduit
                     WHERE cp.idCommande = :idCommande ;";
