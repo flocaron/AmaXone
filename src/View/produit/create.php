@@ -33,6 +33,19 @@
 
                     <div class="flex flex-col gap-6">
                         <div>
+                            <label for="categorie_id" class="block text-sm font-medium text-gray-700">Catégoie</label>
+                            <div class="mt-1">
+                                <select id="categorie_id" name="categorie">
+                                    <?php
+                                        foreach ($categories as $categorie) {
+                                            echo "<option value='" . htmlspecialchars($categorie->getNom())  . "' " . (isset($produit) && $produit->getCategorie() == $categorie->getNom() ? "selected" : "") . " >" . htmlspecialchars($categorie->getNom()) . "</option>";
+                                        }
+                                    ?>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div>
                             <label for="about" class="block text-sm font-medium text-gray-700">Description</label>
                             <div class="mt-1">
                                 <input id="about" name="description"
@@ -71,4 +84,3 @@
             </div>
         </form>
     </div>
-
