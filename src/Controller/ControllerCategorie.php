@@ -17,26 +17,21 @@ class ControllerCategorie extends GenericController
 
     public static function read()
     {
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            if (isset($_REQUEST['nom'])) {
-                $categorie = (new CategorieRepository())->select($_REQUEST['nom']);
-                if (is_null($categorie)) {
-                    MessageFlash::ajouter("warning", "Nom non trouvé !!");
-                    header("Location: frontController.php?action=readAll&controller=categorie");
-                } else {
-                    self::afficheVue([
-                        'categorie' => $categorie,
-                        "pagetitle" => "Détail de {$categorie->getNom()}",
-                        "cheminVueBody" => "categorie/detail.php",
-                    ]);
-                }
+        if (isset($_REQUEST['nom'])) {
+            $categorie = (new CategorieRepository())->select($_REQUEST['nom']);
+            if (is_null($categorie)) {
+                MessageFlash::ajouter("warning", "Nom non trouvé !!");
+                header("Location: frontController.php?action=catalogue&controller=categorie");
             } else {
-                MessageFlash::ajouter("danger", "Nom non renseigné !!");
-                header("Location: frontController.php?action=readAll&controller=categorie"); // TODO modif redirection vers vue catalogueCategorie
+                self::afficheVue([
+                    'categorie' => $categorie,
+                    "pagetitle" => "Détail de {$categorie->getNom()}",
+                    "cheminVueBody" => "categorie/detail.php",
+                ]);
             }
         } else {
-            MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
-            header("Location: frontController.php");
+            MessageFlash::ajouter("danger", "Nom non renseigné !!");
+            header("Location: frontController.php?action=catalogue&controller=categorie");
         }
     }
 
@@ -218,5 +213,14 @@ class ControllerCategorie extends GenericController
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
             header("Location: frontController.php");
         }
+    }
+
+    public static function catalogue()
+    {
+        self::afficheVue([
+            "inventaire" => (new CategorieRepository())->selectAll(),
+            "pagetitle" => "Catalogue Categorie",
+            "cheminVueBody" => "categorie/catalogue.php",
+        ]);
     }
 }

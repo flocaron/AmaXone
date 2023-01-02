@@ -5,6 +5,7 @@ namespace App\E_Commerce\Controller;
 use App\E_Commerce\Lib\ConnexionUtilisateur;
 use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
+use App\E_Commerce\Model\Repository\CategorieRepository;
 use App\E_Commerce\Model\Repository\ProduitRepository;
 use App\E_Commerce\Model\DataObject\Produit;
 
@@ -23,7 +24,7 @@ class ControllerProduit extends GenericController
             $produit = (new ProduitRepository)->select($_REQUEST['id']);
             if (is_null($produit)) {
                 MessageFlash::ajouter("warning", "id non trouvée !!");
-                header("Location: frontController.php?action=catalogue&controller=produit");
+                header("Location: frontController.php?action=catalogue&controller=categorie");
             } else {
                 self::afficheVue([
                     'produit' => $produit,
@@ -33,7 +34,7 @@ class ControllerProduit extends GenericController
             }
         } else {
             MessageFlash::ajouter("danger", "id non renseignée !!");
-            header("Location: frontController.php?action=catalogue&controller=produit");
+            header("Location: frontController.php?action=catalogue&controller=categorie");
         }
     }
 
@@ -76,6 +77,7 @@ class ControllerProduit extends GenericController
                     header("Location: frontController.php?action=readAll&controller=produit");
                 } else {
                     self::afficheVue([
+                        "categories" => (new CategorieRepository())->selectAll(),
                         "produit" => $produit,
                         "action" => "update",
                         "pagetitle" => "Modifier produit",
@@ -96,6 +98,7 @@ class ControllerProduit extends GenericController
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
+                "categories" => (new CategorieRepository())->selectAll(),
                 "action" => "create",
                 "pagetitle" => "Créer Produit",
                 "cheminVueBody" => "produit/create.php",
@@ -109,15 +112,17 @@ class ControllerProduit extends GenericController
     public static function updated()
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
-            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix'])) {
+            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset ($_REQUEST['categorie']) && isset($_REQUEST['prix'])) {
                 $produit = (new ProduitRepository())->select($_REQUEST['id']);
                 if (!is_null($produit)) {
                     $produit->setLibelle($_REQUEST['libelle']);
                     $produit->setDescription($_REQUEST['description']);
+                    $produit->setCategorie($_REQUEST['categorie']);
                     $produit->setPrix($_REQUEST['prix']);
                     if ($_REQUEST['prix'] <= 0) {
                         MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
                         self::afficheVue([
+                            "categories" => (new CategorieRepository())->selectAll(),
                             "produit" => $produit,
                             "action" => "update",
                             "pagetitle" => "Modifier produit",
@@ -134,6 +139,7 @@ class ControllerProduit extends GenericController
                             } else {
                                 MessageFlash::ajouter("warning", "Importation de l'image échouée");
                                 self::afficheVue([
+                                    "categories" => (new CategorieRepository())->selectAll(),
                                     "produit" => $produit,
                                     "action" => "update",
                                     "pagetitle" => "Modifier produit",
@@ -144,6 +150,7 @@ class ControllerProduit extends GenericController
                         } else {
                             MessageFlash::ajouter("warning", "Mauvaise extension ou taille de fichier");
                             self::afficheVue([
+                                "categories" => (new CategorieRepository())->selectAll(),
                                 "produit" => $produit,
                                 "action" => "update",
                                 "pagetitle" => "Modifier produit",
@@ -162,6 +169,7 @@ class ControllerProduit extends GenericController
                 } else {
                     MessageFlash::ajouter("warning", "Ce produit n'existe pas");
                     self::afficheVue([
+                        "categories" => (new CategorieRepository())->selectAll(),
                         "produit" => $produit,
                         "action" => "update",
                         "pagetitle" => "Modifier produit",
@@ -183,11 +191,12 @@ class ControllerProduit extends GenericController
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
 
-            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
-                $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "");
+            if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset ($_REQUEST['categorie']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
+                $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "", $_REQUEST['categorie']);
                 if ($_REQUEST['prix'] <= 0) {
                     MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
                     self::afficheVue([
+                        "categories" => (new CategorieRepository())->selectAll(),
                         "produit" => $produit,
                         "action" => "create",
                         "pagetitle" => "Créer Produit",
@@ -207,6 +216,7 @@ class ControllerProduit extends GenericController
                         } else {
                             MessageFlash::ajouter("warning", "ID déja existant");
                             self::afficheVue([
+                                "categories" => (new CategorieRepository())->selectAll(),
                                 "produit" => $produit,
                                 "action" => "create",
                                 "pagetitle" => "Créer Produit",
@@ -216,6 +226,7 @@ class ControllerProduit extends GenericController
                     } else {
                         MessageFlash::ajouter("warning", "Importation de l'image échouée");
                         self::afficheVue([
+                            "categories" => (new CategorieRepository())->selectAll(),
                             "produit" => $produit,
                             "action" => "create",
                             "pagetitle" => "Créer Produit",
@@ -225,6 +236,7 @@ class ControllerProduit extends GenericController
                 } else {
                     MessageFlash::ajouter("warning", "Mauvaise extension ou taille de fichier");
                     self::afficheVue([
+                        "categories" => (new CategorieRepository())->selectAll(),
                         "produit" => $produit,
                         "action" => "create",
                         "pagetitle" => "Créer Produit",
@@ -243,12 +255,22 @@ class ControllerProduit extends GenericController
 
     public static function catalogue()
     {
-        $produits = (new ProduitRepository())->selectAll();
-        self::afficheVue([
-            'inventaire' => $produits,
-            "pagetitle" => "Catalogue",
-            "cheminVueBody" => "produit/catalogue.php",
-        ]);
+        if (isset($_REQUEST['nom'])) {
+            if (!is_null((new CategorieRepository())->select($_REQUEST['nom']))) {
+                self::afficheVue([
+                    "nomCategorie" => $_REQUEST['nom'],
+                    'inventaire' => (new ProduitRepository())->getProduits($_REQUEST['nom']),
+                    "pagetitle" => "Catalogue",
+                    "cheminVueBody" => "produit/catalogue.php",
+                ]);
+            } else {
+                MessageFlash::ajouter("warning", "Cette categorie n'exsite pas !");
+                header("Location: frontController.php?controller=categorie&action=catalogue");
+            }
+        } else {
+            MessageFlash::ajouter("danger", "Il manque le nom de la catégorie !");
+            header("Location: frontController.php?controller=categorie&action=catalogue");
+        }
     }
 
     public static function addPanier()
@@ -264,8 +286,8 @@ class ControllerProduit extends GenericController
         } else {
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
-        if (isset($_REQUEST['read'])) {
-            header("Location: frontController.php?action=catalogue&controller=produit");
+        if (isset($_REQUEST['nom'])) {
+            header("Location: frontController.php?action=catalogue&controller=produit&nom=" . rawurlencode($_REQUEST['nomF']));
         } else {
             header("Location: frontController.php?action=affichePanier&controller=produit");
         }
@@ -345,14 +367,5 @@ class ControllerProduit extends GenericController
         }
         header("Location: frontController.php?action=affichePanier&controller=produit");
     }
-
-    /*
-     * Catégorie de produit -> Table catégorie( #nomCategorie )
-     *                          rajouter un un champs catégorie dans la table produit
-     *
-     *
-     *
-     */
-
 
 }
