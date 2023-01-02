@@ -33,7 +33,7 @@
 
                     <div class="flex flex-col gap-6">
                         <div>
-                            <label for="categorie_id" class="block text-sm font-medium text-gray-700">Catégoie</label>
+                            <label for="categorie_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
                             <div class="mt-1">
                                 <select id="categorie_id" name="categorie">
                                     <?php
