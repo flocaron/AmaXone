@@ -123,6 +123,18 @@ class ControllerCommande extends GenericController
                 $commande->setId($_REQUEST['id']);
                 $commande->setDate($_REQUEST['date']);
                 $commande->setStatut($_REQUEST['statut']);
+                $user = (new UserRepository())->select($_REQUEST['userLogin']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    self::afficheVue([
+                        "commande" => $commande,
+                        "action" => "update",
+                        "users" => (new UserRepository())->selectAll(),
+                        "pagetitle" => "Modifier commande",
+                        "cheminVueBody" => "commande/create.php",
+                    ]);
+                    exit(1);
+                }
                 $commande->setUserLogin($_REQUEST['userLogin']);
                 $bool = (new CommandeRepository())->update($commande);
                 if ($bool) {
@@ -152,6 +164,18 @@ class ControllerCommande extends GenericController
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
             if (isset($_REQUEST['id']) && isset($_REQUEST['date']) && isset($_REQUEST['statut']) && isset($_REQUEST['userLogin'])) {
+                $user = (new UserRepository())->select($_REQUEST['userLogin']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    self::afficheVue([
+                        "commande" => Commande::construireDepuisFormulaire($_REQUEST),
+                        "action" => "create",
+                        "users" => (new UserRepository())->selectAll(),
+                        "pagetitle" => "Modifier commande",
+                        "cheminVueBody" => "commande/create.php",
+                    ]);
+                    exit(1);
+                }
                 $bool = (new CommandeRepository())->save(Commande::construireDepuisFormulaire($_REQUEST));
                 if ($bool) {
                     MessageFlash::ajouter("success", "Commande bien créé !");
@@ -184,7 +208,7 @@ class ControllerCommande extends GenericController
             if ($bool) {
                 (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
                 MessageFlash::ajouter("success", "Votre commande est enregistré !");
-                header("Location: frontController.php?action=catalogue&controller=produit");
+                header("Location: frontController.php?action=catalogue&controller=categorie");
             } else {
                 MessageFlash::ajouter("warning", "L'enregistrement a échoué");
                 header("Location: frontController.php?action=affichePanier&controller=produit");
@@ -203,6 +227,9 @@ class ControllerCommande extends GenericController
 
 }
 
-
-// TODO formulaire de paiement
 // TODO modifier produit par commandes
+// TODO formulaire de paiement
+
+
+// TODO search bar for products
+// TODO tech support / SAV
