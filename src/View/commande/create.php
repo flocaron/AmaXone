@@ -33,7 +33,7 @@
                 <select name="userLogin" id="login_id">
                     <?php
                     foreach ($users as $user) {
-                        echo "<option value='" . $user->get('login') . "' " . (isset($commande) && $commande->getUserLogin() == $user->get('login') ? "selected" : "") . " >" . $user->get('login') . "</option>";
+                        echo "<option value='" . htmlspecialchars($user->get('login'))  . "' " . (isset($commande) && $commande->getUserLogin() == $user->get('login') ? "selected" : "") . " >" . htmlspecialchars($user->get('login')) . "</option>";
                     }
                     ?>
                 </select>
