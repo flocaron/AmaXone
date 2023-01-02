@@ -57,8 +57,10 @@ class ControllerUser extends GenericController
                             exit(1);
                         }
                         MessageFlash::ajouter("success", "Utilisateur bien supprimé !");
+                        header("Location: frontController.php?action=readAll&controller=user");
                     } else {
                         MessageFlash::ajouter("warning", "login non trouvé !!");
+                        header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                     }
                 } else {
                     MessageFlash::ajouter("info", "Etes-vous sur ? " .
@@ -66,8 +68,8 @@ class ControllerUser extends GenericController
                         rawurlencode($_REQUEST['login']) . "&verif'> oui </a> " .
                         " <a href='frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']) . "'> non</a>"
                     );
+                    header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                 }
-                header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
             } else {
                 MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
                 header("Location: frontController.php");
