@@ -69,7 +69,7 @@ class CommandeRepository extends AbstractRepository
     {
         try {
             $pdo = DatabaseConnection::getPdo();
-            $sql = "SELECT c.id, c.date, c.statut, c.userLogin, p.id AS idProduit, p.libelle, p.description, p.prix, p.imgPath, cp.quantite
+            $sql = "SELECT c.id, c.date, c.statut, c.userLogin, p.id AS idProduit, p.libelle, p.description, p.prix, p.imgPath, p.categorie, cp.quantite
                     FROM projet_commande c
                     JOIN projet_commandeProduit cp ON c.id = cp.idCommande
                     JOIN projet_produit p ON p.id = cp.idProduit
@@ -84,7 +84,8 @@ class CommandeRepository extends AbstractRepository
                         $tab['libelle'],
                         $tab['description'],
                         $tab['prix'],
-                        $tab['imgPath']
+                        $tab['imgPath'],
+                        $tab['categorie']
                     )) => $tab['quantite']
                 ];
             }
