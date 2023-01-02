@@ -11,13 +11,16 @@ class Produit extends AbstractDataObject
     private int $prix;
     private string $imgPath;
 
-    public function __construct(int $id, string $libelle, string $description, int $prix, string $imgPath)
+    private string $categorie;
+
+    public function __construct(int $id, string $libelle, string $description, int $prix, string $imgPath, string $categorie)
     {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->description = $description;
         $this->prix = $prix;
         $this->imgPath = $imgPath;
+        $this->categorie = $categorie;
     }
 
     public function formatTableau(): array
@@ -27,6 +30,7 @@ class Produit extends AbstractDataObject
             'description' => $this->description,
             'prix' => $this->prix,
             'imgPath' => $this->imgPath,
+            'categorie' => $this->categorie,
         ];
         if ($this->id != -1) {
             $formatTab['id'] = $this->id;
@@ -42,6 +46,7 @@ class Produit extends AbstractDataObject
             $tableauFormulaire['description'],
             $tableauFormulaire['prix'],
             $tableauFormulaire['imgPath'],
+            $tableauFormulaire['categorie'],
         );
     }
 
@@ -89,6 +94,16 @@ class Produit extends AbstractDataObject
     public function setImgPath(string $imgPath): void
     {
         $this->imgPath = $imgPath;
+    }
+
+    public function getCategorie(): string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): void
+    {
+        $this->categorie = $categorie;
     }
 
 
