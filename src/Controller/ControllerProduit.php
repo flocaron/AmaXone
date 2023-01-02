@@ -120,7 +120,7 @@ class ControllerProduit extends GenericController
                     $produit->setCategorie($_REQUEST['categorie']);
                     $produit->setPrix($_REQUEST['prix']);
                     if (is_null((new CategorieRepository())->select($_REQUEST['categorie']))) {
-                        MessageFlash::ajouter("warning", "Cette catégorie n'exsite pas !");
+                        MessageFlash::ajouter("warning", "Cette catégorie n'existe pas !");
                         self::afficheVue([
                             "categories" => (new CategorieRepository())->selectAll(),
                             "produit" => $produit,
@@ -205,7 +205,7 @@ class ControllerProduit extends GenericController
             if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset ($_REQUEST['categorie']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
                 $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "", $_REQUEST['categorie']);
                 if (is_null((new CategorieRepository())->select($_REQUEST['nom']))) {
-                    MessageFlash::ajouter("warning", "Cette catégorie n'exsite pas !");
+                    MessageFlash::ajouter("warning", "Cette catégorie n'existe pas !");
                     self::afficheVue([
                         "categories" => (new CategorieRepository())->selectAll(),
                         "produit" => $produit,
@@ -286,7 +286,7 @@ class ControllerProduit extends GenericController
                     "cheminVueBody" => "produit/catalogue.php",
                 ]);
             } else {
-                MessageFlash::ajouter("warning", "Cette categorie n'exsite pas !");
+                MessageFlash::ajouter("warning", "Cette categorie n'existe pas !");
                 header("Location: frontController.php?controller=categorie&action=catalogue");
             }
         } else {
