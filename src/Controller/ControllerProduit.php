@@ -119,6 +119,17 @@ class ControllerProduit extends GenericController
                     $produit->setDescription($_REQUEST['description']);
                     $produit->setCategorie($_REQUEST['categorie']);
                     $produit->setPrix($_REQUEST['prix']);
+                    if (is_null((new CategorieRepository())->select($_REQUEST['categorie']))) {
+                        MessageFlash::ajouter("warning", "Cette catégorie n'exsite pas !");
+                        self::afficheVue([
+                            "categories" => (new CategorieRepository())->selectAll(),
+                            "produit" => $produit,
+                            "action" => "update",
+                            "pagetitle" => "Modifier Produit",
+                            "cheminVueBody" => "produit/create.php",
+                        ]);
+                        exit(1);
+                    }
                     if ($_REQUEST['prix'] <= 0) {
                         MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
                         self::afficheVue([
@@ -193,6 +204,17 @@ class ControllerProduit extends GenericController
 
             if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset ($_REQUEST['categorie']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
                 $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "", $_REQUEST['categorie']);
+                if (is_null((new CategorieRepository())->select($_REQUEST['nom']))) {
+                    MessageFlash::ajouter("warning", "Cette catégorie n'exsite pas !");
+                    self::afficheVue([
+                        "categories" => (new CategorieRepository())->selectAll(),
+                        "produit" => $produit,
+                        "action" => "create",
+                        "pagetitle" => "Créer Produit",
+                        "cheminVueBody" => "produit/create.php",
+                    ]);
+                    exit(1);
+                }
                 if ($_REQUEST['prix'] <= 0) {
                     MessageFlash::ajouter("warning", "Votre produit doit avoir un prix supérieur à 0€ !");
                     self::afficheVue([
@@ -287,7 +309,7 @@ class ControllerProduit extends GenericController
             MessageFlash::ajouter("danger", "Il manque l'id de l'objet !");
         }
         if (isset($_REQUEST['nom'])) {
-            header("Location: frontController.php?action=catalogue&controller=produit&nom=" . rawurlencode($_REQUEST['nomF']));
+            header("Location: frontController.php?action=catalogue&controller=produit&nom=" . rawurlencode($_REQUEST['nom']));
         } else {
             header("Location: frontController.php?action=affichePanier&controller=produit");
         }
