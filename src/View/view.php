@@ -22,7 +22,7 @@
                     </div>
                     <div class="hidden sm:ml-6 sm:block items-center">
                         <div class="flex space-x-4 mt-4 items-center">
-                            <a href="frontController.php?action=catalogue&controller=produit"
+                            <a href="frontController.php?action=catalogue&controller=categorie"
                                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                aria-current="page">Catalogue</a>
                         </div>
