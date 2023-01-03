@@ -119,15 +119,21 @@ class ControllerUser extends GenericController
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdpN']) && isset($_REQUEST['mdpC']) && isset($_REQUEST['email'])) {
             if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
-                $user = (new UserRepository())->select($_REQUEST['login']);
-                if (is_null($user)) {
-                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
-                    header("Location: frontController.php");
-                    exit(1);
-                }
+                $user = new User("", "", "", "", 0, "", "", "");
+                $user->set('login', $_REQUEST['login']);
                 $user->set('nom', $_REQUEST['nom']);
                 $user->set('prenom', $_REQUEST['prenom']);
                 $user->set('email', $_REQUEST['email']);
+                if (is_null((new UserRepository())->select($_REQUEST['login']))) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    self::afficheVue([
+                        "user" => $user,
+                        "action" => "update",
+                        "pagetitle" => "Modifier Utilisateur",
+                        "cheminVueBody" => "user/create.php",
+                    ]);
+                    exit(1);
+                }
                 if (ConnexionUtilisateur::estAdministrateur()) {
                     $password = (new UserRepository())->select(ConnexionUtilisateur::getLoginUtilisateurConnecte())->get('mdpHache');
                 } else {
