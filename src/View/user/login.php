@@ -29,8 +29,8 @@
                     <div class="flex justify-between items-center mb-6">
                         <div class="form-group form-check">
                         </div>
-                        <a href="frontController.php?action=passwordForget&controller=user" class="text-gray-800">Forgot
-                            password?</a>
+                        <a href="frontController.php?action=passwordForget&controller=user" class="text-gray-800">Mot de
+                            passe oublié ?</a>
                     </div>
 
                     <div class="text-center lg:text-left">
@@ -38,14 +38,14 @@
                                 type="submit"
                                 class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                         >
-                            Login
+                            Se Connecter
                         </button>
                         <p class="text-sm font-semibold mt-2 pt-1 mb-0">
-                            Don't have an account?
+                            Vous n'avez pas de compte ?
                             <a
                                     href="frontController.php?action=create&controller=user"
                                     class="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
-                            >Register</a
+                            >Créer un compte</a
                             >
                         </p>
                     </div>
