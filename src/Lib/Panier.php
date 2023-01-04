@@ -114,4 +114,15 @@ class Panier
         return $res;
     }
 
+    public static function filtreQte(array $panier) : array
+    {
+        $tab = [];
+        foreach ($panier as $id => $qte) {
+            if ($qte > 0) {
+                $tab[$id] = $qte;
+            }
+        }
+        return $tab;
+    }
+
 }

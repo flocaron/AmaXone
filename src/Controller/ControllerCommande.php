@@ -7,6 +7,7 @@ use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\DataObject\Commande;
 use App\E_Commerce\Model\Repository\CommandeRepository;
+use App\E_Commerce\Model\Repository\ProduitRepository;
 use App\E_Commerce\Model\Repository\UserRepository;
 
 class ControllerCommande extends GenericController
@@ -85,6 +86,8 @@ class ControllerCommande extends GenericController
                     self::afficheVue([
                         "commande" => $commande,
                         "action" => "update",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "produitsCommande" => (new CommandeRepository())->getProduitParCommande($_REQUEST['id']),
                         "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Modifier commande",
                         "cheminVueBody" => "commande/create.php",
@@ -105,6 +108,7 @@ class ControllerCommande extends GenericController
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
                 "action" => "create",
+                "produits" => (new ProduitRepository())->selectAll(),
                 "users" => (new UserRepository())->selectAll(),
                 "pagetitle" => "Créer Commande",
                 "cheminVueBody" => "commande/create.php",
@@ -118,42 +122,63 @@ class ControllerCommande extends GenericController
     public static function updated()
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
-            if (isset($_REQUEST['id']) && isset($_REQUEST['date']) && isset($_REQUEST['statut']) && isset($_REQUEST['userLogin'])) {
+            if (isset($_REQUEST['id']) && isset($_REQUEST['date']) && isset($_REQUEST['statut']) && isset($_REQUEST['userLogin']) && isset($_REQUEST['produit'])) {
                 $commande = new Commande();
                 $commande->setId($_REQUEST['id']);
                 $commande->setDate($_REQUEST['date']);
                 $commande->setStatut($_REQUEST['statut']);
-                $user = (new UserRepository())->select($_REQUEST['userLogin']);
-                if (is_null($user)) {
-                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                $commande->setUserLogin($_REQUEST['userLogin']);
+                if (is_null((new CommandeRepository())->select($_REQUEST['id']))) {
+                    MessageFlash::ajouter("warning", "ID non trouvé !!");
                     self::afficheVue([
                         "commande" => $commande,
                         "action" => "update",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
                         "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Modifier commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
                     exit(1);
                 }
-                $commande->setUserLogin($_REQUEST['userLogin']);
-                $bool = (new CommandeRepository())->update($commande);
-                if ($bool) {
-                    MessageFlash::ajouter("success", "Commande bien modifié !");
-                    header("Location: frontController.php?controller=commande&action=readAll");
-                } else {
-                    MessageFlash::ajouter("warning", "ID non trouvé !!");
+                if (count(Panier::filtreQte($_REQUEST['produit'])) == 0) {
+                    MessageFlash::ajouter("warning", "Faire une commande vide est impossible !!");
                     self::afficheVue([
                         "commande" => $commande,
                         "action" => "update",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
                         "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Modifier commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
+                    exit(1);
+                }
+                $user = (new UserRepository())->select($_REQUEST['userLogin']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    self::afficheVue([
+                        "commande" => $commande,
+                        "action" => "update",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
+                        "users" => (new UserRepository())->selectAll(),
+                        "pagetitle" => "Modifier commande",
+                        "cheminVueBody" => "commande/create.php",
+                    ]);
+                    exit(1);
+                }
+                $bool = (new CommandeRepository())->update($commande);
+                if ($bool) {
+                    (new CommandeRepository())->updateProduitParCommande($_REQUEST['id'], Panier::filtreQte($_REQUEST['produit']));
+                    MessageFlash::ajouter("success", "Commande bien modifié !");
+                } else {
+                    MessageFlash::ajouter("warning", "Modification echouée !");
                 }
             } else {
                 MessageFlash::ajouter("danger", "ID non renseigné !!");
-                header("Location: frontController.php?controller=commande&action=readAll");
             }
+            header("Location: frontController.php?controller=commande&action=readAll");
         } else {
             MessageFlash::ajouter("danger", "Vous n'etes pas Administrateur !");
             header("Location: frontController.php");
@@ -163,21 +188,37 @@ class ControllerCommande extends GenericController
     public static function created()
     {
         if (ConnexionUtilisateur::estAdministrateur()) {
-            if (isset($_REQUEST['id']) && isset($_REQUEST['date']) && isset($_REQUEST['statut']) && isset($_REQUEST['userLogin'])) {
+            if (isset($_REQUEST['id']) && isset($_REQUEST['date']) && isset($_REQUEST['statut']) && isset($_REQUEST['userLogin']) && isset($_REQUEST['produit'])) {
+                if (count(Panier::filtreQte($_REQUEST['produit'])) == 0) {
+                    MessageFlash::ajouter("warning", "Faire une commande vide est impossible !!");
+                    self::afficheVue([
+                        "commande" => Commande::construireDepuisFormulaire($_REQUEST),
+                        "action" => "create",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
+                        "users" => (new UserRepository())->selectAll(),
+                        "pagetitle" => "Créer commande",
+                        "cheminVueBody" => "commande/create.php",
+                    ]);
+                    exit(1);
+                }
                 $user = (new UserRepository())->select($_REQUEST['userLogin']);
                 if (is_null($user)) {
                     MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
                     self::afficheVue([
                         "commande" => Commande::construireDepuisFormulaire($_REQUEST),
                         "action" => "create",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
                         "users" => (new UserRepository())->selectAll(),
-                        "pagetitle" => "Modifier commande",
+                        "pagetitle" => "Créer commande",
                         "cheminVueBody" => "commande/create.php",
                     ]);
                     exit(1);
                 }
                 $bool = (new CommandeRepository())->save(Commande::construireDepuisFormulaire($_REQUEST));
                 if ($bool) {
+                    (new CommandeRepository())->enregistrerCommande($_REQUEST['userLogin'], Panier::filtreQte($_REQUEST['produit']));
                     MessageFlash::ajouter("success", "Commande bien créé !");
                     header("Location: frontController.php?controller=commande&action=readAll");
                 } else {
@@ -185,6 +226,8 @@ class ControllerCommande extends GenericController
                     self::afficheVue([
                         "commande" => Commande::construireDepuisFormulaire($_REQUEST),
                         "action" => "create",
+                        "produits" => (new ProduitRepository())->selectAll(),
+                        "lastProduit" => Panier::filtreQte($_REQUEST['produit']),
                         "users" => (new UserRepository())->selectAll(),
                         "pagetitle" => "Créer Commande",
                         "cheminVueBody" => "commande/create.php",
@@ -230,9 +273,12 @@ class ControllerCommande extends GenericController
         }
     }
 
+    public static function testing() {
+        (new CommandeRepository())->updateProduitParCommande(138,[2 => 5, 5 => 2]);
+    }
+
 }
 
-// TODO modifier produit par commandes
 // TODO formulaire de paiement
 
 

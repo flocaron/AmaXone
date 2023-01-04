@@ -115,4 +115,31 @@ class CommandeRepository extends AbstractRepository
         }
     }
 
+    public function updateProduitParCommande(int $idCommande, array $produits) : bool
+    {
+        try {
+            $pdo = DatabaseConnection::getPdo();
+            $sql = "DELETE FROM projet_commandeProduit WHERE idCommande = :id; 
+                    INSERT INTO projet_commandeProduit (idCommande, idProduit, quantite) VALUES ";
+            $i = 0;
+            foreach ($produits as $ignored) {
+                $sql .= " (:id, :idProduit$i, :quantite$i) ,";
+                $i++;
+            }
+            $sql = rtrim($sql, ", ");
+            $res = $pdo->prepare($sql);
+            $data["id"] = $idCommande;
+            $i = 0;
+            foreach ($produits as $idProduit => $qte) {
+                $data["idProduit$i"] = $idProduit;
+                $data["quantite$i"] = $qte;
+                $i++;
+            }
+            $res->execute($data);
+        } catch (PDOException) {
+            return false;
+        }
+        return true;
+    }
+
 }
