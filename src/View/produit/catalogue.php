@@ -1,6 +1,7 @@
 <div class="bg-white">
     <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold items-center tracking-tight text-gray-900">Notre Catalogue de <?= htmlspecialchars($nomCategorie) ?></h2>
+        <h2 class="text-2xl font-bold items-center tracking-tight text-gray-900">Notre Catalogue
+            de <?= htmlspecialchars($nomCategorie) ?></h2>
         <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             <?php foreach ($inventaire as $produit) { ?>
                 <div class="group relative">
@@ -30,9 +31,8 @@
                 <a href="frontController.php?action=create&controller=produit">
                     <img src="../assets/images/add.png"
                          alt="Ajouter un produit"
-                         class=" h-1/2 object-fit object-center">
+                         class="h-1/2 object-fit object-center">
                 </a>
-
             </div>
         </div>
         <?php } ?>

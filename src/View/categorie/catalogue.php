@@ -6,13 +6,13 @@
                 <?php foreach ($inventaire as $categorie) { ?>
                     <div class="group relative">
                         <div class="relative h-80 w-full overflow-hidden rounded-lg bg-white group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
+                            <a href="frontController.php?controller=produit&action=catalogue&nom=<?= htmlspecialchars($categorie->getNom()) ?>">
                             <img src="<?php echo "../assets/images/categories/" . htmlspecialchars($categorie->getImgPath()); ?>"
                                  alt="Une categorie X" class="h-full w-full object-cover object-center">
+                            </a>
                         </div>
-                        <a frontController.php?controller=produit&action=catalogue&nom=<?= htmlspecialchars($categorie->getNom()) ?> >
-                            <p class="text-base font-semibold text-gray-900"> <?php echo htmlspecialchars($categorie->getNom()); ?>
-                            </p>
-                        </a>
+                            <p class="text-base font-semibold text-gray-900"> <?php echo htmlspecialchars($categorie->getNom()); ?></p>
+                            <img src="../assets/images/icons/info.png" class ="object-fit" width="5px" height="5px">
                     </div>
                 <?php } ?>
                 <?php if ($estAdmin) { ?>
@@ -20,7 +20,7 @@
                         <a href="frontController.php?action=create&controller=categorie">
                             <img src="../assets/images/add.png"
                                  alt="Ajouter un produit"
-                                 class=" h-1/2 object-fit object-center">
+                                 class="h-1/2 object-fit object-center">
                         </a>
                     </div>
                 <?php } ?>
