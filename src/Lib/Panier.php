@@ -88,7 +88,18 @@ class Panier
     public static function replacePanier(): void
     {
         $lastPanier = (new UserRepository)->getLastPanier(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-        Session::getInstance()->enregistrer(static::$clePanier, is_null($lastPanier) ? [] : unserialize($lastPanier));
+        $newPanier = [];
+        if (!is_null($lastPanier)) {
+            foreach (unserialize($lastPanier) as $id => $qte) {
+                if (!is_null((new ProduitRepository())->select($id))) {
+                    $newPanier[$id] = $qte;
+                }
+            }
+            Session::getInstance()->enregistrer(static::$clePanier, $newPanier);
+        } else {
+            Session::getInstance()->enregistrer(static::$clePanier, []);
+        }
+
     }
 
     public static function viderPanier(): void
