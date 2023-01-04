@@ -367,8 +367,6 @@ class ControllerCommande extends GenericController
 
 }
 
-// TODO logo panel admin
-
 // TODO admin peut pas remove admin
 
 // TODO search bar for products
