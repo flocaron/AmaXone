@@ -92,74 +92,73 @@
             <div class="mb-3 flex -mx-2">
                 <div class="px-2">
                     <label for="type1" class="flex items-center cursor-pointer">
-                        <input type="radio" class="form-radio h-5 w-5 text-indigo-500">
+                        <input id="type1" name="type" type="radio" class="form-radio h-5 w-5 text-indigo-500">
                         <img src="https://leadershipmemphis.org/wp-content/uploads/2020/08/780370.png"
-                             class="h-8 ml-3">
+                             class="h-8 ml-3" alt="...">
                     </label>
                 </div>
                 <div class="px-2">
                     <label for="type2" class="flex items-center cursor-pointer">
-                        <input type="radio" class="form-radio h-5 w-5 text-indigo-500" name="type" id="type1"
+                        <input type="radio" class="form-radio h-5 w-5 text-indigo-500" name="type" id="type2"
                                checked>
                         <img src="https://www.sketchappsources.com/resources/source-image/PayPalCard.png"
-                             class="h-8 ml-3">
+                             class="h-8 ml-3" alt="...">
                     </label>
                 </div>
             </div>
             <div class="mb-3">
-                <label class="font-bold text-sm mb-2 ml-1">Nom du titulaire</label>
+                <label for="nom_id" class="font-bold text-sm mb-2 ml-1">Nom du titulaire</label>
                 <div>
-                    <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
+                    <input id="nom_id" class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
                            placeholder="John Smith" type="text" name="nom"
-                           value="<?= htmlspecialchars($val['nom']) ?>" required/>
+                           value="<?= htmlspecialchars($val['nom']) ?>" required />
                 </div>
             </div>
             <div class="mb-3">
-                <label class="font-bold text-sm mb-2 ml-1">Numéro de la carte</label>
+                <label for="num_id" class="font-bold text-sm mb-2 ml-1">Numéro de la carte</label>
                 <div>
-                    <input class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
+                    <input id="num_id" class="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
                            placeholder="0000 0000 0000 0000" type="number" name="num"
                            value="<?= htmlspecialchars($val['num']) ?>" required/>
                 </div>
             </div>
             <div class="mb-3 -mx-2 flex items-end">
                 <div class="px-2 w-1/2">
-                    <label class="font-bold text-sm mb-2 ml-1">Date d'expiration</label>
+                    <label for="mois_id" class="font-bold text-sm mb-2 ml-1">Date d'expiration</label>
                     <div>
-                        <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                            <option value="01">01 - Janvier</option>
-                            <option value="02">02 - Fevrier</option>
-                            <option value="03">03 - Mars</option>
-                            <option value="04">04 - Avril</option>
-                            <option value="05">05 - Mai</option>
-                            <option value="06">06 - Juin</option>
-                            <option value="07">07 - Juillet</option>
-                            <option value="08">08 - Aout</option>
-                            <option value="09">09 - Septembre</option>
-                            <option value="10">10 - Octobre</option>
-                            <option value="11">11 - Novembre</option>
-                            <option value="12">12 - Decembre</option>
+                        <select id="mois_id" name="mois" class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                            <option value="01" <?= $val['mois'] == "1" ? "selected" : "" ?> >01 - Janvier</option>
+                            <option value="02" <?= $val['mois'] == "2" ? "selected" : "" ?> >02 - Fevrier</option>
+                            <option value="03" <?= $val['mois'] == "3" ? "selected" : "" ?> >03 - Mars</option>
+                            <option value="04" <?= $val['mois'] == "4" ? "selected" : "" ?> >04 - Avril</option>
+                            <option value="05" <?= $val['mois'] == "5" ? "selected" : "" ?> >05 - Mai</option>
+                            <option value="06" <?= $val['mois'] == "6" ? "selected" : "" ?> >06 - Juin</option>
+                            <option value="07" <?= $val['mois'] == "7" ? "selected" : "" ?> >07 - Juillet</option>
+                            <option value="08" <?= $val['mois'] == "8" ? "selected" : "" ?> >08 - Aout</option>
+                            <option value="09" <?= $val['mois'] == "9" ? "selected" : "" ?> >09 - Septembre</option>
+                            <option value="10" <?= $val['mois'] == "10" ? "selected" : "" ?> >10 - Octobre</option>
+                            <option value="11" <?= $val['mois'] == "11" ? "selected" : "" ?> >11 - Novembre</option>
+                            <option value="12" <?= $val['mois'] == "12" ? "selected" : "" ?> >12 - Decembre</option>
                         </select>
                     </div>
                 </div>
                 <div class="px-2 w-1/2">
-                    <select class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
+                    <select id="mois_id" name="an" class="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                        <option value="2023" <?= $val['an'] == "2023" ? "selected" : ""?> >2023</option>
+                        <option value="2024" <?= $val['an'] == "2024" ? "selected" : ""?> >2024</option>
+                        <option value="2025" <?= $val['an'] == "2025" ? "selected" : ""?> >2025</option>
+                        <option value="2026" <?= $val['an'] == "2026" ? "selected" : ""?> >2026</option>
+                        <option value="2027" <?= $val['an'] == "2027" ? "selected" : ""?> >2027</option>
+                        <option value="2028" <?= $val['an'] == "2028" ? "selected" : ""?> >2028</option>
+                        <option value="2029" <?= $val['an'] == "2029" ? "selected" : ""?> >2029</option>
                     </select>
                 </div>
             </div>
             <div class="mb-10">
-                <label class="font-bold text-sm mb-2 ml-1">Security code</label>
+                <label for="crypto_id" class="font-bold text-sm mb-2 ml-1">Security code</label>
                 <div>
-                    <input class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                           placeholder="000" type="text"/>
+                    <input id="crypto_id" class="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
+                           name="crypto" placeholder="000" type="text" required />
                 </div>
             </div>
             <div>

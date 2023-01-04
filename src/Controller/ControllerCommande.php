@@ -257,8 +257,8 @@ class ControllerCommande extends GenericController
                     "val" => [
                         "nom" => "",
                         "num" => "",
-                        "date" => "",
-                        "crypto" => "",
+                        "mois" => "",
+                        "an" => "",
                     ],
                     "total" => $total,
                     "pagetitle" => "Passer Commande",
@@ -281,7 +281,7 @@ class ControllerCommande extends GenericController
                 foreach (Panier::lirePanier() as $id => $qte) {
                     $total += (new ProduitRepository())->select($id)->getPrix() * $qte;
                 }
-                if (isset($_REQUEST['nom']) && isset($_REQUEST['num']) && isset($_REQUEST['date']) && isset($_REQUEST['crypto']) && isset($_REQUEST['sur'])) {
+                if (isset($_REQUEST['nom']) && isset($_REQUEST['num']) && isset($_REQUEST['mois']) && isset($_REQUEST['crypto']) && isset($_REQUEST['an'])) {
                     if (strlen($_REQUEST['crypto']) == 3) {
                         $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
                         if ($bool) {
@@ -298,8 +298,8 @@ class ControllerCommande extends GenericController
                             "val" => [
                                 "nom" => $_REQUEST['nom'],
                                 "num" => $_REQUEST['num'],
-                                "date" => $_REQUEST['date'],
-                                "crypto" => $_REQUEST['crypto'],
+                                "mois" => $_REQUEST['mois'],
+                                "an" => $_REQUEST['an'],
                             ],
                             "total" => $total,
                             "pagetitle" => "Passer Commande",
@@ -312,8 +312,8 @@ class ControllerCommande extends GenericController
                         "val" => [
                             "nom" => $_REQUEST['nom'],
                             "num" => $_REQUEST['num'],
-                            "date" => $_REQUEST['date'],
-                            "crypto" => $_REQUEST['crypto'],
+                            "mois" => $_REQUEST['mois'],
+                            "an" => $_REQUEST['an'],
                         ],
                         "total" => $total,
                         "pagetitle" => "Passer Commande",
@@ -366,6 +366,10 @@ class ControllerCommande extends GenericController
 
 
 }
+
+// TODO logo panel admin
+
+// TODO admin peut pas remove admin
 
 // TODO search bar for products
 // TODO tech support / SAV
