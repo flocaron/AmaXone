@@ -163,8 +163,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit"
-                        class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">
+                <button type="submit" class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">
                     <i class="mdi mdi-lock-outline mr-1"></i> PAYER <?= $total ?> €
                 </button>
                 <input type="hidden" name="action" value="validerCommande"/>

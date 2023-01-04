@@ -1,37 +1,30 @@
-<div class="bg-white">
-    <div class="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold items-center tracking-tight text-gray-900">Notre Catalogue</h2>
-        <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            <?php foreach ($inventaire as $categorie) { ?>
-                <div class="group relative">
-                    <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
-                        <a href="frontController.php?controller=produit&action=catalogue&nom=<?= htmlspecialchars($categorie->getNom()) ?>">
+<div class="bg-gray-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
+            <h2 class="text-2xl font-bold text-gray-900">Categories</h2>
+            <div class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
+                <?php foreach ($inventaire as $categorie) { ?>
+                    <div class="group relative">
+                        <div class="relative h-80 w-full overflow-hidden rounded-lg bg-white group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
                             <img src="<?php echo "../assets/images/categories/" . htmlspecialchars($categorie->getImgPath()); ?>"
-                                 alt=".."
-                                 class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
+                                 alt="Une categorie X" class="h-full w-full object-cover object-center">
+                        </div>
+                        <a frontController.php?controller=produit&action=catalogue&nom=<?= htmlspecialchars($categorie->getNom()) ?> >
+                            <p class="text-base font-semibold text-gray-900"> <?php echo htmlspecialchars($categorie->getNom()); ?>
+                            </p>
                         </a>
-
                     </div>
-                    <div class="mt-4 flex justify-between items-center">
-                        <p class=" py-1.5 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-blue-600 text-white rounded">
-                            <?php echo htmlspecialchars($categorie->getNom()); ?> </p>
-                        <p> <a href="frontController.php?controller=categorie&action=read&nom=<?php echo rawurlencode($categorie->getNom()); ?>"> ii. </a> </p>
+                <?php } ?>
+                <?php if ($estAdmin) { ?>
+                    <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md object-center hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
+                        <a href="frontController.php?action=create&controller=categorie">
+                            <img src="../assets/images/add.png"
+                                 alt="Ajouter un produit"
+                                 class=" h-1/2 object-fit object-center">
+                        </a>
                     </div>
-                </div>
-            <?php } ?>
-
-            <?php
-            if ($estAdmin) { ?>
-            <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md object-center hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
-                <a href="frontController.php?action=create&controller=categorie">
-                    <img src="../assets/images/add.png"
-                         alt="Ajouter un produit"
-                         class=" h-1/2 object-fit object-center">
-                </a>
-
+                <?php } ?>
             </div>
         </div>
-        <?php } ?>
     </div>
 </div>
-
