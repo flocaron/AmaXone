@@ -2,7 +2,7 @@
     <?php require __DIR__ . "/../panelAdminNavBar.php"; ?>
 
 
-    <h2 class="m-4"> 🧔 Liste des commandes 🧔 </h2>
+    <h2 class="m-4"> ✉ Liste des commandes ✉ </h2>
 
     <ol>
         <?php
