@@ -119,21 +119,15 @@ class ControllerUser extends GenericController
     {
         if (isset($_REQUEST['login']) && isset($_REQUEST['nom']) && isset($_REQUEST['prenom']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdpN']) && isset($_REQUEST['mdpC']) && isset($_REQUEST['email'])) {
             if (ConnexionUtilisateur::estUtilisateur($_REQUEST['login']) || ConnexionUtilisateur::estAdministrateur()) {
-                $user = new User("", "", "", "", 0, "", "", "");
-                $user->set('login', $_REQUEST['login']);
+                $user = (new UserRepository())->select($_REQUEST['login']);
+                if (is_null($user)) {
+                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
+                    header("Location: frontController.php");
+                    exit(1);
+                }
                 $user->set('nom', $_REQUEST['nom']);
                 $user->set('prenom', $_REQUEST['prenom']);
                 $user->set('email', $_REQUEST['email']);
-                if (is_null((new UserRepository())->select($_REQUEST['login']))) {
-                    MessageFlash::ajouter("danger", "Cet utilisateur n'existe pas !!");
-                    self::afficheVue([
-                        "user" => $user,
-                        "action" => "update",
-                        "pagetitle" => "Modifier Utilisateur",
-                        "cheminVueBody" => "user/create.php",
-                    ]);
-                    exit(1);
-                }
                 if (ConnexionUtilisateur::estAdministrateur()) {
                     $password = (new UserRepository())->select(ConnexionUtilisateur::getLoginUtilisateurConnecte())->get('mdpHache');
                 } else {
@@ -225,10 +219,10 @@ class ControllerUser extends GenericController
                 $bool = (new UserRepository)->save($newUser);
                 if ($bool) {
                     VerificationEmail::envoiEmailValidation($newUser);
-                    MessageFlash::ajouter("success", "utilisateur bien créé !!");
+                    MessageFlash::ajouter("success", "Utilisateur bien créé !!");
                     header("Location: frontController.php");
                 } else {
-                    MessageFlash::ajouter("warning", "login deja existant !!");
+                    MessageFlash::ajouter("warning", "Login deja existant !!");
                     self::afficheVue([
                         "user" => $user,
                         "action" => "create",
@@ -237,7 +231,7 @@ class ControllerUser extends GenericController
                     ]);
                 }
             } else {
-                MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
+                MessageFlash::ajouter("warning", "Les deux mots de passe doivent être égaux !!");
                 self::afficheVue([
                     "user" => $user,
                     "action" => "create",
@@ -246,7 +240,7 @@ class ControllerUser extends GenericController
                 ]);
             }
         } else {
-            MessageFlash::ajouter("danger", "login non renseignée !!");
+            MessageFlash::ajouter("danger", "Login non renseignée !!");
             header("Location: frontController.php?action=create&controller=user");
         }
     }
@@ -254,7 +248,7 @@ class ControllerUser extends GenericController
     public static function login()
     {
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            MessageFlash::ajouter('danger', 'Veuillez vous deconnectez !!');
             header('Location: frontController.php');
         } else {
             self::afficheVue([
@@ -268,7 +262,7 @@ class ControllerUser extends GenericController
     public static function logined()
     {
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez-vous deconnecter !!');
+            MessageFlash::ajouter('danger', 'Veuillez-vous deconnecter !!');
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login']) && isset($_REQUEST['mdp'])) {
@@ -308,7 +302,7 @@ class ControllerUser extends GenericController
             ConnexionUtilisateur::deconnecter();
             MessageFlash::ajouter("success", "Vous-etes deconnecté !");
         } else {
-            MessageFlash::ajouter("danger", "vous n'etes pas connecté");
+            MessageFlash::ajouter("danger", "Vous n'etes pas connecté");
 
         }
         header("Location: frontController.php?action=login&controller=user");
@@ -330,7 +324,7 @@ class ControllerUser extends GenericController
 
     public static function passwordForget() { // demandeLogin
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            MessageFlash::ajouter('danger', 'Veuillez vous deconnectez !!');
             header('Location: frontController.php');
         } else {
             self::afficheVue([
@@ -342,7 +336,7 @@ class ControllerUser extends GenericController
 
     public static function passwordForgeted() {
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            MessageFlash::ajouter('danger', 'Veuillez vous deconnectez !!');
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login'])) {
@@ -367,7 +361,7 @@ class ControllerUser extends GenericController
 
     public static function passwordChange () { // changePassword
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            MessageFlash::ajouter('danger', 'Veuillez vous deconnectez !!');
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login']) && isset($_REQUEST['nonce'])) {
@@ -401,7 +395,7 @@ class ControllerUser extends GenericController
 
     public static function passwordChanged() {
         if (ConnexionUtilisateur::estConnecte()) {
-            MessageFlash::ajouter('danger', 'veuillez vous deconnectez !!');
+            MessageFlash::ajouter('danger', 'Veuillez vous deconnectez !!');
             header('Location: frontController.php');
         } else {
             if (isset($_REQUEST['login']) && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])) {
@@ -419,7 +413,7 @@ class ControllerUser extends GenericController
                         MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
                     }
                 } else {
-                    MessageFlash::ajouter("warning", "les deux mots de passe doivent être égaux !!");
+                    MessageFlash::ajouter("warning", "Les deux mots de passe doivent être égaux !!");
                 }
             } else {
                 MessageFlash::ajouter("danger", "Il manque le login !");
