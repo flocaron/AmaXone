@@ -204,7 +204,7 @@ class ControllerProduit extends GenericController
 
             if (isset($_REQUEST['id']) && isset($_REQUEST['libelle']) && isset($_REQUEST['description']) && isset ($_REQUEST['categorie']) && isset($_REQUEST['prix']) && !empty($_FILES['file-upload']) && is_uploaded_file($_FILES['file-upload']['tmp_name'])) {
                 $produit = new Produit($_REQUEST['id'], $_REQUEST['libelle'], $_REQUEST['description'], $_REQUEST['prix'], "", $_REQUEST['categorie']);
-                if (is_null((new CategorieRepository())->select($_REQUEST['nom']))) {
+                if (is_null((new CategorieRepository())->select($_REQUEST['categorie']))) {
                     MessageFlash::ajouter("warning", "Cette catégorie n'existe pas !");
                     self::afficheVue([
                         "categories" => (new CategorieRepository())->selectAll(),
