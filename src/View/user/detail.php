@@ -14,12 +14,12 @@
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo "Nom: " . htmlspecialchars($user->get('nom')); ?></p>
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo "Prenom: " . htmlspecialchars($user->get('prenom')); ?></p>
             <div class="grid grid-cols-2 gap-4 ">
-            <a <?php echo "href=frontController.php?controller=user&action=update&login=" . rawurlencode($user->get('login')) ?>
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Modifier le profil
-                <svg class="ml-2" fill="#000000" height="32px" width="32px" id="Layer_1"
-                     xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 70 70" xml:space="preserve">
+                <a <?php echo "href=frontController.php?controller=user&action=update&login=" . rawurlencode($user->get('login')) ?>
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Modifier le profil
+                    <svg class="ml-2" fill="#000000" height="32px" width="32px" id="Layer_1"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 70 70" xml:space="preserve">
 
                         <g id="SVGRepo_iconCarrier">
                             <g>
@@ -32,32 +32,28 @@
                         </g>
 
                 </svg>
-            </a>
-            <a <?php echo "href=frontController.php?controller=user&action=delete&login=" . rawurlencode($user->get('login')) ?>
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Supprimer le compte
-                <svg class="ml-2" fill="#000000" height="32px" width="32px" id="Layer_1"
-                     xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 512 512" xml:space="preserve"><g
-                            id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M42.7,469.3c0,23.5,19.1,42.7,42.7,42.7h341.3c23.5,0,42.7-19.1,42.7-42.7V192H42.7V469.3z M362.7,256h42.7v192h-42.7V256z M234.7,256h42.7v192h-42.7V256z M106.7,256h42.7v192h-42.7V256z M490.7,85.3h-128V42.7C362.7,19.1,343.5,0,320,0H192 c-23.5,0-42.7,19.1-42.7,42.7v42.7h-128C9.5,85.3,0,94.9,0,106.7V128c0,11.8,9.5,21.3,21.3,21.3h469.3c11.8,0,21.3-9.5,21.3-21.3 v-21.3C512,94.9,502.5,85.3,490.7,85.3z M320,85.3H192V42.7h128V85.3z"></path>
-                    </g></svg>
+                </a>
+                <a <?php echo "href=frontController.php?controller=user&action=delete&login=" . rawurlencode($user->get('login')) ?>
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Supprimer le compte
+                    <svg class="ml-2" fill="#000000" height="32px" width="32px" id="Layer_1"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 512 512" xml:space="preserve"><g
+                                id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M42.7,469.3c0,23.5,19.1,42.7,42.7,42.7h341.3c23.5,0,42.7-19.1,42.7-42.7V192H42.7V469.3z M362.7,256h42.7v192h-42.7V256z M234.7,256h42.7v192h-42.7V256z M106.7,256h42.7v192h-42.7V256z M490.7,85.3h-128V42.7C362.7,19.1,343.5,0,320,0H192 c-23.5,0-42.7,19.1-42.7,42.7v42.7h-128C9.5,85.3,0,94.9,0,106.7V128c0,11.8,9.5,21.3,21.3,21.3h469.3c11.8,0,21.3-9.5,21.3-21.3 v-21.3C512,94.9,502.5,85.3,490.7,85.3z M320,85.3H192V42.7h128V85.3z"></path>
+                        </g>
                 </svg>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
-
-
-    </div>
     <!-- Historique des commandes !-->
-    <div class="mt-5 p-4">
+    <div id="commande" class="mt-5 p-4">
         <h2 class="text-2xl font-bold items-center tracking-tight text-gray-900">Historique des commandes</h2>
         <div class="flex flex-row gap-2 mt-5 flex-wrap">
             <?php
-            foreach ($commandes
-
-                     as $commandeSerialize => $tab) {
+            foreach ($commandes as $commandeSerialize => $tab) {
                 $commande = unserialize($commandeSerialize);
                 $total = 0; ?>
                 <div class="m-auto h-full w-full max-w-md bg-white shadow p-2 border-t-4 border-green-600 rounded">
@@ -96,6 +92,7 @@
                                         <h1 class="text-lg font-mono text-green-600"><?php echo $total ?> euros</h1>
                                     </div>
                                 </div>
+                                <div> <a href="frontController.php?action=exporterPDF&controller=commande&id=<?= rawurlencode($commande->getId()) ?>"> expoter PDF </a></div>
 
                         </div>
 

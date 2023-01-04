@@ -3,6 +3,7 @@
 namespace App\E_Commerce\Controller;
 
 use App\E_Commerce\Lib\ConnexionUtilisateur;
+use App\E_Commerce\Lib\FPDF;
 use App\E_Commerce\Lib\MessageFlash;
 use App\E_Commerce\Lib\Panier;
 use App\E_Commerce\Model\DataObject\Commande;
@@ -248,29 +249,119 @@ class ControllerCommande extends GenericController
     {
         if (ConnexionUtilisateur::estConnecte()) {
             if (Panier::nbPanier() > 0) {
-                $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
-                if ($bool) {
-                    (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
-                    MessageFlash::ajouter("success", "Votre commande est enregistré !");
-                    header("Location: frontController.php?action=catalogue&controller=categorie");
-                } else {
-                    MessageFlash::ajouter("warning", "L'enregistrement a échoué");
-                    header("Location: frontController.php?action=affichePanier&controller=produit");
+                $total = 0;
+                foreach (Panier::lirePanier() as $id => $qte) {
+                    $total += (new ProduitRepository())->select($id)->getPrix() * $qte;
                 }
-                /*
-                    } else {
-                        MessageFlash::ajouter("info", "Valider ? <a href='frontController.php?action=passerCommande&verif&controller=commande'>oui</a> <a href='frontController.php?action=affichePanier&controller=produit'>non</a>");
-                        header("Location: frontController.php?action=affichePanier&controller=produit");
-                    }
-                */
+                self::afficheVue([
+                    "val" => [
+                        "nom" => "",
+                        "num" => "",
+                        "date" => "",
+                        "crypto" => "",
+                    ],
+                    "total" => $total,
+                    "pagetitle" => "Passer Commande",
+                    "cheminVueBody" => "commande/formCB.php",
+                ]);
             } else {
-                MessageFlash::ajouter("warning", "Vous ne pouvez pas commander avec un panier vide !");
+                MessageFlash::ajouter("info", "Vous ne pouvez pas commander avec un panier vide !");
                 header("Location: frontController.php?action=affichePanier&controller=produit");
             }
         } else {
             MessageFlash::ajouter("warning", "Veuillez-vous connecter pour passer une commande");
             header("Location: frontController.php?action=login&controller=user");
         }
+    }
+
+    public static function validerCommande() {
+        if (ConnexionUtilisateur::estConnecte()) {
+            if (Panier::nbPanier() > 0) {
+                $total = 0;
+                foreach (Panier::lirePanier() as $id => $qte) {
+                    $total += (new ProduitRepository())->select($id)->getPrix() * $qte;
+                }
+                if (isset($_REQUEST['nom']) && isset($_REQUEST['num']) && isset($_REQUEST['date']) && isset($_REQUEST['crypto']) && isset($_REQUEST['sur'])) {
+                    if (strlen($_REQUEST['crypto']) == 3) {
+                        $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
+                        if ($bool) {
+                            (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
+                            MessageFlash::ajouter("success", "Votre commande est enregistré !");
+                            header("Location: frontController.php?action=catalogue&controller=categorie");
+                        } else {
+                            MessageFlash::ajouter("warning", "L'enregistrement a échoué");
+                            header("Location: frontController.php?action=affichePanier&controller=produit");
+                        }
+                    } else {
+                        MessageFlash::ajouter("warning", "le cryptogramme doit faire 3 chiffre !!");
+                        self::afficheVue([
+                            "val" => [
+                                "nom" => $_REQUEST['nom'],
+                                "num" => $_REQUEST['num'],
+                                "date" => $_REQUEST['date'],
+                                "crypto" => $_REQUEST['crypto'],
+                            ],
+                            "total" => $total,
+                            "pagetitle" => "Passer Commande",
+                            "cheminVueBody" => "commande/formCB.php",
+                        ]);
+                    }
+                } else {
+                    MessageFlash::ajouter("danger", "Il manque des informations de paiement !");
+                    self::afficheVue([
+                        "val" => [
+                            "nom" => $_REQUEST['nom'],
+                            "num" => $_REQUEST['num'],
+                            "date" => $_REQUEST['date'],
+                            "crypto" => $_REQUEST['crypto'],
+                        ],
+                        "total" => $total,
+                        "pagetitle" => "Passer Commande",
+                        "cheminVueBody" => "commande/formCB.php",
+                    ]);
+                }
+            } else {
+                MessageFlash::ajouter("info", "Vous ne pouvez pas commander avec un panier vide !");
+                header("Location: frontController.php?action=affichePanier&controller=produit");
+            }
+        } else {
+            MessageFlash::ajouter("warning", "Veuillez-vous connecter pour passer une commande");
+            header("Location: frontController.php?action=login&controller=user");
+        }
+    }
+
+    public static function exporterPDF () {
+        if (ConnexionUtilisateur::estConnecte()) {
+            if (isset($_REQUEST['id'])) {
+                $commande = (new CommandeRepository())->select($_REQUEST['id']);
+                if (!is_null($commande)) {
+                    if ($commande->getUserLogin() == ConnexionUtilisateur::getLoginUtilisateurConnecte() || ConnexionUtilisateur::estAdministrateur()) {
+
+                        $pdf = new FPDF();
+                        $pdf->SetFont('Arial','B',16);
+                        $pdf->Write(1000, "<div style='red'> Bonsoir </div>");
+                        $pdf->Output("", "commande.pdf", true);
+
+
+
+                        // header("Location: " . __DIR__ . "/../../assets/PDF/commande.pdf");
+                    } else {
+                        MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
+                        header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()));
+                    }
+                } else {
+                    MessageFlash::ajouter("warning", "Cette commande n'existe pas !");
+                    header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()));
+                }
+            } else {
+                MessageFlash::ajouter("danger", "Il manque l'id !");
+                header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()));
+            }
+        } else {
+            MessageFlash::ajouter("danger", "Vous n'etes pas connecté !");
+            header("Location: frontController.php?action=login&controller=user");
+        }
+
     }
 
 
