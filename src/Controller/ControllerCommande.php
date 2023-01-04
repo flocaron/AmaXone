@@ -367,8 +367,5 @@ class ControllerCommande extends GenericController
 
 }
 
-// TODO formulaire de paiement
-
-
 // TODO search bar for products
 // TODO tech support / SAV
