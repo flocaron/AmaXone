@@ -101,7 +101,7 @@
                             <div class="flex flex-row">
                                 <div class="px-2">
                                     <img src="../assets/images/icons/<?php echo $type?>.png" alt="..."
-                                         class=" mt-2 block aspect-auto object-cover h-8 rounded-full w-auto">
+                                         class="block aspect-auto object-cover h-8 rounded-full w-auto">
                                 </div>
                                 <div class="ml-2 mr-6">
                                     <span class="font-semibold"><?php echo $msg ?></span>
