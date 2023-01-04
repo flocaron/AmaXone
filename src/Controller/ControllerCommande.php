@@ -273,9 +273,6 @@ class ControllerCommande extends GenericController
         }
     }
 
-    public static function testing() {
-        (new CommandeRepository())->updateProduitParCommande(138,[2 => 5, 5 => 2]);
-    }
 
 }
 
