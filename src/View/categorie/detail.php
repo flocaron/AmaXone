@@ -1,17 +1,18 @@
-<h3> Détail de <?php echo htmlspecialchars($categorie->getNom()); ?> : </h3>
-
-<article>
-    <?php
-    echo "<p> Nom = " . htmlspecialchars($categorie->getNom()) . " </p>\n";
-    echo "<p> Description = " . htmlspecialchars($categorie->getDescription()) . " </p>\n";
-    echo "<p> Image Path = " . htmlspecialchars($categorie->getImgPath()) . " </p>\n";
-
-    if ($estAdmin) {
-        echo "<div class='mt-5'>" .
-            "<a href='frontController.php?controller=categorie&action=delete&nom=" . rawurlencode($categorie->getNom()) . "' > ❌ </a>" .
-            "<a href='frontController.php?controller=categorie&action=update&nom=" . rawurlencode($categorie->getNom()) . "' > ✅ </a>" .
-            "</div>";
-    }
-    ?>
-</article>
-
+<div class="flex items-center justify-center w-full">
+    <div class="w-full p-4">
+        <div class="flex flex-col justify-center p-10 bg-white rounded-lg shadow-2xl card">
+            <div class="prod-title">
+                <p class="text-2xl font-bold text-gray-900 uppercase">
+                    <?php echo htmlspecialchars($categorie->getNom()); ?>
+                </p>
+                <p class="text-sm mt-5 text-gray-400 uppercase">
+                    <?php echo htmlspecialchars($categorie->getDescription()); ?>
+                </p>
+            </div>
+            <div class="prod-img mt-5">
+                <img src="<?php echo "../assets/images/categories/" .htmlspecialchars($categorie->getImgPath()); ?>"
+                     class="object-cover object-center w-full" alt=".."/>
+            </div>
+        </div>
+    </div>
+</div>
