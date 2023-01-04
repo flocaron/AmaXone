@@ -28,7 +28,7 @@
             <?php
             if ($estAdmin) { ?>
             <div class="min-h-80 aspect-w-1 aspect-h-1 w-full rounded-md object-center hover:shadow-lg transition duration-300 ease-in-out lg:aspect-none lg:h-80">
-                <a href="frontController.php?action=create&controller=produit">
+                <a href="frontController.php?action=create&controller=produit&nom=<?= rawurlencode($nomCategorie) ?>">
                     <img src="../assets/images/add.png"
                          alt="Ajouter un produit"
                          class="h-1/2 object-fit object-center">

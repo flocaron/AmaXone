@@ -38,7 +38,7 @@
                                 <select id="categorie_id" name="categorie">
                                     <?php
                                         foreach ($categories as $categorie) {
-                                            echo "<option value='" . htmlspecialchars($categorie->getNom())  . "' " . (isset($produit) && $produit->getCategorie() == $categorie->getNom() ? "selected" : "") . " >" . htmlspecialchars($categorie->getNom()) . "</option>";
+                                            echo "<option value='" . htmlspecialchars($categorie->getNom())  . "' " . (isset($produit) && $produit->getCategorie() == $categorie->getNom() ? "selected" : ((isset($categorieNom) && $categorieNom == $categorie->getNom()) ? "selected" : "")) . " >" . htmlspecialchars($categorie->getNom()) . "</option>";
                                         }
                                     ?>
 

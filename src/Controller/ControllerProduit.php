@@ -99,6 +99,7 @@ class ControllerProduit extends GenericController
         if (ConnexionUtilisateur::estAdministrateur()) {
             self::afficheVue([
                 "categories" => (new CategorieRepository())->selectAll(),
+                "categorieNom" => isset($_REQUEST['nom']) ? str_replace("%20", " ", $_REQUEST['nom']) : "",
                 "action" => "create",
                 "pagetitle" => "Créer Produit",
                 "cheminVueBody" => "produit/create.php",
