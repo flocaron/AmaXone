@@ -236,7 +236,7 @@ class ControllerProduit extends GenericController
                             MessageFlash::ajouter("success", "Produit bien crée");
                             header("Location: frontController.php?action=readAll&controller=produit");
                         } else {
-                            MessageFlash::ajouter("warning", "ID déja existant");
+                            MessageFlash::ajouter("warning", "ID déja existant ou Donnée trop longue");
                             self::afficheVue([
                                 "categories" => (new CategorieRepository())->selectAll(),
                                 "produit" => $produit,
