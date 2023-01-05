@@ -11,19 +11,11 @@
     -->
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity">
 
+
         <div class="fixed inset-0 overflow-hidden">
             <div class="absolute inset-0 overflow-hidden">
                 <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-                    <!--
-                      Slide-over panel, show/hide based on slide-over state.
 
-                      Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                        From: "translate-x-full"
-                        To: "translate-x-0"
-                      Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                        From: "translate-x-0"
-                        To: "translate-x-full"
-                    -->
                     <div class="pointer-events-auto w-screen max-w-md">
                         <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                             <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
@@ -44,6 +36,17 @@
                                             </a>
                                         </button>
                                     </div>
+                                </div>
+                                <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+                                    <p>
+                                        //TODO
+                                        <a href="frontController.php?action=removeAll&controller=produit">
+                                            <button type="button"
+                                                    class="font-medium text-indigo-600 hover:text-indigo-500">
+                                                Vider le panier
+                                            </button>
+                                        </a>
+                                    </p>
                                 </div>
 
                                 <div class="mt-8">
