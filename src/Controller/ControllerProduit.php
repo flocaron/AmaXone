@@ -367,6 +367,7 @@ class ControllerProduit extends GenericController
         ]);
     }
 
+    /*
     public static function replacePanier()
     {
         if (ConnexionUtilisateur::estConnecte()) {
@@ -380,6 +381,7 @@ class ControllerProduit extends GenericController
             header("Location: frontController.php?action=login&controller=user");
         }
     }
+    */
 
     public static function viderPanier()
     {
