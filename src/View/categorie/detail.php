@@ -11,7 +11,7 @@
             </div>
             <div class="prod-img mt-5">
                 <img src="<?php echo "../assets/images/categories/" .htmlspecialchars($categorie->getImgPath()); ?>"
-                     class="object-cover object-center w-full" alt=".."/>
+                     class="aspect-video w-1/2" alt=".."/>
             </div>
         </div>
     </div>

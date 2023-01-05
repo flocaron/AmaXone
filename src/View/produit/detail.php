@@ -10,7 +10,7 @@
                 </p>
             </div>
             <div class="prod-img mt-5">
-                <img src="<?php echo "../assets/images/produits/" . htmlspecialchars($produit->getImgPath()); ?>" class="object-cover object-center w-96 h-48" alt=".."/>
+                <img src="<?php echo "../assets/images/produits/" . htmlspecialchars($produit->getImgPath()); ?>" class="object-center aspect-video" alt=".."/>
             </div>
             <div class="grid gap-10 prod-info">
                 <div class="flex flex-col items-center justify-between text-gray-900 md:flex-row mt-10">
