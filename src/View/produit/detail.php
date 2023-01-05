@@ -18,7 +18,7 @@
                         <?php echo htmlspecialchars($produit->getPrix()) . " €"; ?>
                     </p>
                     <button class="px-6 py-2 uppercase transition duration-200 ease-in border-2 border-gray-900 rounded-full hover:bg-gray-800 hover:text-white focus:outline-none">
-                        <a href="frontController.php?controller=produit&action=addPanier&read&id=<?php echo rawurlencode($produit->getId()); ?>">
+                        <a href="frontController.php?controller=produit&action=addPanier&nom=<?= rawurlencode($produit->getCategorie()) ?>&id=<?php echo rawurlencode($produit->getId()); ?>">
                             Ajouter au Panier </a>
                     </button>
                 </div>
