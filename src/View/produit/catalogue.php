@@ -9,7 +9,7 @@
                         <a href="frontController.php?controller=produit&action=read&id=<?php echo rawurlencode($produit->getId()); ?>">
                             <img src="<?php echo "../assets/images/produits/" . htmlspecialchars($produit->getImgPath()); ?>"
                                  alt=".."
-                                 class="h-full w-full object-fit object-scale-down object-center lg:h-full lg:w-full">
+                                 class="h-full w-full object-scale-down object-center lg:h-full lg:w-full">
                         </a>
 
                     </div>
