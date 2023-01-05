@@ -18,7 +18,7 @@
             <div class="mx-auto max-w-3xl pt-20 pb-32 sm:pt-48 sm:pb-40">
                 <h1 class="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">Bienvenue chez Alteer</h1>
                 <p class="mt-6 text-lg leading-8 text-gray-600 sm:text-center">Spécialisée
-                    dans la vente de matériel informatique de qualité depuis plus de 10 <br> Alteer (ex-AmaXone) vous
+                    dans la vente de matériel informatique de qualité depuis plus de 10 ans.<br>Alteer (ex-AmaXone) vous
                     proposent une
                     large gamme de produits, allant des ordinateurs de bureau et portables aux écrans,
                     imprimantes et accessoires, selectionnant soigneusement nos fournisseurs afin de vous
@@ -29,7 +29,7 @@
                     client et à maintenir des relations durables avec nos partenaires et fournisseurs.
 
                 </p>
-                <div class="mt-8 flex gap-x-4 sm:justify-center">
+                <div class="mt-8 flex gap-x-4 justify-center">
                     <a href="frontController.php?action=catalogue&controller=categorie"
                        class="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700">
                         Découvrir notre catalogue
