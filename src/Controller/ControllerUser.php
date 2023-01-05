@@ -271,9 +271,7 @@ class ControllerUser extends GenericController
                     if (VerificationEmail::aValideEmail($user)) {
                         if (MotDePasse::verifier($_REQUEST['mdp'], $user->get('mdpHache'))) {
                             ConnexionUtilisateur::connecter($_REQUEST['login']);
-                            if (count(Panier::lirePanier()) == 0) {
-                                Panier::replacePanier();
-                            }
+                            Panier::replacePanier();
                             MessageFlash::ajouter("success", "Vous etes bien connecté !");
                             header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode($_REQUEST['login']));
                         } else {
