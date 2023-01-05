@@ -363,7 +363,7 @@ class ControllerCommande extends GenericController
 
                             $pdf->Cell(40,10,'         - ' . $produit->getLibelle() . " -> " . $produit->getPrix() . chr(128) . " x$qte", 0, 1);
 
-                            $total += $produit->getPrix();
+                            $total += $produit->getPrix() * $qte;
                         }
                         $pdf->SetFont('Arial','B',12);
                         $pdf->Cell(40,10,'Date Quittance', 0, 1);
