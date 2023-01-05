@@ -386,7 +386,7 @@ class ControllerProduit extends GenericController
         if (isset($_REQUEST['verif'])) {
             Panier::viderPanier();
         } else {
-            MessageFlash::ajouter("info", "vous etes sur ? <a href='frontController.php?action=viderPanier&controller=produit&verif'> oui </a> <a href='frontController.php?action=affichePanier&controller=produit'> non </a>");
+            MessageFlash::ajouter("info", "Confirmer ? <a href='frontController.php?action=viderPanier&controller=produit&verif'> Oui </a> <a href='frontController.php?action=affichePanier&controller=produit'> Non </a>");
         }
         header("Location: frontController.php?action=affichePanier&controller=produit");
     }

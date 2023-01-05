@@ -39,8 +39,7 @@
                                 </div>
                                 <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                                     <p>
-                                        //TODO
-                                        <a href="frontController.php?action=removeAll&controller=produit">
+                                        <a href="frontController.php?action=viderPanier&controller=produit">
                                             <button type="button"
                                                     class="font-medium text-indigo-600 hover:text-indigo-500">
                                                 Vider le panier
@@ -105,7 +104,7 @@
 
                                                     <div class="flex">
 
-                                                        <a href="frontController.php?action=removePanier&controller=produit&id=<?php echo htmlspecialchars($produit->getId()) ?>">
+                                                        <a href="frontController.php?action=removeAllPanier&controller=produit&id=<?php echo htmlspecialchars($produit->getId()) ?>">
                                                             <button type="button"
                                                                     class="font-medium text-indigo-600 hover:text-indigo-500">
 
