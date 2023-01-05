@@ -286,6 +286,7 @@ class ControllerCommande extends GenericController
                         $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
                         if ($bool) {
                             (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
+                            Panier::viderPanier();
                             MessageFlash::ajouter("success", "Votre commande est enregistré !");
                             header("Location: frontController.php?action=catalogue&controller=categorie");
                         } else {
@@ -337,14 +338,42 @@ class ControllerCommande extends GenericController
                 if (!is_null($commande)) {
                     if ($commande->getUserLogin() == ConnexionUtilisateur::getLoginUtilisateurConnecte() || ConnexionUtilisateur::estAdministrateur()) {
 
+                        $user = (new UserRepository())->select($commande->getUserLogin());
+                        $produits = (new CommandeRepository())->getProduitParCommande($commande->getId());
+
                         $pdf = new FPDF();
+                        $pdf->AddPage();
+
                         $pdf->SetFont('Arial','B',16);
-                        $pdf->Write(1000, "<div style='red'> Bonsoir </div>");
+                        $pdf->Cell(40,10,'N' . chr(176) . ' Commande', 0, 1);
+                        $pdf->SetFont('Arial','B',14);
+                        $pdf->Cell(40,10,'QUITTANCE-' . $commande->getId(), 0, 1);
+
+                        $pdf->SetFont('Arial','',12);
+                        $pdf->Cell(40,10,'Nom : ' . $user->get('nom') . " " . $user->get('prenom'), 0, 1);
+                        $pdf->Cell(40,10,'Email : ' . $user->get('email'), 0, 1);
+
+                        $pdf->SetFont('Arial','B',12);
+                        $pdf->Cell(40,10,'Articles :', 0, 1);
+                        $pdf->SetFont('Arial','',11);
+
+                        $total = 0;
+                        foreach ($produits as $produitSerialize => $qte) {
+                            $produit = unserialize($produitSerialize);
+
+                            $pdf->Cell(40,10,'         - ' . $produit->getLibelle() . " -> " . $produit->getPrix() . chr(128) . " x$qte", 0, 1);
+
+                            $total += $produit->getPrix() * $qte;
+                        }
+                        $pdf->SetFont('Arial','B',12);
+                        $pdf->Cell(40,10,'Date Quittance', 0, 1);
+                        $pdf->SetFont('Arial','',11);
+                        $pdf->Cell(40,10,$commande->getDate(), 0, 1);
+
+                        $pdf->Cell(40, 10, "Montant Pay" . chr(233) . " : $total " . chr(128), 0, 1);
+
                         $pdf->Output("", "commande.pdf", true);
 
-
-
-                        // header("Location: " . __DIR__ . "/../../assets/PDF/commande.pdf");
                     } else {
                         MessageFlash::ajouter("danger", "Vous n'etes pas le bon utilisateur connecté !");
                         header("Location: frontController.php?action=read&controller=user&login=" . rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()));
@@ -366,6 +395,9 @@ class ControllerCommande extends GenericController
 
 
 }
+
+
+// TODO export PDF
 
 // TODO admin peut pas remove admin
 

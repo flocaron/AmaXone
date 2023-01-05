@@ -92,7 +92,7 @@
                                         <h1 class="text-lg font-mono text-green-600"><?php echo $total ?> euros</h1>
                                     </div>
                                 </div>
-                                <div> <a href="frontController.php?action=exporterPDF&controller=commande&id=<?= rawurlencode($commande->getId()) ?>"> exporter PDF </a></div>
+                                <div> &rarr; <a class="font-bold" href="frontController.php?action=exporterPDF&controller=commande&id=<?= rawurlencode($commande->getId()) ?>"> Exporter PDF </a></div>
 
                         </div>
 
