@@ -286,6 +286,7 @@ class ControllerCommande extends GenericController
                         $bool = (new CommandeRepository)->save(new Commande(-1, date("Y-m-d"), "en cours", ConnexionUtilisateur::getLoginUtilisateurConnecte()));
                         if ($bool) {
                             (new CommandeRepository())->enregistrerCommande(ConnexionUtilisateur::getLoginUtilisateurConnecte(), Panier::lirePanier());
+                            Panier::viderPanier();
                             MessageFlash::ajouter("success", "Votre commande est enregistré !");
                             header("Location: frontController.php?action=catalogue&controller=categorie");
                         } else {
