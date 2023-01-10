@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="../assets/CSS/style.css"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
-    <title><?php use App\E_Commerce\Lib\MessageFlash;
-
-        echo $pagetitle; ?></title>
+    <title><?php echo $pagetitle; ?></title>
 </head>
 <body class="bg-white">
 <header>
